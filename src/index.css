@@ -1,0 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+/* @import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities"; */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  padding: 0;
+  margin: 0;
+  font-family: "Be Vietnam Pro", sans-serif !important;
+  font-size: 16px;
+}
+
+.Toastify__toast--success {
+  background: red;
+}
+
+.swal2-container {
+  z-index: 10000 !important;
+}
+.tiptap p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.Tiptap-mathematics-editor {
+  background-color: greenyellow;
+}
+
+.ProseMirror ul {
+  padding: 0 3rem;
+  list-style: disc !important;
+}
+
+.ProseMirror pre {
+  background-color: #f6f2f2;
+  border: #aaa 1px solid;
+  border-radius: 10px;
+  padding: 1rem;
+  margin: 1rem;
+}
