@@ -124,6 +124,8 @@ export enum ScreenSize {
   MOBILE = "mobile",
 }
 
+export const BUFFER = "buffer";
+
 export enum ButtonType {
   PRIMARY = "primary",
   SECONDARY = "secondary",

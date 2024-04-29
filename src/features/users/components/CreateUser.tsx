@@ -62,12 +62,8 @@ export default function CreateUser(props: Props) {
   });
 
   const handleCreate = handleSubmit(async (dto: any) => {
-    console.log("---------", dto);
-    console.log("iii");
-
     try {
       const response = await authService.register(dto);
-      console.log("----res", response);
       if (response?.success) {
         showSuccessNotificationFunction("Tạo người dùng thành công");
         reset({
@@ -88,7 +84,11 @@ export default function CreateUser(props: Props) {
   });
 
   return (
-    <Form title="Tạo lớp học" isOpenForm={isOpenForm} handleClose={handleClose}>
+    <Form
+      title="Tạo người dùng"
+      isOpenForm={isOpenForm}
+      handleClose={handleClose}
+    >
       <InputText
         control={control}
         name="username"

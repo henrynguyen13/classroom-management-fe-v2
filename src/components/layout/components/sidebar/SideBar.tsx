@@ -83,7 +83,7 @@ export default function SideBar() {
           }}
         >
           {menuItems.map((item, index) => (
-            <Link to={item.redirect}>
+            <Link to={item.redirect} key={index}>
               <ListItem
                 disableGutters={true}
                 disablePadding={true}

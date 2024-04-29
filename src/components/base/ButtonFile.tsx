@@ -22,6 +22,7 @@ interface Props {
   backgroundColor?: string;
   size?: "small" | "medium" | "large";
   selectedFile: File | null;
+  previewTable?: string[];
   onSelectedFile: (file: File | null) => void;
 }
 
@@ -32,11 +33,13 @@ export default function ButtonFile({
   borderRadius = "8",
   size = "medium",
   selectedFile,
+  previewTable,
   onSelectedFile,
 }: Props) {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const selectedFile = event.target.files[0];
+      console.log("-selectedFile", selectedFile);
       onSelectedFile(selectedFile);
     }
   };
@@ -60,16 +63,18 @@ export default function ButtonFile({
         {title}
         <VisuallyHiddenInput
           type="file"
-          accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"
+          accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
           id="contained-button-file"
           multiple
           onChange={handleFileChange}
         />
       </Button>
 
-      <label className="ml-4" htmlFor="contained-button-file">
-        {selectedFile?.name}
-      </label>
+      {previewTable!.length === 0 && (
+        <label className="ml-4" htmlFor="contained-button-file">
+          {selectedFile?.name}
+        </label>
+      )}
     </div>
   );
 }

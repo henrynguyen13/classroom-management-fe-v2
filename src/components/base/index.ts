@@ -18,6 +18,7 @@ import SingleSelect from "./SingleSelect";
 import Collapse from "./Collapse";
 import Dropdown from "./Dropdown";
 import ButtonIcon from "./ButtonIcon";
+import MultiSelect from "./MultiSelect";
 
 export {
   CustomButton,
@@ -40,6 +41,7 @@ export {
   Collapse,
   Dropdown,
   ButtonIcon,
+  MultiSelect,
 };
 
 export * from "./icons";

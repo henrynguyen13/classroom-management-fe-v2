@@ -27,6 +27,20 @@ class AuthService extends ApiService {
       dto
     );
   }
+
+  async registerImport(dto: any[]) {
+    // const formData = new FormData();
+    // formData.append("file", file);
+    return this.client.post<ICreateUser, IBodyResponse<any>>(
+      `${this.baseUrl}/signup/import`,
+      dto
+      // {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      // }
+    );
+  }
 }
 
 export const authService = new AuthService(

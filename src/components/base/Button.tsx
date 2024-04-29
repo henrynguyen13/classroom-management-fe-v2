@@ -14,6 +14,7 @@ interface Props {
   endIcon?: ReactNode;
   size?: "small" | "medium" | "large";
   borderRadius?: string;
+  marginRight?: string;
   onClick?:
     | MouseEventHandler<HTMLButtonElement>
     | ((input: any) => Promise<void>);
@@ -30,6 +31,7 @@ export default function CustomButton({
   backgroundColor = "#1D8FE4",
   endIcon,
   borderRadius = "8",
+  marginRight,
   onClick,
 }: Props) {
   return (
@@ -46,6 +48,7 @@ export default function CustomButton({
         width: width + "px",
         textTransform: "none",
         borderRadius: borderRadius + "px",
+        marginRight: marginRight + "px",
       }}
     >
       {text}

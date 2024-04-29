@@ -8,6 +8,7 @@ interface Props {
   title: string;
   children: React.ReactNode;
   width?: string;
+  minWidth?: string;
   height?: string;
 }
 export default function Form(props: Props) {
@@ -16,6 +17,7 @@ export default function Form(props: Props) {
     handleClose,
     title,
     children,
+    minWidth = "",
     width = "500px",
     height = "auto",
   } = props;
@@ -30,6 +32,7 @@ export default function Form(props: Props) {
     borderRadius: "8px",
     width: width,
     height: height + " !important",
+    minWidth: minWidth,
 
     overflowY: "scroll",
     "&::-webkit-scrollbar": {

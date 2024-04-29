@@ -1,3 +1,5 @@
+import { ROLES } from ".";
+
 export const time = [
   { id: "6:45", label: "6:45" },
   { id: "7:00", label: "7:00" },
@@ -71,4 +73,11 @@ export const date = [
   { id: "Thứ 6", label: "Thứ 6" },
   { id: "Thứ 7", label: "Thứ 7" },
   { id: "Chủ nhật", label: "Chủ nhật" },
+];
+
+export const roles = [
+  ROLES.ADMIN,
+  ROLES.ACADEMIC_AFFAIR,
+  ROLES.STUDENT,
+  ROLES.TEACHER,
 ];

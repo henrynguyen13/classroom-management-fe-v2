@@ -23,14 +23,17 @@ import { mdiCircleSmall, mdiLoginVariant } from "@mdi/js";
 import { NoData } from "@/assets/icons";
 import { userService } from "@/features/profile/services/profile.service";
 import { IUser } from "@/features/auth/interfaces";
-import { ROLES } from "@/common";
+import { ROLES, roles } from "@/common";
 import CreateUser from "./CreateUser";
 import { useNavigate } from "react-router-dom";
+import CreateUserExcel from "./CreateUserExcel";
+import { MultiSelect } from "@/components/base";
 export default function UsersPage() {
   const navigate = useNavigate();
   const [users, setUsers] = useState<IUser[]>([]);
   const [totalItems, setTotalItems] = useState(0);
   const [isOpenCreateForm, setIsOpenCreateForm] = useState(false);
+  const [isOpenCreateExcelForm, setIsOpenCreateExcelForm] = useState(false);
 
   async function getUsers(query: ICommonListQuery) {
     try {
@@ -44,24 +47,33 @@ export default function UsersPage() {
     } finally {
     }
   }
+
+  const handleSearch = async (e: any) => {
+    const query: ICommonListQuery = {
+      textFilter: e.target.value,
+    };
+    await getUsers(query);
+  };
+
   useEffect(() => {
     getUsers({});
   }, []);
+
   const [page, setPage] = useState(0);
 
   const rowsPerPage = 10;
 
-  const updateUserList = async () => {
+  const handleChangePage = async (event: unknown, newPage: number) => {
+    setPage(newPage);
     const query: ICommonListQuery = {
-      page: page + 1,
+      page: newPage + 1,
       limit: rowsPerPage,
     };
     await getUsers(query);
   };
 
-  const handleChangePage = async (event: unknown, newPage: number) => {
-    setPage(newPage);
-    updateUserList();
+  const handleUpdateUserList = () => {
+    handleChangePage(null, 0);
   };
 
   const convertRoleColor = (role: string) => {
@@ -70,6 +82,13 @@ export default function UsersPage() {
       : role === ROLES.STUDENT
       ? "#52C41A"
       : "#D9D9D9";
+  };
+
+  const handleSelectRole = async (role: string) => {
+    const query: ICommonListQuery = {
+      keyword: role,
+    };
+    await getUsers(query);
   };
   return (
     <div>
@@ -89,9 +108,22 @@ export default function UsersPage() {
               <SearchIcon />
             </InputAdornment>
           }
+          onChange={handleSearch}
           placeholder="Tìm kiếm"
         />
+
+        <MultiSelect
+          label="Vai trò"
+          name={roles}
+          getValue={convertUserRole}
+          handleSelect={handleSelectRole}
+        />
         <div>
+          <CustomButton
+            text="Tạo file excel"
+            marginRight="12"
+            onClick={() => setIsOpenCreateExcelForm(true)}
+          />
           <CustomButton
             onClick={() => setIsOpenCreateForm(true)}
             text="Tạo mới"
@@ -271,7 +303,12 @@ export default function UsersPage() {
       <CreateUser
         isOpenForm={isOpenCreateForm}
         handleClose={() => setIsOpenCreateForm(false)}
-        updateUserList={updateUserList}
+        updateUserList={handleUpdateUserList}
+      />
+      <CreateUserExcel
+        isOpenForm={isOpenCreateExcelForm}
+        handleClose={() => setIsOpenCreateExcelForm(false)}
+        updateUserList={handleUpdateUserList}
       />
     </div>
   );

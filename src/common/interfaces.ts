@@ -9,6 +9,7 @@ export interface ICommonListQuery {
   orderBy?: string;
   orderDirection?: OrderDirection;
   keyword?: string;
+  textFilter?: string;
 }
 
 export interface IGetListResponse<T> {

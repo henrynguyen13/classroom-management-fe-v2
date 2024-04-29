@@ -211,3 +211,23 @@ export const logout = () => {
   authStorageService.resetAll();
   navigate("/login");
 };
+
+export const convertArrayToJSON = (array: any[]) => {
+  const headers: string[] = array[0];
+  const jsonData: any[] = [];
+
+  for (let i = 1; i < array.length; i++) {
+    const row = array[i];
+    const obj: { [key: string]: string } = {};
+
+    for (let j = 0; j < headers.length; j++) {
+      const header = headers[j];
+      const value = row[j];
+      obj[header] = value.toString();
+    }
+
+    jsonData.push(obj);
+  }
+
+  return jsonData;
+};
