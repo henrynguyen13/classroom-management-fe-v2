@@ -14,6 +14,7 @@ interface Props {
   value?: string;
   disabled?: boolean;
   width?: string;
+  minWidth?: string;
   onChange?: (e: any) => void;
 }
 
@@ -25,7 +26,8 @@ export default function InputText({
   value,
   placeholder,
   disabled,
-  width = "500",
+  minWidth,
+  width,
 }: Props) {
   const [elementId, setElementId] = useState("");
 
@@ -57,7 +59,7 @@ export default function InputText({
                 "& .MuiInputBase-root": {
                   borderRadius: 2,
                   height: "48px",
-                  width: width + "px",
+                  width: width ? width + "px" : "100%",
                 },
                 "& .MuiInputLabel-root": {
                   display: "none",
@@ -65,6 +67,7 @@ export default function InputText({
                 "& .MuiFormHelperText-root": {
                   color: "#ed3a3a",
                 },
+                width: "100%",
               }}
               id={elementId}
               variant={variant}

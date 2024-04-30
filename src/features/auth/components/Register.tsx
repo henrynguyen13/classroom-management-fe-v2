@@ -49,6 +49,7 @@ export default function Register() {
         name="username"
         label="Họ và tên"
         placeholder="Nhập họ và tên"
+        width="500"
       />
       <InputText
         control={control}

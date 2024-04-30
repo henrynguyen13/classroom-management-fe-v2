@@ -4,7 +4,6 @@ import InputText from "@/components/base/InputText";
 import { useForm } from "react-hook-form";
 
 import { showSuccessNotificationFunction } from "@/common/helpers";
-import { IMarkResponse } from "../interfaces";
 import { assignmentService } from "@/features/assignments/services/assignment.service";
 
 interface Props {

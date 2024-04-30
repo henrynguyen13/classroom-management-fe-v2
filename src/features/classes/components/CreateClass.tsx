@@ -42,7 +42,6 @@ export default function CreateClass(props: Props) {
       try {
         const response = await userService.getAllUser({});
         if (response?.success) {
-          console.log("-----", response.users);
           setTeachers(
             response.users
               .filter((user: IUser) => user.role === ROLES.TEACHER)
@@ -66,10 +65,7 @@ export default function CreateClass(props: Props) {
     name: "description",
   });
   const handleCreate = handleSubmit(async (mclass: any) => {
-    console.log("---------", mclass);
-    console.log("iii");
     const response = await classService.create(mclass);
-    console.log("----res", response);
     if (response?.success) {
       showSuccessNotificationFunction("Tạo lớp học thành công");
       reset({

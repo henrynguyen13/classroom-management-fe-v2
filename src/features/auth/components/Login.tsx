@@ -87,6 +87,7 @@ export default function Login() {
         placeholder="Nhập email"
         control={control}
         name="email"
+        width="500"
       />
 
       <InputPassword

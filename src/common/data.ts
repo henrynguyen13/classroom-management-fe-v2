@@ -81,3 +81,10 @@ export const roles = [
   ROLES.STUDENT,
   ROLES.TEACHER,
 ];
+
+export const Roles = [
+  { id: ROLES.ADMIN, label: "Quản trị viên" },
+  { id: ROLES.ACADEMIC_AFFAIR, label: "Giáo vụ" },
+  { id: ROLES.STUDENT, label: "Học sinh" },
+  { id: ROLES.TEACHER, label: "Giáo viên" },
+];

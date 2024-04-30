@@ -1,10 +1,17 @@
 import {
+  Avatar,
   IconButton,
   InputAdornment,
   OutlinedInput,
   Tooltip,
 } from "@mui/material";
-import { convertUserRole, formatDate } from "@/common/helpers";
+import {
+  convertUserRole,
+  formatDate,
+  showAlert,
+  showErrorNotificationFunction,
+  showSuccessNotificationFunction,
+} from "@/common/helpers";
 import SearchIcon from "@mui/icons-material/Search";
 import CustomButton from "@/components/base/Button";
 import Table from "@mui/material/Table";
@@ -19,7 +26,12 @@ import { useEffect, useState } from "react";
 import Chip from "@mui/material/Chip";
 import { ICommonListQuery } from "@/common/interfaces";
 import Icon from "@mdi/react";
-import { mdiCircleSmall, mdiLoginVariant } from "@mdi/js";
+import {
+  mdiCircleSmall,
+  mdiLeadPencil,
+  mdiLoginVariant,
+  mdiTrashCan,
+} from "@mdi/js";
 import { NoData } from "@/assets/icons";
 import { userService } from "@/features/profile/services/profile.service";
 import { IUser } from "@/features/auth/interfaces";
@@ -28,12 +40,16 @@ import CreateUser from "./CreateUser";
 import { useNavigate } from "react-router-dom";
 import CreateUserExcel from "./CreateUserExcel";
 import { MultiSelect } from "@/components/base";
+import UpdateProfile from "@/features/profile/components/UpdateProfile";
+import UpdateUser from "./UpdateUser";
 export default function UsersPage() {
   const navigate = useNavigate();
   const [users, setUsers] = useState<IUser[]>([]);
+  const [currentId, setCurrentId] = useState<string>("");
   const [totalItems, setTotalItems] = useState(0);
   const [isOpenCreateForm, setIsOpenCreateForm] = useState(false);
   const [isOpenCreateExcelForm, setIsOpenCreateExcelForm] = useState(false);
+  const [isOpenUpdateForm, setIsOpenUpdateForm] = useState(false);
 
   async function getUsers(query: ICommonListQuery) {
     try {
@@ -90,8 +106,31 @@ export default function UsersPage() {
     };
     await getUsers(query);
   };
+
+  const handleClickDelete = (id: string) => {
+    showAlert({
+      title: "Bạn có chắc muốn xóa người dùng này",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        return handleDelete(id);
+      }
+    });
+  };
+
+  const handleDelete = async (id: string) => {
+    const response = await userService.deleteUserById(id);
+    if (response?.success) {
+      showSuccessNotificationFunction("Xóa người dùng thành công");
+      handleUpdateUserList();
+    } else {
+      showErrorNotificationFunction("Có lỗi xảy ra. Vui lòng kiểm tra lại");
+    }
+  };
+
   return (
     <div>
+      <h2 className="text-xl font-medium">Danh sách người dùng</h2>
+
       <div className="flex justify-between items-center">
         <OutlinedInput
           sx={{
@@ -101,6 +140,7 @@ export default function UsersPage() {
             "& .MuiInputBase-input": {
               padding: "12px",
             },
+            width: "400px",
           }}
           id="outlined-adornment-search"
           startAdornment={
@@ -109,7 +149,7 @@ export default function UsersPage() {
             </InputAdornment>
           }
           onChange={handleSearch}
-          placeholder="Tìm kiếm"
+          placeholder="Tìm kiếm theo mã, tên, email"
         />
 
         <MultiSelect
@@ -118,6 +158,7 @@ export default function UsersPage() {
           getValue={convertUserRole}
           handleSelect={handleSelectRole}
         />
+
         <div>
           <CustomButton
             text="Tạo file excel"
@@ -160,7 +201,7 @@ export default function UsersPage() {
       </div>
       <TableContainer
         sx={{
-          maxHeight: "70vh",
+          maxHeight: "60vh",
           "&::-webkit-scrollbar": {
             width: 8,
           },
@@ -197,14 +238,14 @@ export default function UsersPage() {
               </TableCell>
               <TableCell
                 sx={{ backgroundColor: "#e3e1e1" }}
-                width="15%"
+                width="20%"
                 align="center"
               >
                 Tên người dùng
               </TableCell>
               <TableCell
                 sx={{ backgroundColor: "#e3e1e1" }}
-                width="25%"
+                width="20%"
                 align="center"
               >
                 Email
@@ -237,7 +278,10 @@ export default function UsersPage() {
               users.map((user, index) => (
                 <TableRow
                   key={user._id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  sx={{
+                    "&:last-child td, &:last-child th": { border: 0 },
+                    "&:hover": { backgroundColor: "#F3F4F8" },
+                  }}
                 >
                   <TableCell width="5%">{index + 1}</TableCell>
                   <TableCell padding="none" width="10%" align="center">
@@ -248,16 +292,31 @@ export default function UsersPage() {
                       />
                     ) : null}
                   </TableCell>
-                  <TableCell width="15%" align="center">
-                    {user.username}
-                  </TableCell>
-                  <TableCell width="25%" align="center">
-                    <div className="line-clamp-2 text-sm">{user.email}</div>
+                  <TableCell
+                    width="20%"
+                    align="center"
+                    sx={{ "&:hover": { cursor: "pointer", opacity: 0.7 } }}
+                    onClick={() => navigate(`/users/${user._id}`)}
+                  >
+                    <div className="flex flex-start items-center text-sm">
+                      <Avatar
+                        sx={{ marginRight: 1, width: 40, height: 40 }}
+                        src={
+                          user?.avatar
+                            ? user?.avatar
+                            : `/src/assets/images/no-avatar/webp`
+                        }
+                      />
+                      {user.username}
+                    </div>
                   </TableCell>
                   <TableCell width="20%" align="center">
+                    <div className="line-clamp-2 text-sm">{user.email}</div>
+                  </TableCell>
+                  <TableCell width="25%" align="center">
                     {formatDate(user.createdAt)}
                   </TableCell>
-                  <TableCell padding="none" width="15%" align="center">
+                  <TableCell padding="none" width="10%" align="center">
                     <div className="flex items-center">
                       <Icon
                         color={convertRoleColor(user.role)}
@@ -271,9 +330,27 @@ export default function UsersPage() {
                   </TableCell>
                   <TableCell padding="none" width="10%" align="center">
                     <div className="flex justify-center">
+                      <Tooltip title="Sửa">
+                        <IconButton
+                          sx={{ color: "#e28d0f" }}
+                          onClick={() => {
+                            setIsOpenUpdateForm(true), setCurrentId(user._id);
+                          }}
+                        >
+                          <Icon path={mdiLeadPencil} size={1} />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Xóa">
+                        <IconButton
+                          sx={{ color: "#ED3A3A" }}
+                          onClick={() => handleClickDelete(user._id)}
+                        >
+                          <Icon path={mdiTrashCan} size={1} />
+                        </IconButton>
+                      </Tooltip>
                       <Tooltip title="Xem chi tiết">
                         <IconButton
-                          onClick={() => navigate(`/classes/${user._id}`)}
+                          onClick={() => navigate(`/users/${user._id}`)}
                         >
                           <Icon path={mdiLoginVariant} size={1} />
                         </IconButton>
@@ -309,6 +386,12 @@ export default function UsersPage() {
         isOpenForm={isOpenCreateExcelForm}
         handleClose={() => setIsOpenCreateExcelForm(false)}
         updateUserList={handleUpdateUserList}
+      />
+      <UpdateUser
+        id={currentId}
+        isOpenForm={isOpenUpdateForm}
+        handleClose={() => setIsOpenUpdateForm(false)}
+        updateProfile={handleUpdateUserList}
       />
     </div>
   );
