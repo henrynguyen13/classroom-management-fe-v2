@@ -16,6 +16,7 @@ import TestPage from "./features/tests/components/TestPage";
 import BaseLayout from "./components/layout/BaseLayout";
 import TestResultPage from "./features/tests/components/TestResultPage";
 import Root from "./app";
+import UserDetailPage from "./features/users/components/UserDetailPage";
 
 export const router = createBrowserRouter([
   {
@@ -81,11 +82,10 @@ export const router = createBrowserRouter([
         path: "/users",
         element: <UsersPage />,
       },
-
-      //   {
-      //     path: "logout",
-      //     action: logoutUser,
-      //   },
+      {
+        path: "/users/:id",
+        element: <UserDetailPage />,
+      },
     ],
   },
 

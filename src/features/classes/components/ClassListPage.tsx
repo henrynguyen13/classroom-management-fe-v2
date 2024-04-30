@@ -57,7 +57,6 @@ export default function ClassListPage() {
   useEffect(() => {
     async function getClassList(query: ICommonListQuery) {
       const response = await classService.getAllClasses(query);
-      console.log("-----class", response);
       setClassList(response.data?.items);
       setTotalItems(response.data?.totalItems);
     }

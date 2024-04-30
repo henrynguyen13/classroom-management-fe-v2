@@ -7,7 +7,6 @@ import {
   showSuccessAlert,
 } from "@/common/helpers";
 import { useEffect, useState } from "react";
-import { userService } from "../services/profile.service";
 import { IUpdateUser, IUser } from "@/features/auth/interfaces";
 import { mdiLeadPencil } from "@mdi/js";
 import { IconButton, Tooltip } from "@mui/material";
@@ -15,16 +14,17 @@ import Icon from "@mdi/react";
 import Avatar from "react-avatar-edit";
 import { ROLES, Roles } from "@/common";
 import { Dropdown } from "@/components/base";
+import { userService } from "@/features/profile/services/profile.service";
 
 interface Props {
-  user: IUser;
+  id: string;
   isOpenForm: boolean;
   handleClose: () => void;
   updateProfile: () => void;
 }
 
-export default function UpdateProfile(props: Props) {
-  const { isOpenForm, handleClose, updateProfile, user } = props;
+export default function UpdateUser(props: Props) {
+  const { isOpenForm, handleClose, updateProfile, id } = props;
   const [open, setOpen] = useState(false);
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
@@ -37,18 +37,26 @@ export default function UpdateProfile(props: Props) {
   const onClose = () => {
     handleCloseModal();
   };
-  useEffect(() => {
+
+  const getUserDetail = async () => {
+    const response = await userService.getUserById(id);
     reset({
-      username: user?.username ?? "",
-      role: user?.role ?? "",
+      email: response?.email ?? "",
+      code: response?.code ?? "",
+      username: response?.username ?? "",
+      role: response?.role ?? "",
     });
-    setImage(user?.avatar ?? "/src/assets/images/no-avatar.webp");
-  }, []);
+    setImage(response?.avatar ?? "/src/assets/images/no-avatar.webp");
+  };
+
+  useEffect(() => {
+    getUserDetail();
+  }, [id]);
 
   const { control, handleSubmit, reset } = useForm({});
 
   const handleUpdate = handleSubmit(async (dto: IUpdateUser) => {
-    const response = await userService.updateProfile(user?._id as string, dto);
+    const response = await userService.updateProfile(id, dto);
 
     if (response?.success) {
       showSuccessNotificationFunction("Cập nhật thông tin cá nhân thành công");
@@ -77,10 +85,7 @@ export default function UpdateProfile(props: Props) {
     const formData = new FormData();
     formData.append("file", blob, "avatar.jpg");
 
-    const response = await userService.uploadAvatar(
-      user._id as string,
-      formData
-    );
+    const response = await userService.uploadAvatar(id as string, formData);
     if (response?.success) {
       showSuccessAlert({ title: "Cập nhật ảnh đại diện thành công" });
     }
@@ -89,7 +94,7 @@ export default function UpdateProfile(props: Props) {
     <Form
       title="Cập nhật thông tin cá nhân"
       width="650px"
-      height="90vh"
+      height="92vh"
       isOpenForm={isOpenForm}
       handleClose={handleClose}
     >
@@ -132,19 +137,19 @@ export default function UpdateProfile(props: Props) {
 
       {/* <button onClick={handleOpenModal}>choose avatar</button>
       <button onClick={uploadAvatar}>upload avatar</button> */}
-      <div className="flex justify-between mt-16">
+      <div className="flex justify-between mt-4">
         <InputText
           control={control}
-          name=""
-          value={user?.code ?? ""}
+          name="code"
+          value="code"
           label="Mã người dùng"
           disabled
         />
         <div className="m-5"></div>
         <InputText
           control={control}
-          name=""
-          value={user?.email ?? ""}
+          name="email"
+          value="email"
           label="Email"
           disabled
         />

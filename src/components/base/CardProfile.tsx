@@ -1,16 +1,14 @@
-import { ICard, ROLES } from "@/common/interfaces";
+import { ICard } from "@/common/interfaces";
 
 import { mdiLeadPencil, mdiKey } from "@mdi/js";
 import { Card, Chip, IconButton, Tooltip } from "@mui/material";
 import Icon from "@mdi/react";
 import Avatar from "@mui/material/Avatar";
-import { useSelector } from "react-redux";
 import { useState } from "react";
 import UpdateProfile from "@/features/profile/components/UpdateProfile";
 import { IUser } from "@/features/auth/interfaces";
-import { userService } from "@/features/profile/services/profile.service";
 import ChangePassword from "@/features/profile/components/ChangePassword";
-import authStorageService from "@/common/storages/authStorage.service";
+import { ROLES } from "@/common";
 
 interface Props {
   user: IUser;
@@ -28,7 +26,6 @@ export default function CardProfile({
   const [isUpdateProfile, setIsUpdateProfile] = useState<boolean>(false);
   const [isChangePassword, setIsChangePassword] = useState<boolean>(false);
 
-  const role = authStorageService.getLoginUser().role;
   return (
     <>
       <Card>
@@ -72,15 +69,14 @@ export default function CardProfile({
           <div className="border-[1px] border-border"></div>
           <div className="grid grid-cols-2">
             {list
-              .filter((item) => item?.role.includes(role as ROLES))
+              .filter((item) => item?.role.includes(user?.role as ROLES))
               .map((item, index) => (
                 <div key={index} className="mt-6">
                   <div className="flex mb-2 text-neutral-2">
                     {item.icon}
                     {item.title}
                   </div>
-                  {item.title === "Mã học sinh" ||
-                  item.title === "Mã giáo viên" ? (
+                  {item.title === "Mã người dùng" ? (
                     <Chip
                       label={item.content}
                       variant="outlined"

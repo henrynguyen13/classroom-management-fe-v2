@@ -10,7 +10,6 @@ interface Props {
   placeholder?: string;
   width?: string;
   label?: string;
-  value?: string;
 }
 
 export default function Dropdown({
@@ -20,7 +19,6 @@ export default function Dropdown({
   placeholder,
   width,
   label,
-  value,
 }: Props) {
   return (
     <Controller
@@ -58,12 +56,7 @@ export default function Dropdown({
               id={name}
               options={options}
               renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label={placeholder}
-                  inputRef={ref}
-                  // helperText={error?.message}
-                />
+                <TextField {...params} label={placeholder} inputRef={ref} />
               )}
               sx={{
                 width: width,

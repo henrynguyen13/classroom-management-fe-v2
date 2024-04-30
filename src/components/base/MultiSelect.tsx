@@ -13,6 +13,7 @@ import {
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
+const MAX_DISPLAY_CHIPS = 2;
 const MenuProps = {
   PaperProps: {
     style: {
@@ -36,6 +37,8 @@ export default function MultiSelect({
   handleSelect,
 }: Props) {
   const [personName, setPersonName] = React.useState<string[]>([]);
+  const [displayChips, setDisplayChips] =
+    React.useState<number>(MAX_DISPLAY_CHIPS);
 
   const handleChange = (event: SelectChangeEvent<typeof personName>) => {
     const {
@@ -45,9 +48,17 @@ export default function MultiSelect({
     handleSelect(value);
   };
 
+  React.useEffect(() => {
+    if (personName.length > MAX_DISPLAY_CHIPS) {
+      setDisplayChips(MAX_DISPLAY_CHIPS);
+    } else {
+      setDisplayChips(personName.length);
+    }
+  }, [personName]);
+
   return (
     <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
+      <FormControl sx={{ m: 1, width: 330 }}>
         <InputLabel id={label}>{label}</InputLabel>
         <Select
           labelId={label}
@@ -58,12 +69,16 @@ export default function MultiSelect({
           input={<OutlinedInput id={label} label={label} />}
           renderValue={(selected) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-              {selected.map((value) => (
+              {selected.slice(0, displayChips).map((value) => (
                 <Chip key={value} label={getValue(value)} />
               ))}
+              {selected.length > displayChips && (
+                <Chip label={`+${selected.length - displayChips}`} />
+              )}
             </Box>
           )}
           MenuProps={MenuProps}
+          sx={{ height: "52px", borderRadius: "8px" }}
         >
           {name.map((i) => (
             <MenuItem key={i} value={i}>
