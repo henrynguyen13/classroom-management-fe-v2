@@ -11,7 +11,7 @@ import { ClassStatus } from "@/features/classes/constants";
 import { AssignmentStatus } from "@/features/assignments/interfaces";
 import { useDispatch } from "react-redux";
 import { ROLES } from "./constants";
-import authStorageService from "./storages/authStorage.service";
+import { AuthStorageService } from "./storages/authStorage.service";
 import { loggedout } from "@/features/auth/reducers/auth.reducer";
 import { useNavigate } from "react-router-dom";
 export function isValidJSON(str: string) {
@@ -197,18 +197,18 @@ export const convertStatusSubmit = (submittedDate: Date, expiredDate: Date) => {
   }
 };
 export const isTeacher = () => {
-  return authStorageService.getLoginUser().role === ROLES.TEACHER;
+  return AuthStorageService.getLoginUser().role === ROLES.TEACHER;
 };
 
 export const isStudent = () => {
-  return authStorageService.getLoginUser().role === ROLES.STUDENT;
+  return AuthStorageService.getLoginUser().role === ROLES.STUDENT;
 };
 
 export const logout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   dispatch(loggedout());
-  authStorageService.resetAll();
+  AuthStorageService.resetAll();
   navigate("/login");
 };
 

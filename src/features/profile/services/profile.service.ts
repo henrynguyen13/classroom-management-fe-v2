@@ -1,8 +1,8 @@
 import { ApiService } from "@/plugins/axios/api";
 import axiosService from "@/plugins/axios";
 
-import { IUpdateUser, IUser } from "@/features/auth/interfaces";
-import { IBodyResponse, ICommonListQuery } from "@/common/interfaces";
+import { IUpdateUser, IUser } from "@/features";
+import { IBodyResponse, ICommonListQuery } from "@/common";
 
 class UserService extends ApiService {
   async getUserById(userId: string) {
@@ -28,6 +28,10 @@ class UserService extends ApiService {
     return this.client.get<IUser, any>(`${this.baseUrl}`, {
       params: queryString,
     });
+  }
+
+  async getAllUserWithoutPagination() {
+    return this.client.get<IUser, any>(`${this.baseUrl}/all`);
   }
 
   async deleteUserById(id: string): Promise<IBodyResponse<any>> {

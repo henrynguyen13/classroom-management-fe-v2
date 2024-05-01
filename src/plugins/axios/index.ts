@@ -6,7 +6,7 @@ import axios, {
   AxiosResponse,
 } from "axios";
 import dayjs from "../dayjs";
-import authStorageService from "@/common/storages/authStorage.service";
+import { AuthStorageService } from "@/common/storages/authStorage.service";
 import { logout } from "@/common/helpers";
 import { sendRefreshToken } from "./middlewares/authMiddleware";
 
@@ -29,18 +29,17 @@ axiosInstance.interceptors.request.use(async (config: any) => {
     config.url?.indexOf("/login")! >= 0 ||
     config.url?.indexOf("/signup")! >= 0
   ) {
-    console.log("hiii");
     return config;
   }
-  const tokenExpiredAt = authStorageService.getAccessTokenExpiredAt();
+  const tokenExpiredAt = AuthStorageService.getAccessTokenExpiredAt();
   if (
     !tokenExpiredAt ||
     (tokenExpiredAt && tokenExpiredAt <= new Date().getTime())
   ) {
     // token expired, check refresh token
-    const refreshToken = authStorageService.getRefreshToken();
+    const refreshToken = AuthStorageService.getRefreshToken();
     const refreshTokenExpiredAt =
-      +authStorageService.getRefreshTokenExpiredAt();
+      +AuthStorageService.getRefreshTokenExpiredAt();
     if (
       !refreshToken ||
       !refreshTokenExpiredAt ||
@@ -48,11 +47,9 @@ axiosInstance.interceptors.request.use(async (config: any) => {
     ) {
       // refresh token expired
       logout();
-      console.log("---expired");
     } else {
       // check refresh token ok, call refresh token api
       await sendRefreshToken();
-      console.log("---refresh");
     }
   }
 
@@ -63,7 +60,7 @@ axiosInstance.interceptors.request.use(async (config: any) => {
       "X-Timezone-Name": dayjs.tz.guess(),
       // "accept-language": cookieService.getCurrentLanguage(),
       "Content-Type": "application/json",
-      Authorization: `Bearer ${authStorageService.getAccessToken() || ""}`,
+      Authorization: `Bearer ${AuthStorageService.getAccessToken() || ""}`,
 
       ...config.headers,
     },

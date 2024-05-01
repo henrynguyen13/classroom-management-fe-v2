@@ -1,23 +1,21 @@
-import { Provider } from "react-redux";
-import { store } from "./store";
 import React from "react";
+import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
+import { store } from "./store";
 
-function ReduxProvider<T>(Component: React.FunctionComponent<T>) {
-  let persistor = persistStore(store);
-  return function inject(props: any) {
-    //need to replace any, "Type 'T' is not assignable to type 'IntrinsicAttributes & T'."
-    const EnhancedComponent = () => (
-      <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <Component {...props} />
-        </PersistGate>
-      </Provider>
-    );
+export const ReduxProvider = <T extends {}>(
+  Component: React.ComponentType<T>
+) => {
+  const persistor = persistStore(store);
 
-    return <EnhancedComponent />;
-  };
-}
+  const EnhancedComponent: React.FC<T> = (props) => (
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <Component {...props} />
+      </PersistGate>
+    </Provider>
+  );
 
-export default ReduxProvider;
+  return EnhancedComponent;
+};

@@ -1,47 +1,23 @@
-import CustomButton from "./Button";
-import ButtonFile from "./ButtonFile";
-import CardAssignment from "./CardAssignment";
-import CardDetail from "./CardDetail";
-import CardProfile from "./CardProfile";
-import CardQuestion from "./CardQuestion";
-import CardQuestionResult from "./CardQuestionResult";
-import CardQuestionTest from "./CardQuestionTest";
-import CustomDatePicker from "./DatePicker";
-import Form from "./Form";
-import InputPassword from "./InputPassword";
-import InputText from "./InputText";
-import InputTextArea from "./InputTextArea";
-import Loading from "./Loading";
-import { Messages } from "./Message";
-import { MessageForm } from "./MessageForm";
-import SingleSelect from "./SingleSelect";
-import Collapse from "./Collapse";
-import Dropdown from "./Dropdown";
-import ButtonIcon from "./ButtonIcon";
-import MultiSelect from "./MultiSelect";
-
-export {
-  CustomButton,
-  ButtonFile,
-  CardAssignment,
-  CardDetail,
-  CardProfile,
-  CardQuestion,
-  CardQuestionResult,
-  CardQuestionTest,
-  CustomDatePicker,
-  Form,
-  InputPassword,
-  InputText,
-  InputTextArea,
-  Loading,
-  Messages,
-  MessageForm,
-  SingleSelect,
-  Collapse,
-  Dropdown,
-  ButtonIcon,
-  MultiSelect,
-};
-
+export * from "./Button";
+export * from "./ButtonFile";
+export * from "./CardAssignment";
+export * from "./CardDetail";
+export * from "./CardProfile";
+export * from "./CardQuestion";
+export * from "./CardQuestionResult";
+export * from "./CardQuestionTest";
+export * from "./DatePicker";
+export * from "./Form";
+export * from "./InputPassword";
+export * from "./InputText";
+export * from "./InputTextArea";
+export * from "./Loading";
+export * from "./Message";
+export * from "./MessageForm";
+export * from "./SingleSelect";
+export * from "./Collapse";
+export * from "./Dropdown";
+export * from "./ButtonIcon";
+export * from "./MultiSelect";
 export * from "./icons";
+export * from "./math";

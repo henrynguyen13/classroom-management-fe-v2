@@ -1,11 +1,11 @@
 import { Card } from "@mui/material";
-import CustomButton from "./Button";
+import { CustomButton } from "./Button";
 interface Props {
   title: string;
   count: number;
 }
 
-export default function CardAssignment({ title, count }: Props) {
+export const CardAssignment = ({ title, count }: Props) => {
   return (
     <Card>
       <div className="w-full  rounded-lg  p-8 ">
@@ -17,4 +17,4 @@ export default function CardAssignment({ title, count }: Props) {
       </div>
     </Card>
   );
-}
+};

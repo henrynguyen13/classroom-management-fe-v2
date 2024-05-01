@@ -1,38 +1,39 @@
-import CustomButton from "@/components/base/Button";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import TablePagination from "@mui/material/TablePagination";
 import { useState } from "react";
-import { classService } from "@/features/classes/services/class.service";
-import { ICommonListQuery, IStudent } from "@/common/interfaces";
-import { IClass } from "@/features/classes/interfaces";
-import AddStudentToClass from "./AddStudentToClass";
-import { Chip, IconButton, Tooltip } from "@mui/material";
 import Icon from "@mdi/react";
-import noData from "@/assets/icons/no_data.svg";
 import { mdiTrashCan } from "@mdi/js";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  TablePagination,
+  Chip,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
+
 import {
   isTeacher,
   showAlert,
   showErrorNotificationFunction,
   showSuccessNotificationFunction,
-} from "@/common/helpers";
+  IStudent,
+  ICommonListQuery,
+} from "@/common";
+import { NoData } from "@/assets";
+import { CustomButton } from "@/components";
+import { classService, IClass } from "@/features";
+import { AddStudentToClass } from "./AddStudentToClass";
 
 interface Props {
   id: string;
   students: IStudent[];
   updateStudentList?: () => void;
 }
-export default function StudentList({
-  id,
-  students,
-  updateStudentList,
-}: Props) {
+export const StudentList = ({ id, students, updateStudentList }: Props) => {
   const [classDetail, setClassDetail] = useState<IClass>();
   const [isOpenAddStudent, setIsOpenAddStudent] = useState(false);
   const rowsPerPage = 10;
@@ -210,7 +211,7 @@ export default function StudentList({
               <TableRow>
                 <TableCell colSpan={4} align="center">
                   <img
-                    src={noData}
+                    src={NoData}
                     className="h-80 flex my-0 mx-auto"
                     alt="No-data"
                   />
@@ -232,4 +233,4 @@ export default function StudentList({
       />
     </>
   );
-}
+};

@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
-import HeaderBar from "./components/header/HeaderBar";
-export default function BaseLayout() {
+import { HeaderBar } from ".";
+
+export const BaseLayout = () => {
   return (
     <div className="flex h-full w-full">
       <div className="relative flex-1 m-h-full h-full">
@@ -9,4 +10,4 @@ export default function BaseLayout() {
       </div>
     </div>
   );
-}
+};

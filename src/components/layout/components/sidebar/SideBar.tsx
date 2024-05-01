@@ -7,10 +7,8 @@ import {
   ListItemText,
 } from "@mui/material";
 import _ from "lodash";
+import { Link, useLocation } from "react-router-dom";
 
-import { Link, useNavigate, useLocation } from "react-router-dom";
-
-import { Student, Class, Dashboard } from "@/assets/icons";
 import {
   STUDENT_AND_TEACHER,
   ROLES,
@@ -18,12 +16,13 @@ import {
   PAGES,
   ADMIN_AND_AFFAIR,
   ALL_MEMBERS,
+  AuthStorageService,
 } from "@/common";
-import authStorageService from "@/common/storages/authStorage.service";
+import { Student, Class, Dashboard } from "@/assets";
 
 const drawerWidth = 240;
 
-export default function SideBar() {
+export const SideBar = () => {
   const location = useLocation();
 
   const sidebarItems: ISideBar[] = [
@@ -53,7 +52,7 @@ export default function SideBar() {
     },
   ];
 
-  const role = authStorageService.getLoginUser().role;
+  const role = AuthStorageService.getLoginUser().role;
 
   const menuItems: ISideBar[] = sidebarItems.filter((item) => {
     return item.role.includes(role as ROLES);
@@ -120,4 +119,4 @@ export default function SideBar() {
       </Drawer>
     </>
   );
-}
+};

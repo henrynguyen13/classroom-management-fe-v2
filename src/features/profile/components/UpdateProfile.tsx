@@ -1,20 +1,18 @@
-import CustomButton from "@/components/base/Button";
-import Form from "@/components/base/Form";
-import InputText from "@/components/base/InputText";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import Avatar from "react-avatar-edit";
+import Icon from "@mdi/react";
+import { mdiLeadPencil } from "@mdi/js";
+import { IconButton, Tooltip } from "@mui/material";
+
 import {
   showSuccessNotificationFunction,
   showSuccessAlert,
-} from "@/common/helpers";
-import { useEffect, useState } from "react";
-import { userService } from "../services/profile.service";
-import { IUpdateUser, IUser } from "@/features/auth/interfaces";
-import { mdiLeadPencil } from "@mdi/js";
-import { IconButton, Tooltip } from "@mui/material";
-import Icon from "@mdi/react";
-import Avatar from "react-avatar-edit";
-import { ROLES, Roles } from "@/common";
-import { Dropdown } from "@/components/base";
+  Roles,
+} from "@/common";
+import { CustomButton, Form, InputText, Dropdown } from "@/components";
+import { IUpdateUser, IUser } from "@/features";
+import { userService } from "../index";
 
 interface Props {
   user: IUser;
@@ -23,7 +21,7 @@ interface Props {
   updateProfile: () => void;
 }
 
-export default function UpdateProfile(props: Props) {
+export const UpdateProfile = (props: Props) => {
   const { isOpenForm, handleClose, updateProfile, user } = props;
   const [open, setOpen] = useState(false);
   const handleOpenModal = () => setOpen(true);
@@ -186,4 +184,4 @@ export default function UpdateProfile(props: Props) {
       </div>
     </Form>
   );
-}
+};

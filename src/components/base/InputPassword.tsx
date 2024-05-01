@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
-import TextField from "@mui/material/TextField";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { Controller } from "@/plugins/hook-form";
+import { IconButton, InputAdornment, TextField } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+
+import { Controller } from "@/plugins";
 interface Props {
   control: any;
   name: string;
@@ -20,7 +18,7 @@ interface Props {
   onChange?: (e: any) => void;
 }
 
-export default function InputPassword({
+export const InputPassword = ({
   name,
   control,
   label,
@@ -28,7 +26,7 @@ export default function InputPassword({
   value,
   placeholder,
   width = "500px",
-}: Props) {
+}: Props) => {
   const [elementId, setElementId] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -120,4 +118,4 @@ export default function InputPassword({
       }}
     />
   );
-}
+};

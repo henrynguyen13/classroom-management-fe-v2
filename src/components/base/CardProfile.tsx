@@ -1,14 +1,10 @@
-import { ICard } from "@/common/interfaces";
-
-import { mdiLeadPencil, mdiKey } from "@mdi/js";
-import { Card, Chip, IconButton, Tooltip } from "@mui/material";
-import Icon from "@mdi/react";
-import Avatar from "@mui/material/Avatar";
 import { useState } from "react";
-import UpdateProfile from "@/features/profile/components/UpdateProfile";
-import { IUser } from "@/features/auth/interfaces";
-import ChangePassword from "@/features/profile/components/ChangePassword";
-import { ROLES } from "@/common";
+import { mdiLeadPencil, mdiKey } from "@mdi/js";
+import { Card, Chip, IconButton, Tooltip, Avatar } from "@mui/material";
+import Icon from "@mdi/react";
+
+import { ICard, ROLES } from "@/common";
+import { ChangePassword, IUser, UpdateProfile } from "@/features";
 
 interface Props {
   user: IUser;
@@ -17,12 +13,7 @@ interface Props {
   updateProfile: () => void;
 }
 
-export default function CardProfile({
-  title,
-  list,
-  user,
-  updateProfile,
-}: Props) {
+export const CardProfile = ({ title, list, user, updateProfile }: Props) => {
   const [isUpdateProfile, setIsUpdateProfile] = useState<boolean>(false);
   const [isChangePassword, setIsChangePassword] = useState<boolean>(false);
 
@@ -114,4 +105,4 @@ export default function CardProfile({
       ) : null}
     </>
   );
-}
+};

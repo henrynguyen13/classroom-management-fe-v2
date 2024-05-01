@@ -1,8 +1,8 @@
 import { ApiService } from "@/plugins/axios/api";
 import axiosService from "@/plugins/axios";
-import { ICreateUser, ILogin, IUser } from "../interfaces";
-import { IBodyResponse } from "@/common/interfaces";
-import { IChangePassword } from "@/features/profile/interfaces";
+import { ICreateUser, ILogin, IUser } from "../index";
+import { IBodyResponse } from "@/common";
+import { IChangePassword } from "@/features/profile";
 class AuthService extends ApiService {
   async register(dto: ICreateUser) {
     return this.client.post<ICreateUser, IBodyResponse<IUser>>(

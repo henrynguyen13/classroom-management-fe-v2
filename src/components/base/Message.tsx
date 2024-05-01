@@ -1,5 +1,6 @@
-import { Message } from "@/common/interfaces";
-import { IUser } from "@/features/auth/interfaces";
+import { Message } from "@/common";
+import { IUser } from "@/features";
+
 const determineMessageStyle = (user: IUser, messageUserId: string) => {
   if (user && messageUserId === user._id) {
     return "bg-violet-900 p-4 ml-24 mb-4 rounded";

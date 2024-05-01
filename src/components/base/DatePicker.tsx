@@ -1,18 +1,18 @@
-import { Controller } from "@/plugins/hook-form";
 import { DatePicker, ConfigProvider } from "antd";
 import dayjs from "dayjs";
+import { Controller } from "@/plugins";
 interface Props {
   width?: string;
   control: any;
   name: string;
   value?: Date;
 }
-export default function CustomDatePicker({
+export const CustomDatePicker = ({
   width = "100%",
   control,
   name,
   value,
-}: Props) {
+}: Props) => {
   return (
     <Controller
       control={control}
@@ -43,4 +43,4 @@ export default function CustomDatePicker({
       }}
     />
   );
-}
+};

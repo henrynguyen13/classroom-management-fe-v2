@@ -11,7 +11,7 @@ interface Props {
   minWidth?: string;
   height?: string;
 }
-export default function Form(props: Props) {
+export const Form = (props: Props) => {
   const {
     isOpenForm,
     handleClose,
@@ -73,4 +73,4 @@ export default function Form(props: Props) {
       </Fade>
     </Modal>
   );
-}
+};

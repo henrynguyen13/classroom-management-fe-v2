@@ -1,6 +1,11 @@
-import { IAnswer, QuestionType } from "@/features/questions/interfaces";
-import { Card, IconButton, Radio, Tooltip } from "@mui/material";
-import Chip from "@mui/material/Chip";
+import {
+  Card,
+  IconButton,
+  Radio,
+  Tooltip,
+  Chip,
+  Checkbox,
+} from "@mui/material";
 import Icon from "@mdi/react";
 import {
   mdiCheckCircleOutline,
@@ -8,9 +13,10 @@ import {
   mdiLeadPencil,
   mdiTrashCan,
 } from "@mdi/js";
-import { showAlert } from "@/common/helpers";
-import OutputTiptap from "./math/OutputTiptap";
-import Checkbox from "@mui/material/Checkbox";
+
+import { showAlert } from "@/common";
+import { IAnswer, QuestionType } from "@/features";
+import { OutputTiptap } from "./math/OutputTiptap";
 interface Props {
   text: string;
   answers: IAnswer[];
@@ -21,7 +27,7 @@ interface Props {
   handleUpdate: () => void;
 }
 
-export default function CardQuestion({
+export const CardQuestion = ({
   type,
   text,
   answers,
@@ -29,7 +35,7 @@ export default function CardQuestion({
   id,
   handleDelete,
   handleUpdate,
-}: Props) {
+}: Props) => {
   const letters = ["A", "B", "C", "D"];
 
   const handleClickDelete = (id: string) => {
@@ -116,4 +122,4 @@ export default function CardQuestion({
       </div>
     </Card>
   );
-}
+};

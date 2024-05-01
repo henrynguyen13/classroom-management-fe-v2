@@ -1,22 +1,21 @@
-import CustomButton from "@/components/base/Button";
-import InputText from "@/components/base/InputText";
-import { useForm } from "react-hook-form";
-import { showSuccessNotificationFunction } from "@/common/helpers";
-import CustomDatePicker from "@/components/base/DatePicker";
-import InputTextArea from "@/components/base/InputTextArea";
 import { useEffect, useState } from "react";
-import { assignmentService } from "../services/assignment.service";
-import { IUpdateAssignment } from "../interfaces";
+import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
+
+import { showSuccessNotificationFunction } from "@/common";
+import {
+  CustomButton,
+  InputText,
+  CustomDatePicker,
+  InputTextArea,
+} from "@/components";
+import { assignmentService, IUpdateAssignment } from "../index";
 
 interface Props {
   setIsUpdate: any;
   onUpdateSuccess: (data: any) => void;
 }
-export default function UpdateAssignment({
-  setIsUpdate,
-  onUpdateSuccess,
-}: Props) {
+export const UpdateAssignment = ({ setIsUpdate, onUpdateSuccess }: Props) => {
   const { id, assignmentId } = useParams();
 
   const [expiredAt, setExpiredAt] = useState<Date>();
@@ -108,4 +107,4 @@ export default function UpdateAssignment({
       </div>
     </div>
   );
-}
+};

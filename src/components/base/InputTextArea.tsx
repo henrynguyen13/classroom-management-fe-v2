@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Textarea from "@mui/joy/Textarea";
 
-import { Controller } from "@/plugins/hook-form";
+import { Controller } from "@/plugins";
 interface Props {
   control: any;
   name: string;
@@ -15,13 +15,13 @@ interface Props {
   onChange?: (e: any) => void;
 }
 
-export default function InputTextArea({
+export const InputTextArea = ({
   name,
   control,
   label,
   value,
   placeholder,
-}: Props) {
+}: Props) => {
   const [elementId, setElementId] = useState("");
 
   useEffect(() => {
@@ -62,4 +62,4 @@ export default function InputTextArea({
       }}
     />
   );
-}
+};

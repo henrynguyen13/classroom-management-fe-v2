@@ -1,16 +1,13 @@
-import CustomButton from "@/components/base/Button";
-import Form from "@/components/base/Form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { questionSchema } from "../schema";
-import { useForm, Controller } from "@/plugins/hook-form";
-import { useFieldArray } from "react-hook-form";
-import { FieldValues } from "react-hook-form";
-import { assignmentService } from "@/features/assignments/services/assignment.service";
-import { IUpdateQuestion } from "../interfaces";
 import { useEffect, useState } from "react";
-import { showSuccessNotificationFunction } from "@/common/helpers";
+import { useFieldArray, FieldValues } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Radio } from "@mui/material";
-import Tiptap from "@/components/base/math/Tiptap";
+
+import { showSuccessNotificationFunction } from "@/common";
+import { CustomButton, Form, Tiptap } from "@/components";
+import { assignmentService } from "@/features";
+import { useForm, Controller } from "@/plugins";
+import { questionSchema, IUpdateQuestion } from "../index";
 interface Props {
   classId?: string;
   assignmentId?: string;
@@ -28,7 +25,7 @@ const defaultValues = {
     isCorrect: false,
   })),
 };
-export default function UpdateQuestion(props: Props) {
+export const UpdateQuestion = (props: Props) => {
   const {
     isOpenForm,
     classId,
@@ -181,4 +178,4 @@ export default function UpdateQuestion(props: Props) {
       </div>
     </Form>
   );
-}
+};

@@ -1,10 +1,8 @@
-import CustomButton from "@/components/base/Button";
-import Form from "@/components/base/Form";
-import InputText from "@/components/base/InputText";
 import { useForm } from "react-hook-form";
 
-import { showSuccessNotificationFunction } from "@/common/helpers";
-import { assignmentService } from "@/features/assignments/services/assignment.service";
+import { showSuccessNotificationFunction } from "@/common";
+import { CustomButton, Form, InputText } from "@/components";
+import { assignmentService } from "@/features";
 
 interface Props {
   classId: string;
@@ -19,7 +17,7 @@ const defaultValues = {
   mark: "",
   comment: "",
 };
-export default function MarkForm(props: Props) {
+export const MarkForm = (props: Props) => {
   const {
     isOpenForm,
     classId,
@@ -84,4 +82,4 @@ export default function MarkForm(props: Props) {
       </div>
     </Form>
   );
-}
+};

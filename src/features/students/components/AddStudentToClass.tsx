@@ -1,22 +1,20 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   showErrorNotificationFunction,
   showSuccessNotificationFunction,
-} from "@/common/helpers";
-import { IAddStudent } from "@/common/interfaces";
-import CustomButton from "@/components/base/Button";
-import Form from "@/components/base/Form";
-import InputText from "@/components/base/InputText";
-import { classService } from "@/features/classes/services/class.service";
-import { useForm } from "@/plugins/hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { studentSchema } from "../schema";
+  IAddStudent,
+} from "@/common";
+import { InputText, Form, CustomButton } from "@/components";
+import { classService } from "@/features";
+import { useForm } from "@/plugins";
+import { studentSchema } from "../index";
 interface Props {
   isOpenForm: boolean;
   id: string;
   handleClose: () => void;
   updateStudentList?: () => void;
 }
-export default function AddStudentToClass(props: Props) {
+export const AddStudentToClass = (props: Props) => {
   const { isOpenForm, handleClose, id, updateStudentList } = props;
   const { control, handleSubmit, reset } = useForm({
     resolver: yupResolver(studentSchema),
@@ -77,4 +75,4 @@ export default function AddStudentToClass(props: Props) {
       </div>
     </Form>
   );
-}
+};

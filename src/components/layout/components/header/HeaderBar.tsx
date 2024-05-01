@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import Avatar from "@mui/material/Avatar";
-import HeaderMenu from "./HeaderMenu";
-import { userService } from "@/features/profile/services/profile.service";
-import { LogoText } from "@/assets/icons";
-import authStorageService from "@/common/storages/authStorage.service";
-export default function HeaderBar() {
+import { Avatar } from "@mui/material";
+import { HeaderMenu } from "./HeaderMenu";
+import { userService } from "@/features";
+import { LogoText } from "@/assets";
+import { AuthStorageService } from "@/common";
+
+export const HeaderBar = () => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [avatar, setAvatar] = useState("");
-  const user = authStorageService.getLoginUser();
+  const user = AuthStorageService.getLoginUser();
 
   useEffect(() => {
     const getAvatar = async () => {
@@ -39,4 +40,4 @@ export default function HeaderBar() {
       </div>
     </div>
   );
-}
+};

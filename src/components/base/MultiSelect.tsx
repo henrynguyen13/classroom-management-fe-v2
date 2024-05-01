@@ -30,12 +30,7 @@ interface Props {
   handleSelect: (e: any) => Promise<void>;
 }
 
-export default function MultiSelect({
-  label,
-  name,
-  getValue,
-  handleSelect,
-}: Props) {
+export const MultiSelect = ({ label, name, getValue, handleSelect }: Props) => {
   const [personName, setPersonName] = React.useState<string[]>([]);
   const [displayChips, setDisplayChips] =
     React.useState<number>(MAX_DISPLAY_CHIPS);
@@ -89,4 +84,4 @@ export default function MultiSelect({
       </FormControl>
     </div>
   );
-}
+};

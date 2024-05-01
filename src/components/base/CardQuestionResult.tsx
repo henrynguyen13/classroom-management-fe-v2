@@ -1,10 +1,9 @@
-import { IAnswer, QuestionType } from "@/features/questions/interfaces";
-import { Card, Radio } from "@mui/material";
-import Chip from "@mui/material/Chip";
+import { Card, Radio, Chip } from "@mui/material";
 import Icon from "@mdi/react";
 import { mdiCheckCircleOutline, mdiCheckboxOutline } from "@mdi/js";
-import { IResponse } from "@/features/responses/interfaces";
-import OutputTiptap from "./math/OutputTiptap";
+
+import { IAnswer, QuestionType, IResponse } from "@/features";
+import { OutputTiptap } from "./math/OutputTiptap";
 interface Props {
   type: QuestionType;
   text: string;
@@ -14,13 +13,13 @@ interface Props {
   studentAnswer: IResponse[];
 }
 
-export default function CardQuestionResult({
+export const CardQuestionResult = ({
   type,
   text,
   answers,
   idx,
   studentAnswer,
-}: Props) {
+}: Props) => {
   const letters = ["A", "B", "C", "D"];
 
   return (
@@ -102,4 +101,4 @@ export default function CardQuestionResult({
       </div>
     </Card>
   );
-}
+};

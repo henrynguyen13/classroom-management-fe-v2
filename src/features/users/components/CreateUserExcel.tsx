@@ -1,12 +1,14 @@
 import { useState } from "react";
 import * as xlsx from "xlsx";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 
 import {
   BUFFER,
@@ -16,16 +18,15 @@ import {
   showErrorNotificationFunction,
   showSuccessNotificationFunction,
 } from "@/common";
-import { Form, CustomButton, ButtonFile } from "@/components/base";
-
-import { authService } from "@/features/auth/services/auth.service";
+import { Form, CustomButton, ButtonFile } from "@/components";
+import { authService } from "@/features";
 interface Props {
   isOpenForm: boolean;
   handleClose: () => void;
   updateUserList: () => void;
 }
 
-export default function CreateUserExcel(props: Props) {
+export const CreateUserExcel = (props: Props) => {
   const { isOpenForm, handleClose, updateUserList } = props;
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -187,4 +188,4 @@ export default function CreateUserExcel(props: Props) {
       </div>
     </Form>
   );
-}
+};

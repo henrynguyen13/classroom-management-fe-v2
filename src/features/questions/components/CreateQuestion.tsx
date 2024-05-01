@@ -1,17 +1,13 @@
-import CustomButton from "@/components/base/Button";
-import Form from "@/components/base/Form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { questionSchema } from "../schema";
-import { useForm, Controller } from "@/plugins/hook-form";
-import { useFieldArray } from "react-hook-form";
-import { FieldValues } from "react-hook-form";
-import { assignmentService } from "@/features/assignments/services/assignment.service";
-import { ICreateQuestion } from "../interfaces";
 import { useState } from "react";
-import { showSuccessNotificationFunction } from "@/common/helpers";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Tiptap from "@/components/base/math/Tiptap";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useFieldArray, FieldValues } from "react-hook-form";
+import { Checkbox, FormControlLabel } from "@mui/material";
+
+import { showSuccessNotificationFunction } from "@/common";
+import { CustomButton, Form, Tiptap } from "@/components";
+import { assignmentService } from "@/features";
+import { useForm, Controller } from "@/plugins";
+import { questionSchema } from "../index";
 interface Props {
   classId?: string;
   assignmentId?: string;
@@ -25,7 +21,7 @@ const defaultValues = {
   answers: Array.from({ length: 4 }, () => ({ text: "", isCorrect: false })),
 };
 const letters = ["A", "B", "C", "D"];
-export default function CreateQuestion(props: Props) {
+export const CreateQuestion = (props: Props) => {
   const { isOpenForm, handleClose, handleQuestionCreateSuccess } = props;
   const [tiptapQuestionContent, setTiptapQuestionContent] = useState("");
   const [tiptapAnswersContent, setTiptapAnswersContent] = useState(
@@ -175,4 +171,4 @@ export default function CreateQuestion(props: Props) {
       </div>
     </Form>
   );
-}
+};

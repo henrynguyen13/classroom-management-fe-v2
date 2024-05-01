@@ -1,8 +1,7 @@
 import { Outlet } from "react-router-dom";
-import HeaderBar from "./components/header/HeaderBar";
-import SideBar from "./components/sidebar/SideBar";
+import { HeaderBar, SideBar } from ".";
 
-export default function MainLayout() {
+export const MainLayout = () => {
   return (
     // <div className="flex h-full w-full">
     //   <SideBar />
@@ -21,4 +20,4 @@ export default function MainLayout() {
       </div>
     </div>
   );
-}
+};

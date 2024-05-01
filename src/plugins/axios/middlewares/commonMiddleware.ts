@@ -4,7 +4,7 @@
 // import { HttpStatus } from "../../../common/constants";
 // import type { IBodyResponse } from "../../../common/interfaces";
 // import { isValidJSON } from "../../../common/helpers";
-// import authStorageService from "@/common/storages/authStorage.service";
+// import {AuthStorageService} from "@/common/storages/authStorage.service";
 
 // export default class CommonMiddleware extends HttpMiddleware {
 //   async onRequest(config: AxiosRequestConfig): Promise<AxiosRequestConfig> {
@@ -13,7 +13,7 @@
 //         ...config.headers,
 //         "X-Timezone": dayjs().format("Z"),
 //         "X-Timezone-Name": dayjs.tz.guess(),
-//         "accept-language": authStorageService.getLanguage(),
+//         "accept-language": AuthStorageService.getLanguage(),
 //         "Content-Type": "application/json",
 //       },
 //     });

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import authStorageService from "./common/storages/authStorage.service";
+import { AuthStorageService } from "./common/storages/authStorage.service";
 import { LogoText } from "./assets/icons";
 
 export default function Root() {
@@ -8,7 +8,7 @@ export default function Root() {
   const location = useLocation();
   useEffect(() => {
     const checkAuthentication = () => {
-      const isAuthenticated = authStorageService.checkAuthentication();
+      const isAuthenticated = AuthStorageService.checkAuthentication();
 
       const currentRoute = location.pathname;
       if (!isAuthenticated && currentRoute !== "/login") {
