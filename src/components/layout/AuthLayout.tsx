@@ -1,7 +1,7 @@
 import { ImageLogin, LogoText } from "@/assets/icons";
 import { Outlet } from "react-router-dom";
 
-export default function AuthLayout() {
+export const AuthLayout = () => {
   return (
     <div className="grid grid-cols-2 h-screen">
       <div className="bg-primary-1 ">
@@ -29,4 +29,4 @@ export default function AuthLayout() {
       </div>
     </div>
   );
-}
+};

@@ -1,23 +1,27 @@
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import CustomButton from "@/components/base/Button";
-import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { Box, Button, Chip, Typography } from "@mui/material";
-import { ICreateAttendance } from "../interfaces";
-import { attendanceService } from "../services/attendance.service";
-import { showSuccessNotificationFunction } from "@/common/helpers";
-import LinearProgress, {
+import dayjs from "dayjs";
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Box,
+  Button,
+  Chip,
+  Typography,
+  LinearProgress,
   linearProgressClasses,
-} from "@mui/material/LinearProgress";
-import { styled } from "@mui/material/styles";
-import { IStudent } from "@/common/interfaces";
-import noData from "@/assets/icons/no_data.svg";
+  styled,
+} from "@mui/material";
+
+import { showSuccessNotificationFunction, IStudent } from "@/common";
+import { NoData } from "@/assets";
+import { CustomButton } from "@/components";
+import { ICreateAttendance, attendanceService } from "../index";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -35,7 +39,7 @@ interface Props {
   classId: string;
   students: IStudent[];
 }
-export default function ListAttendance({ classId, students }: Props) {
+export const ListAttendance = ({ classId, students }: Props) => {
   const [changeButton, setChangeButton] = useState<boolean>(false);
   const [attendanceList, setAttendanceList] = useState<ICreateAttendance[]>([]);
 
@@ -44,7 +48,6 @@ export default function ListAttendance({ classId, students }: Props) {
       const response = await attendanceService.getAttendanceByClassId(classId);
       if (response.success) {
         setAttendanceList(response?.data.items ?? []);
-        console.log("response", response);
       }
     };
 
@@ -293,7 +296,7 @@ export default function ListAttendance({ classId, students }: Props) {
               <TableRow>
                 <TableCell colSpan={4} align="center">
                   <img
-                    src={noData}
+                    src={NoData}
                     className="h-80 flex my-0 mx-auto"
                     alt="No-data"
                   />
@@ -308,4 +311,4 @@ export default function ListAttendance({ classId, students }: Props) {
       </TableContainer>
     </div>
   );
-}
+};

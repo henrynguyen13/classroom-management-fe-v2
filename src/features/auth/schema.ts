@@ -1,6 +1,7 @@
 // import yup from "@/plugins/yup";
 import * as yup from "yup";
-import { FORM_VALIDATION } from "@/common/constants";
+import { FORM_VALIDATION } from "@/common";
+
 export const registerSchema = yup.object({
   username: yup.string().required("Tên là trường bắt buộc"),
   email: yup

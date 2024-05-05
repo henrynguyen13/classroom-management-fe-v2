@@ -1,20 +1,17 @@
-import CustomButton from "@/components/base/Button";
-import Form from "@/components/base/Form";
-import InputText from "@/components/base/InputText";
-import { useForm } from "react-hook-form";
-import {
-  showSuccessNotificationFunction,
-  showSuccessAlert,
-} from "@/common/helpers";
 import { useEffect, useState } from "react";
-import { IUpdateUser, IUser } from "@/features/auth/interfaces";
+import { useForm } from "react-hook-form";
 import { mdiLeadPencil } from "@mdi/js";
 import { IconButton, Tooltip } from "@mui/material";
 import Icon from "@mdi/react";
 import Avatar from "react-avatar-edit";
-import { ROLES, Roles } from "@/common";
-import { Dropdown } from "@/components/base";
-import { userService } from "@/features/profile/services/profile.service";
+
+import {
+  showSuccessNotificationFunction,
+  showSuccessAlert,
+  Roles,
+} from "@/common";
+import { Dropdown, CustomButton, Form, InputText } from "@/components";
+import { userService, IUpdateUser } from "@/features";
 
 interface Props {
   id: string;
@@ -23,7 +20,7 @@ interface Props {
   updateProfile: () => void;
 }
 
-export default function UpdateUser(props: Props) {
+export const UpdateUser = (props: Props) => {
   const { isOpenForm, handleClose, updateProfile, id } = props;
   const [open, setOpen] = useState(false);
   const handleOpenModal = () => setOpen(true);
@@ -191,4 +188,4 @@ export default function UpdateUser(props: Props) {
       </div>
     </Form>
   );
-}
+};

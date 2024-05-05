@@ -1,25 +1,15 @@
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+
 import {
-  IOption,
   ROLES,
   showErrorNotificationFunction,
   showSuccessNotificationFunction,
 } from "@/common";
-import {
-  Form,
-  InputText,
-  CustomButton,
-  InputPassword,
-} from "@/components/base";
-
-import { yupResolver } from "@hookform/resolvers/yup";
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import { userService } from "@/features/profile/services/profile.service";
-import { IUser } from "@/features/auth/interfaces";
-import { registerSchema } from "@/features/auth/schema";
-import { Controller } from "@/plugins/hook-form";
-import { authService } from "@/features/auth/services/auth.service";
+import { Form, InputText, CustomButton, InputPassword } from "@/components";
+import { registerSchema, authService } from "@/features";
+import { Controller } from "@/plugins";
 interface Props {
   isOpenForm: boolean;
   handleClose: () => void;
@@ -32,30 +22,9 @@ const defaultValues = {
   password: "",
   role: ROLES.STUDENT,
 };
-export default function CreateUser(props: Props) {
+export const CreateUser = (props: Props) => {
   const { isOpenForm, handleClose, updateUserList } = props;
 
-  const [teachers, setTeachers] = useState<IOption[]>([]);
-  useEffect(() => {
-    const getAllTeachers = async () => {
-      try {
-        const response = await userService.getAllUser({});
-        if (response?.success) {
-          console.log("-----", response.users);
-          setTeachers(
-            response.users
-              .filter((user: IUser) => user.role === ROLES.TEACHER)
-              .map((user: IUser) => ({ id: user._id, label: user.username }))
-          );
-        }
-      } catch (e) {
-        console.error(e);
-      } finally {
-      }
-    };
-
-    getAllTeachers();
-  }, []);
   const { control, handleSubmit, reset } = useForm({
     resolver: yupResolver(registerSchema),
     defaultValues,

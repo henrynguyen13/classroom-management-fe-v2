@@ -1,8 +1,8 @@
-import Breadcrumbs from "@mui/material/Breadcrumbs";
-import Link from "@mui/material/Link";
 import Icon from "@mdi/react";
+import { Link, Breadcrumbs } from "@mui/material";
 import { mdiHomeImportOutline } from "@mdi/js";
-export default function HeaderBreadcrumnbs({ pathname }: { pathname: string }) {
+
+export const HeaderBreadcrumnbs = ({ pathname }: { pathname: string }) => {
   const getBreadcrumbText = () => {
     if (pathname === "/classes") {
       return "Lớp học";
@@ -36,4 +36,4 @@ export default function HeaderBreadcrumnbs({ pathname }: { pathname: string }) {
       </Link>
     </Breadcrumbs>
   );
-}
+};

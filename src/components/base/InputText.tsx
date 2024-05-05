@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import TextField from "@mui/material/TextField";
-import { Controller } from "@/plugins/hook-form";
+import { TextField } from "@mui/material";
+import { Controller } from "@/plugins";
 interface Props {
   control: any;
   name: string;
@@ -18,7 +18,7 @@ interface Props {
   onChange?: (e: any) => void;
 }
 
-export default function InputText({
+export const InputText = ({
   name,
   control,
   label,
@@ -26,9 +26,8 @@ export default function InputText({
   value,
   placeholder,
   disabled,
-  minWidth,
   width,
-}: Props) {
+}: Props) => {
   const [elementId, setElementId] = useState("");
 
   useEffect(() => {
@@ -83,4 +82,4 @@ export default function InputText({
       }}
     />
   );
-}
+};

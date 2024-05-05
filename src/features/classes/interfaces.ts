@@ -1,4 +1,4 @@
-import { IBase, baseFields } from "@/common/interfaces";
+import { IBase, baseFields } from "@/common";
 
 export interface ITeacher {
   _id: string;

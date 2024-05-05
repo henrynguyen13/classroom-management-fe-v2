@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 import { FieldValues, useFieldArray, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { IconButton, Tooltip } from "@mui/material";
+import Icon from "@mdi/react";
+import { mdiTrashCan } from "@mdi/js";
+
 import {
   IOption,
   ROLES,
@@ -7,16 +12,10 @@ import {
   showSuccessNotificationFunction,
   time,
 } from "@/common";
-import { Form, InputText, CustomButton, Dropdown } from "@/components/base";
-import Icon from "@mdi/react";
-import { mdiTrashCan } from "@mdi/js";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { classSchema } from "../schema";
-import { Add } from "@/assets/icons";
-import { IconButton, Tooltip } from "@mui/material";
-import { userService } from "@/features/profile/services/profile.service";
-import { IUser } from "@/features/auth/interfaces";
-import { classService } from "../services/class.service";
+import { Form, InputText, CustomButton, Dropdown } from "@/components";
+import { Add } from "@/assets";
+import { userService, IUser } from "@/features";
+import { classSchema, classService } from "../index";
 interface Props {
   isOpenForm: boolean;
   handleClose: () => void;
@@ -33,14 +32,15 @@ const defaultValues = {
   })),
   teacher: "",
 };
-export default function CreateClass(props: Props) {
+
+export const CreateClass = (props: Props) => {
   const { isOpenForm, handleClose, updateClassList } = props;
 
   const [teachers, setTeachers] = useState<IOption[]>([]);
   useEffect(() => {
     const getAllTeachers = async () => {
       try {
-        const response = await userService.getAllUser({});
+        const response = await userService.getAllUserWithoutPagination();
         if (response?.success) {
           setTeachers(
             response.users
@@ -56,14 +56,17 @@ export default function CreateClass(props: Props) {
 
     getAllTeachers();
   }, []);
+
   const { control, handleSubmit, reset } = useForm({
     resolver: yupResolver(classSchema),
     defaultValues,
   });
+
   const { fields, append, remove } = useFieldArray<FieldValues["description"]>({
     control,
     name: "description",
   });
+
   const handleCreate = handleSubmit(async (mclass: any) => {
     const response = await classService.create(mclass);
     if (response?.success) {
@@ -89,6 +92,7 @@ export default function CreateClass(props: Props) {
   const handleDeleteDescription = (index: number) => {
     remove(index);
   };
+
   return (
     <Form
       title="Tạo lớp học"
@@ -168,13 +172,6 @@ export default function CreateClass(props: Props) {
         options={teachers}
         label="Giáo viên giảng dạy"
       />
-      {/* <InputText
-        control={control}
-        name="description"
-        label="Mô tả lớp học"
-        placeholder="Nhập mô tả lớp học"
-        width="430"
-      /> */}
 
       <div className="flex justify-end mt-10">
         <CustomButton
@@ -196,4 +193,4 @@ export default function CreateClass(props: Props) {
       </div>
     </Form>
   );
-}
+};

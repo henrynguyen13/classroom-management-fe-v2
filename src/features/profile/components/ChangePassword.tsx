@@ -1,15 +1,13 @@
-import CustomButton from "@/components/base/Button";
-import Form from "@/components/base/Form";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+
 import {
   showSuccessNotificationFunction,
   showErrorNotificationFunction,
-} from "@/common/helpers";
-import { IChangePassword } from "../interfaces";
-import InputPassword from "@/components/base/InputPassword";
-import { authService } from "@/features/auth/services/auth.service";
-import { useDispatch } from "react-redux";
-import { auth } from "@/features/auth/reducers/auth.reducer";
+} from "@/common";
+import { CustomButton, Form, InputPassword } from "@/components";
+import { authService, auth } from "@/features";
+import { IChangePassword } from "../index";
 
 interface Props {
   userId: string;
@@ -21,7 +19,7 @@ const defaultValues = {
   currentPassword: "",
   newPassword: "",
 };
-export default function ChangePassword(props: Props) {
+export const ChangePassword = (props: Props) => {
   const { userId, isOpenForm, handleClose } = props;
   const dispatch = useDispatch();
 
@@ -90,4 +88,4 @@ export default function ChangePassword(props: Props) {
       </div>
     </Form>
   );
-}
+};

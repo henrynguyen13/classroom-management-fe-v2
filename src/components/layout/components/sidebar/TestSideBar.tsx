@@ -1,11 +1,12 @@
-import { RootState } from "@/plugins/redux-toolkit/store";
-import { testSlice } from "@/features/tests/reducers/test.reducer";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { assignmentService } from "@/features/assignments/services/assignment.service";
+import { useDispatch, useSelector } from "react-redux";
 
-export default function TestSideBar() {
+import { RootState } from "@/plugins";
+import { testSlice } from "@/features/tests/reducers/test.reducer";
+import { assignmentService } from "@/features";
+
+export const TestSideBar = () => {
   const { id, assignmentId } = useParams();
   const dispatch = useDispatch();
   const handleQuestionSelect = (index: number) => {
@@ -54,4 +55,4 @@ export default function TestSideBar() {
       </div>
     </div>
   );
-}
+};

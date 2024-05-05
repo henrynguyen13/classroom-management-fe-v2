@@ -20,7 +20,7 @@ interface Props {
     | ((input: any) => Promise<void>);
 }
 
-export default function CustomButton({
+export const CustomButton = ({
   text,
   variant = "contained",
   width = "200",
@@ -33,7 +33,7 @@ export default function CustomButton({
   borderRadius = "8",
   marginRight,
   onClick,
-}: Props) {
+}: Props) => {
   return (
     <Button
       variant={variant}
@@ -54,4 +54,4 @@ export default function CustomButton({
       {text}
     </Button>
   );
-}
+};

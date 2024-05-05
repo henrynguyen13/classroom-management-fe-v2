@@ -1,4 +1,4 @@
-import { i18n } from "next-i18next";
+import i18n from "i18next";
 import { defaultLocale } from "yup";
 
 const { mixed: mixedLocale, string: stringLocale } = defaultLocale;

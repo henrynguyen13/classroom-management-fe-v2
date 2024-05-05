@@ -7,7 +7,7 @@ import CodeBlock from "@tiptap/extension-code-block";
 import { Mathematics } from "@tiptap-pro/extension-mathematics";
 import Underline from "@tiptap/extension-underline";
 import StarterKit from "@tiptap/starter-kit";
-import EditorMenu from "./EditorMenu";
+import { EditorMenu } from "./EditorMenu";
 import styles from "./input.module.css";
 import "katex/dist/katex.min.css";
 import { useEffect, useState } from "react";
@@ -25,7 +25,7 @@ interface Props {
   width?: string;
   onChange?: (e: any) => void;
 }
-const Tiptap = ({
+export const Tiptap = ({
   name,
   control,
   label,
@@ -97,7 +97,6 @@ const Tiptap = ({
 
   useEffect(() => {
     editor?.commands.setContent(JSON?.parse(value!));
-    console.log("------", value);
   }, [value]);
   return (
     <>
@@ -123,5 +122,3 @@ const Tiptap = ({
     </>
   );
 };
-
-export default Tiptap;

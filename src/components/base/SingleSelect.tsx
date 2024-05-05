@@ -1,17 +1,21 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
-import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { IItem } from "@/common/interfaces";
+import {
+  Box,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  SelectChangeEvent,
+  Select,
+} from "@mui/material";
+
+import { IItem } from "@/common";
 
 interface Props {
   name: string;
   items: IItem[];
   maxWidth?: number;
 }
-export default function SingleSelect({ items, name, maxWidth = 500 }: Props) {
+export const SingleSelect = ({ items, name, maxWidth = 500 }: Props) => {
   const [value, setValue] = React.useState("");
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -42,4 +46,4 @@ export default function SingleSelect({ items, name, maxWidth = 500 }: Props) {
       </FormControl>
     </Box>
   );
-}
+};

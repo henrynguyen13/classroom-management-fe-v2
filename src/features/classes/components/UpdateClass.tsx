@@ -1,13 +1,21 @@
-import CustomButton from "@/components/base/Button";
-import Form from "@/components/base/Form";
-import InputText from "@/components/base/InputText";
-import { useForm } from "react-hook-form";
-import { IUpdateClass } from "../interfaces";
-import { classService } from "../services/class.service";
-import { showSuccessNotificationFunction } from "@/common/helpers";
+import { useEffect, useState } from "react";
+import { FieldValues, useFieldArray, useForm } from "react-hook-form";
+import { mdiTrashCan } from "@mdi/js";
+import Icon from "@mdi/react";
+import { IconButton, Tooltip } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { classSchema } from "../schema";
-import { useEffect } from "react";
+
+import {
+  showSuccessNotificationFunction,
+  IOption,
+  ROLES,
+  date,
+  time,
+} from "@/common";
+import { Add } from "@/assets";
+import { Form, InputText, CustomButton, Dropdown } from "@/components";
+import { IUser, userService } from "@/features";
+import { classService, classSchema } from "../index";
 
 interface Props {
   classId: string;
@@ -16,8 +24,25 @@ interface Props {
   updateClassList: () => void;
 }
 
-export default function UpdateClass(props: Props) {
+export const UpdateClass = (props: Props) => {
   const { isOpenForm, handleClose, updateClassList, classId } = props;
+  const [teachers, setTeachers] = useState<IOption[]>([]);
+
+  const getAllTeachers = async () => {
+    try {
+      const response = await userService.getAllUserWithoutPagination();
+      if (response?.success) {
+        setTeachers(
+          response.users
+            .filter((user: IUser) => user.role === ROLES.TEACHER)
+            .map((user: IUser) => ({ id: user._id, label: user.username }))
+        );
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+    }
+  };
 
   useEffect(() => {
     const getClassDetail = async () => {
@@ -26,15 +51,21 @@ export default function UpdateClass(props: Props) {
         code: response.class?.code ?? "",
         name: response.class?.name ?? "",
         description: response.class?.description ?? "",
+        teacher: response.class?.teacher?._id ?? "",
       });
     };
 
     getClassDetail();
+    getAllTeachers();
   }, [classId]);
   const { control, handleSubmit, reset } = useForm({
     resolver: yupResolver(classSchema),
   });
 
+  const { fields, append, remove } = useFieldArray<FieldValues["description"]>({
+    control,
+    name: "description",
+  });
   const handleUpdate = handleSubmit(async (mclass: any) => {
     const response = await classService.update(classId, mclass);
     if (response?.success) {
@@ -43,15 +74,33 @@ export default function UpdateClass(props: Props) {
       updateClassList();
     }
   });
+
+  const handleAddDescription = () => {
+    append({
+      from: "",
+      to: "",
+      date: "",
+    });
+  };
+
+  const handleDeleteDescription = (index: number) => {
+    remove(index);
+  };
   return (
-    <Form title="Sửa lớp học" isOpenForm={isOpenForm} handleClose={handleClose}>
+    <Form
+      title="Sửa lớp học"
+      isOpenForm={isOpenForm}
+      handleClose={handleClose}
+      width="650px"
+      height="700px"
+    >
       <InputText
         control={control}
         name="code"
         value="code"
         label="Mã lớp học"
         placeholder="Nhập mã lớp học"
-        width="430"
+        width="570"
       />
       <InputText
         control={control}
@@ -59,15 +108,64 @@ export default function UpdateClass(props: Props) {
         value="name"
         label="Tên lớp học"
         placeholder="Nhập tên lớp học"
-        width="430"
+        width="570"
       />
-      <InputText
+      <Tooltip title="Thêm" placement="right">
+        <img
+          className="cursor-pointer hover:opacity-70 relative mt-2"
+          src={Add}
+          onClick={handleAddDescription}
+          alt="Add icon"
+        />
+      </Tooltip>
+      {fields.map((field, index) => (
+        <div
+          key={index}
+          className="flex justify-between items-center w-[570px]"
+        >
+          <Dropdown
+            control={control}
+            placeholder="Từ"
+            name={`description[${index}].from`}
+            options={time}
+            width="140px"
+            label="Thời gian"
+          />
+          <Dropdown
+            control={control}
+            name={`description[${index}].to`}
+            placeholder="Đến"
+            options={time}
+            width="140px"
+          />
+          <Dropdown
+            control={control}
+            name={`description[${index}].date`}
+            placeholder="Ngày"
+            options={date}
+            width="170px"
+          />
+          <div className="w-[200px]">
+            {index !== 0 && (
+              <Tooltip title="Xóa">
+                <IconButton
+                  sx={{ color: "#ED3A3A", marginLeft: 2, marginBottom: 1 }}
+                  onClick={() => handleDeleteDescription(index)}
+                >
+                  <Icon path={mdiTrashCan} size={1} />
+                </IconButton>
+              </Tooltip>
+            )}
+          </div>
+        </div>
+      ))}
+
+      <Dropdown
         control={control}
-        name="description"
-        value="description"
-        label="Mô tả lớp học"
-        placeholder="Nhập mô tả lớp học"
-        width="430"
+        name="teacher"
+        placeholder="Giáo viên"
+        options={teachers}
+        label="Giáo viên giảng dạy"
       />
 
       <div className="flex justify-end mt-10">
@@ -90,4 +188,4 @@ export default function UpdateClass(props: Props) {
       </div>
     </Form>
   );
-}
+};

@@ -1,6 +1,5 @@
 import { Controller } from "react-hook-form";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
+import { TextField, Autocomplete } from "@mui/material";
 import { IOption } from "@/common";
 
 interface Props {
@@ -12,14 +11,14 @@ interface Props {
   label?: string;
 }
 
-export default function Dropdown({
+export const Dropdown = ({
   control,
   name,
   options,
   placeholder,
   width,
   label,
-}: Props) {
+}: Props) => {
   return (
     <Controller
       name={name}
@@ -75,4 +74,4 @@ export default function Dropdown({
       }}
     />
   );
-}
+};

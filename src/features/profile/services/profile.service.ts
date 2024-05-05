@@ -1,8 +1,8 @@
 import { ApiService } from "@/plugins/axios/api";
 import axiosService from "@/plugins/axios";
 
-import { IUpdateUser, IUser } from "@/features/auth/interfaces";
-import { IBodyResponse, ICommonListQuery } from "@/common/interfaces";
+import { IUpdateUser, IUser } from "@/features";
+import { IBodyResponse, ICommonListQuery } from "@/common";
 
 class UserService extends ApiService {
   async getUserById(userId: string) {
@@ -26,6 +26,12 @@ class UserService extends ApiService {
 
   async getAllUser(queryString: ICommonListQuery) {
     return this.client.get<IUser, any>(`${this.baseUrl}`, {
+      params: queryString,
+    });
+  }
+
+  async getAllUserWithoutPagination(queryString: ICommonListQuery) {
+    return this.client.get<IUser, any>(`${this.baseUrl}/all`, {
       params: queryString,
     });
   }

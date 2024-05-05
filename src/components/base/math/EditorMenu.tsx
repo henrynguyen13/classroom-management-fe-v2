@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Editor } from "@tiptap/react";
 import {
   MdFormatItalic,
@@ -7,13 +8,13 @@ import {
 import { FaCode, FaUndo, FaRedo } from "react-icons/fa";
 import { MdFormatListBulleted, MdFormatUnderlined } from "react-icons/md";
 import { IoIosImage } from "react-icons/io";
-import MenuItem from "./MenuItem";
-import { useState } from "react";
+import { MenuItem } from "./MenuItem";
 interface Props {
   editor: Editor;
   upload?: () => Promise<string>;
 }
-export default function EditorMenu({ editor, upload }: Props) {
+
+export const EditorMenu = ({ editor, upload }: Props) => {
   const [activeIndex, setActiveIndex] = useState<number>();
   async function addImage() {
     const url = await upload?.();
@@ -145,7 +146,6 @@ export default function EditorMenu({ editor, upload }: Props) {
   const handleClick = (index: number) => {
     setActiveIndex(index);
     items[index].action();
-    console.log("index", activeIndex);
   };
   return (
     <>
@@ -160,4 +160,4 @@ export default function EditorMenu({ editor, upload }: Props) {
       ))}
     </>
   );
-}
+};

@@ -1,19 +1,19 @@
-import { IQuestion } from "@/features/questions/interfaces";
+import { useState } from "react";
 import { Radio } from "@mui/material";
 
-import { useState } from "react";
-import OutputTiptap from "./math/OutputTiptap";
+import { IQuestion } from "@/features";
+import { OutputTiptap } from "./math/OutputTiptap";
 interface Props {
   currentIndex: number;
   question: IQuestion;
   onAnswerSelected: (currentIndex: number, selectedAnswer: string) => void;
 }
 
-export default function CardQuestionTest({
+export const CardQuestionTest = ({
   question,
   currentIndex,
   onAnswerSelected,
-}: Props) {
+}: Props) => {
   const letters = ["A", "B", "C", "D"];
 
   const [selectedAnswer, setSelectedAnswer] = useState<string[]>([]);
@@ -69,4 +69,4 @@ export default function CardQuestionTest({
       </div>
     </div>
   );
-}
+};

@@ -1,50 +1,67 @@
-import CustomButton from "@/components/base/Button";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import TablePagination from "@mui/material/TablePagination";
 import { useState } from "react";
-import { classService } from "@/features/classes/services/class.service";
-import { ICommonListQuery, IStudent } from "@/common/interfaces";
-import { IClass } from "@/features/classes/interfaces";
-import AddStudentToClass from "./AddStudentToClass";
-import { Chip, IconButton, Tooltip } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
 import Icon from "@mdi/react";
-import noData from "@/assets/icons/no_data.svg";
-import { mdiTrashCan } from "@mdi/js";
+import { mdiLoginVariant, mdiTrashCan } from "@mdi/js";
 import {
-  isTeacher,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  TablePagination,
+  Chip,
+  IconButton,
+  Tooltip,
+  Avatar,
+} from "@mui/material";
+
+import {
+  isAdminOrAffair,
   showAlert,
   showErrorNotificationFunction,
   showSuccessNotificationFunction,
-} from "@/common/helpers";
+  IStudent,
+  ICommonListQuery,
+} from "@/common";
+import { NoData } from "@/assets";
+import { CustomButton } from "@/components";
+import { classService, IClass } from "@/features";
+import { AddStudentToClass } from "./AddStudentToClass";
 
 interface Props {
   id: string;
   students: IStudent[];
+  total: number;
+  allStudents: IStudent[];
+  setStudents: (e: any) => void;
   updateStudentList?: () => void;
 }
-export default function StudentList({
+export const StudentList = ({
   id,
   students,
+  total,
+  allStudents,
   updateStudentList,
-}: Props) {
-  const [classDetail, setClassDetail] = useState<IClass>();
+  setStudents,
+}: Props) => {
+  const navigate = useNavigate();
+
   const [isOpenAddStudent, setIsOpenAddStudent] = useState(false);
   const rowsPerPage = 10;
   const [page, setPage] = useState(0);
+
   const handleChangePage = async (event: unknown, newPage: number) => {
     setPage(newPage);
     const query: ICommonListQuery = {
       page: newPage + 1,
       limit: rowsPerPage,
     };
-    const response = await classService.getClassDetail(id);
-    setClassDetail(response.class);
+    const response = await classService.getClassDetail(id as string, query);
+
+    setStudents(response?.class?.users);
   };
   const handleClickDelete = (id: string) => {
     showAlert({
@@ -62,18 +79,19 @@ export default function StudentList({
       showSuccessNotificationFunction("Xóa học sinh thành công");
       if (updateStudentList) {
         updateStudentList();
+        handleChangePage(null, 0);
       }
     } else {
       showErrorNotificationFunction("Có lỗi xảy ra. Vui lòng kiểm tra lại");
     }
   };
 
-  const isTeacherRole = isTeacher();
+  const isAdminOrAffairRole = isAdminOrAffair();
   return (
     <>
       <div className="flex justify-between items-center">
         <div className="text-black">Danh sách học sinh </div>
-        {isTeacherRole && (
+        {isAdminOrAffairRole && (
           <CustomButton
             onClick={() => {
               setIsOpenAddStudent(true);
@@ -84,7 +102,7 @@ export default function StudentList({
       </div>
 
       <div className="flex justify-between items-center">
-        <div>Tổng số: {students.length} học sinh</div>
+        <div>Tổng số: {total} học sinh</div>
         <TablePagination
           sx={{
             "& .MuiTablePagination-selectLabel": {
@@ -100,7 +118,7 @@ export default function StudentList({
             },
           }}
           component="div"
-          count={students.length}
+          count={total}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -143,7 +161,7 @@ export default function StudentList({
 
               <TableCell
                 sx={{ backgroundColor: "#e3e1e1" }}
-                width="15%"
+                width="20%"
                 align="center"
               >
                 Tên học sinh
@@ -160,49 +178,75 @@ export default function StudentList({
                 width="25%"
                 align="center"
               >
-                {isTeacherRole ? "Hành động" : "Mã học sinh"}
+                Mã học sinh
+              </TableCell>
+              <TableCell
+                sx={{ backgroundColor: "#e3e1e1" }}
+                width="25%"
+                align="center"
+              >
+                Hành động
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {students?.length > 0 ? (
-              students.map((row, index) => (
+              students.map((user, index) => (
                 <TableRow
                   key={index}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell width="5%">{index + 1}</TableCell>
 
-                  <TableCell width="15%" align="center">
-                    {row.username}
+                  <TableCell width="20%" align="left">
+                    <div className="flex flex-start items-center text-sm">
+                      <Avatar
+                        sx={{ marginRight: 1, width: 32, height: 32 }}
+                        src={
+                          user?.avatar
+                            ? user?.avatar
+                            : `/src/assets/images/no-avatar/webp`
+                        }
+                      />
+                      {user.username}
+                    </div>
                   </TableCell>
                   <TableCell width="25%" align="center">
-                    {row.email}
+                    {user.email}
                   </TableCell>
                   <TableCell width="25%" align="center" padding="none">
-                    {isTeacherRole ? (
+                    <Chip
+                      label={user.code}
+                      variant="outlined"
+                      sx={{
+                        color: "#1D8FE4",
+                        borderColor: "#1D8FE4",
+
+                        "&. MuiChip-label": {
+                          fontSize: "14px",
+                        },
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell width="25%" align="center" padding="none">
+                    {isAdminOrAffairRole && (
                       <Tooltip title="Xóa">
                         <IconButton
                           sx={{ color: "#ED3A3A" }}
-                          onClick={() => handleClickDelete(row._id)}
+                          onClick={() => handleClickDelete(user._id)}
                         >
                           <Icon path={mdiTrashCan} size={1} />
                         </IconButton>
                       </Tooltip>
-                    ) : (
-                      <Chip
-                        label={row.code}
-                        variant="outlined"
-                        sx={{
-                          color: "#1D8FE4",
-                          borderColor: "#1D8FE4",
-
-                          "&. MuiChip-label": {
-                            fontSize: "14px",
-                          },
-                        }}
-                      />
                     )}
+
+                    <Tooltip title="Xem chi tiết">
+                      <IconButton
+                        onClick={() => navigate(`/users/${user._id}`)}
+                      >
+                        <Icon path={mdiLoginVariant} size={1} />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))
@@ -210,7 +254,7 @@ export default function StudentList({
               <TableRow>
                 <TableCell colSpan={4} align="center">
                   <img
-                    src={noData}
+                    src={NoData}
                     className="h-80 flex my-0 mx-auto"
                     alt="No-data"
                   />
@@ -229,7 +273,8 @@ export default function StudentList({
         id={id}
         isOpenForm={isOpenAddStudent}
         updateStudentList={updateStudentList}
+        studentsInClass={allStudents}
       />
     </>
   );
-}
+};

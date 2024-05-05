@@ -1,13 +1,12 @@
 import { Card, Chip } from "@mui/material";
-import { ICard, ROLES } from "@/common";
-import authStorageService from "@/common/storages/authStorage.service";
+import { ICard, ROLES, AuthStorageService } from "@/common";
 
 interface Props {
   list: ICard[];
 }
 
-export default function CardDetail({ list }: Props) {
-  const role = authStorageService.getLoginUser().role;
+export const CardDetail = ({ list }: Props) => {
+  const role = AuthStorageService.getLoginUser().role;
   return (
     <Card>
       <div className="w-full  rounded-lg  p-8 ">
@@ -20,7 +19,7 @@ export default function CardDetail({ list }: Props) {
               <div key={index} className="mt-6">
                 <div className="flex items-center mb-2 text-neutral-2 font-medium">
                   <div className="mr-2">
-                    <img src={item.icon.src} alt={item.icon} />
+                    <img src={item.icon} alt={item.icon} />
                   </div>
                   {item.title}
                 </div>
@@ -56,4 +55,4 @@ export default function CardDetail({ list }: Props) {
       </div>
     </Card>
   );
-}
+};

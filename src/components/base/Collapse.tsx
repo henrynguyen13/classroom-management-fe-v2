@@ -1,16 +1,19 @@
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { CardDetail } from ".";
+
 import { ICard } from "@/common";
+import { CardDetail } from ".";
 
 interface Props {
   title: string;
   list: ICard[];
 }
-export default function Collapse({ title, list }: Props) {
+export const Collapse = ({ title, list }: Props) => {
   return (
     <div>
       <Accordion defaultExpanded>
@@ -23,4 +26,4 @@ export default function Collapse({ title, list }: Props) {
       </Accordion>
     </div>
   );
-}
+};

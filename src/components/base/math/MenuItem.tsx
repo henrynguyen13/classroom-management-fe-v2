@@ -6,7 +6,7 @@ interface Props {
   action: () => void;
   isActive: boolean;
 }
-export default function MenuItem({ title, icon, action, isActive }: Props) {
+export const MenuItem = ({ title, icon, action, isActive }: Props) => {
   return (
     <>
       <Tooltip title={title}>
@@ -21,4 +21,4 @@ export default function MenuItem({ title, icon, action, isActive }: Props) {
       </Tooltip>
     </>
   );
-}
+};

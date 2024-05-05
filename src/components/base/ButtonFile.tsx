@@ -1,6 +1,5 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Button from "@mui/material/Button";
+import { styled, Button } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 const VisuallyHiddenInput = styled("input")({
@@ -26,7 +25,7 @@ interface Props {
   onSelectedFile: (file: File | null) => void;
 }
 
-export default function ButtonFile({
+export const ButtonFile = ({
   title,
   color = "white",
   backgroundColor = "#1D8FE4",
@@ -35,11 +34,10 @@ export default function ButtonFile({
   selectedFile,
   previewTable,
   onSelectedFile,
-}: Props) {
+}: Props) => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const selectedFile = event.target.files[0];
-      console.log("-selectedFile", selectedFile);
       onSelectedFile(selectedFile);
     }
   };
@@ -77,4 +75,4 @@ export default function ButtonFile({
       )}
     </div>
   );
-}
+};

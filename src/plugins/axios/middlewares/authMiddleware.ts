@@ -2,23 +2,23 @@ import axios, { type AxiosRequestConfig } from "axios";
 // import { HttpMiddleware } from "./httpMiddleware";
 import { logout } from "@/common/helpers";
 import { IBodyResponse, ILoginResponse } from "@/common/interfaces";
-import authStorageService from "@/common/storages/authStorage.service";
+import { AuthStorageService } from "@/common/storages/authStorage.service";
 export const sendRefreshToken = async () => {
   try {
     const response = (
       await axios.get(`${import.meta.env.VITE_API}/auth/refresh-token`, {
         headers: {
-          Authorization: `Bearer ${authStorageService.getRefreshToken()}`,
+          Authorization: `Bearer ${AuthStorageService.getRefreshToken()}`,
         },
       })
     )?.data as IBodyResponse<ILoginResponse>;
-    authStorageService.setLoginUser(response?.data?.user);
-    authStorageService.setAccessToken(response?.data?.accessToken?.token);
-    authStorageService.setAccessTokenExpiredAt(
+    AuthStorageService.setLoginUser(response?.data?.user);
+    AuthStorageService.setAccessToken(response?.data?.accessToken?.token);
+    AuthStorageService.setAccessTokenExpiredAt(
       response?.data?.accessToken?.expiresIn
     );
-    authStorageService.setRefreshToken(response?.data?.refreshToken?.token);
-    authStorageService.setRefreshTokenExpiredAt(
+    AuthStorageService.setRefreshToken(response?.data?.refreshToken?.token);
+    AuthStorageService.setRefreshTokenExpiredAt(
       response?.data?.refreshToken?.expiresIn
     );
     return response?.data;
@@ -36,16 +36,16 @@ export const sendRefreshToken = async () => {
 //       return config;
 //     }
 
-//     const tokenExpiredAt = authStorageService.getAccessTokenExpiredAt();
+//     const tokenExpiredAt = AuthStorageService.getAccessTokenExpiredAt();
 //     console.log("tokenexpire", tokenExpiredAt);
 //     if (
 //       !tokenExpiredAt ||
 //       (tokenExpiredAt && tokenExpiredAt <= new Date().getTime())
 //     ) {
 //       // token expired, check refresh token
-//       const refreshToken = authStorageService.getRefreshToken();
+//       const refreshToken = AuthStorageService.getRefreshToken();
 //       const refreshTokenExpiredAt =
-//         +authStorageService.getRefreshTokenExpiredAt();
+//         +AuthStorageService.getRefreshTokenExpiredAt();
 //       if (
 //         !refreshToken ||
 //         !refreshTokenExpiredAt ||
@@ -63,7 +63,7 @@ export const sendRefreshToken = async () => {
 
 //     config.headers = {
 //       ...config.headers,
-//       Authorization: `Bearer ${authStorageService.getAccessToken()}`,
+//       Authorization: `Bearer ${AuthStorageService.getAccessToken()}`,
 //     };
 //     return config;
 //   }
