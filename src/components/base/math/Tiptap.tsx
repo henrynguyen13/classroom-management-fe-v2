@@ -97,7 +97,6 @@ export const Tiptap = ({
 
   useEffect(() => {
     editor?.commands.setContent(JSON?.parse(value!));
-    console.log("------", value);
   }, [value]);
   return (
     <>

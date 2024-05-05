@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Icon from "@mdi/react";
-import { mdiTrashCan } from "@mdi/js";
+import { mdiLoginVariant, mdiTrashCan } from "@mdi/js";
 import {
   Table,
   TableBody,
@@ -13,10 +15,11 @@ import {
   Chip,
   IconButton,
   Tooltip,
+  Avatar,
 } from "@mui/material";
 
 import {
-  isTeacher,
+  isAdminOrAffair,
   showAlert,
   showErrorNotificationFunction,
   showSuccessNotificationFunction,
@@ -31,21 +34,34 @@ import { AddStudentToClass } from "./AddStudentToClass";
 interface Props {
   id: string;
   students: IStudent[];
+  total: number;
+  allStudents: IStudent[];
+  setStudents: (e: any) => void;
   updateStudentList?: () => void;
 }
-export const StudentList = ({ id, students, updateStudentList }: Props) => {
-  const [classDetail, setClassDetail] = useState<IClass>();
+export const StudentList = ({
+  id,
+  students,
+  total,
+  allStudents,
+  updateStudentList,
+  setStudents,
+}: Props) => {
+  const navigate = useNavigate();
+
   const [isOpenAddStudent, setIsOpenAddStudent] = useState(false);
   const rowsPerPage = 10;
   const [page, setPage] = useState(0);
+
   const handleChangePage = async (event: unknown, newPage: number) => {
     setPage(newPage);
     const query: ICommonListQuery = {
       page: newPage + 1,
       limit: rowsPerPage,
     };
-    const response = await classService.getClassDetail(id);
-    setClassDetail(response.class);
+    const response = await classService.getClassDetail(id as string, query);
+
+    setStudents(response?.class?.users);
   };
   const handleClickDelete = (id: string) => {
     showAlert({
@@ -63,18 +79,19 @@ export const StudentList = ({ id, students, updateStudentList }: Props) => {
       showSuccessNotificationFunction("Xóa học sinh thành công");
       if (updateStudentList) {
         updateStudentList();
+        handleChangePage(null, 0);
       }
     } else {
       showErrorNotificationFunction("Có lỗi xảy ra. Vui lòng kiểm tra lại");
     }
   };
 
-  const isTeacherRole = isTeacher();
+  const isAdminOrAffairRole = isAdminOrAffair();
   return (
     <>
       <div className="flex justify-between items-center">
         <div className="text-black">Danh sách học sinh </div>
-        {isTeacherRole && (
+        {isAdminOrAffairRole && (
           <CustomButton
             onClick={() => {
               setIsOpenAddStudent(true);
@@ -85,7 +102,7 @@ export const StudentList = ({ id, students, updateStudentList }: Props) => {
       </div>
 
       <div className="flex justify-between items-center">
-        <div>Tổng số: {students.length} học sinh</div>
+        <div>Tổng số: {total} học sinh</div>
         <TablePagination
           sx={{
             "& .MuiTablePagination-selectLabel": {
@@ -101,7 +118,7 @@ export const StudentList = ({ id, students, updateStudentList }: Props) => {
             },
           }}
           component="div"
-          count={students.length}
+          count={total}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -144,7 +161,7 @@ export const StudentList = ({ id, students, updateStudentList }: Props) => {
 
               <TableCell
                 sx={{ backgroundColor: "#e3e1e1" }}
-                width="15%"
+                width="20%"
                 align="center"
               >
                 Tên học sinh
@@ -161,49 +178,75 @@ export const StudentList = ({ id, students, updateStudentList }: Props) => {
                 width="25%"
                 align="center"
               >
-                {isTeacherRole ? "Hành động" : "Mã học sinh"}
+                Mã học sinh
+              </TableCell>
+              <TableCell
+                sx={{ backgroundColor: "#e3e1e1" }}
+                width="25%"
+                align="center"
+              >
+                Hành động
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {students?.length > 0 ? (
-              students.map((row, index) => (
+              students.map((user, index) => (
                 <TableRow
                   key={index}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell width="5%">{index + 1}</TableCell>
 
-                  <TableCell width="15%" align="center">
-                    {row.username}
+                  <TableCell width="20%" align="left">
+                    <div className="flex flex-start items-center text-sm">
+                      <Avatar
+                        sx={{ marginRight: 1, width: 32, height: 32 }}
+                        src={
+                          user?.avatar
+                            ? user?.avatar
+                            : `/src/assets/images/no-avatar/webp`
+                        }
+                      />
+                      {user.username}
+                    </div>
                   </TableCell>
                   <TableCell width="25%" align="center">
-                    {row.email}
+                    {user.email}
                   </TableCell>
                   <TableCell width="25%" align="center" padding="none">
-                    {isTeacherRole ? (
+                    <Chip
+                      label={user.code}
+                      variant="outlined"
+                      sx={{
+                        color: "#1D8FE4",
+                        borderColor: "#1D8FE4",
+
+                        "&. MuiChip-label": {
+                          fontSize: "14px",
+                        },
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell width="25%" align="center" padding="none">
+                    {isAdminOrAffairRole && (
                       <Tooltip title="Xóa">
                         <IconButton
                           sx={{ color: "#ED3A3A" }}
-                          onClick={() => handleClickDelete(row._id)}
+                          onClick={() => handleClickDelete(user._id)}
                         >
                           <Icon path={mdiTrashCan} size={1} />
                         </IconButton>
                       </Tooltip>
-                    ) : (
-                      <Chip
-                        label={row.code}
-                        variant="outlined"
-                        sx={{
-                          color: "#1D8FE4",
-                          borderColor: "#1D8FE4",
-
-                          "&. MuiChip-label": {
-                            fontSize: "14px",
-                          },
-                        }}
-                      />
                     )}
+
+                    <Tooltip title="Xem chi tiết">
+                      <IconButton
+                        onClick={() => navigate(`/users/${user._id}`)}
+                      >
+                        <Icon path={mdiLoginVariant} size={1} />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))
@@ -230,6 +273,7 @@ export const StudentList = ({ id, students, updateStudentList }: Props) => {
         id={id}
         isOpenForm={isOpenAddStudent}
         updateStudentList={updateStudentList}
+        studentsInClass={allStudents}
       />
     </>
   );

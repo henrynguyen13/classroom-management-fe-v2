@@ -68,6 +68,7 @@ export interface IStudent extends IBase {
   email: string;
   username: string;
   code: string;
+  avatar?: string;
 }
 
 export interface IAddStudent
@@ -112,4 +113,5 @@ export interface ILoginResponse {
 export interface IOption {
   id: string;
   label: string;
+  [key: string]: string;
 }

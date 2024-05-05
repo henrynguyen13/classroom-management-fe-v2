@@ -204,6 +204,13 @@ export const isStudent = () => {
   return AuthStorageService.getLoginUser().role === ROLES.STUDENT;
 };
 
+export const isAdminOrAffair = () => {
+  return (
+    AuthStorageService.getLoginUser().role === ROLES.ACADEMIC_AFFAIR ||
+    AuthStorageService.getLoginUser().role === ROLES.ADMIN
+  );
+};
+
 export const logout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();

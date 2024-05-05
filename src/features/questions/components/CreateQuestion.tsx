@@ -49,7 +49,6 @@ export const CreateQuestion = (props: Props) => {
   });
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const answer = event.target.value;
-    console.log("selectedAns", answer);
     // const currentIndex = selectedAnswer.indexOf(answer as never);
     // const newSelectedAnswers = [...selectedAnswer];
 

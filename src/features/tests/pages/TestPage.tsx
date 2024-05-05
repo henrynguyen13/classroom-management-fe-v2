@@ -30,8 +30,6 @@ export const TestPage = () => {
       );
 
       if (response?.success) {
-        console.log("----", response);
-
         setQuestions(response.data?.items || []);
         setTotalQuestions(response.data?.totalItems || 0);
       }
@@ -65,7 +63,6 @@ export const TestPage = () => {
     // setCurrentIndex((currentIndex) => currentIndex + 1);
     dispatch(testSlice.actions.answeredQuestion(currentIndex));
     dispatch(testSlice.actions.selectQuestion(currentIndex + 1));
-    console.log("response", responses);
   };
 
   const handleFinalSubmit = async () => {
@@ -83,7 +80,6 @@ export const TestPage = () => {
         navigate(
           `/classes/${id}/assignment/${assignmentId}/result/${response._id}`
         );
-        console.log("--------", response);
         setTimeout(() => {
           // dispatch(testSlice.actions.resetAnsweredQuestion());
           dispatch(testSlice.actions.answeredQuestion("RESET"));

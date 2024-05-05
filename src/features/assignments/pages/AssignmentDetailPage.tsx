@@ -96,7 +96,6 @@ export const AssignmentDetailPage = () => {
         selectedFile as File
       );
       if (response?.success) {
-        console.log("response", response);
         setSelectedFile(null);
         setIsLoading(false);
         setResponse(response);

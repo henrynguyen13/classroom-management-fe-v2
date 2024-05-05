@@ -21,8 +21,6 @@ export const ResponseDetailPage = () => {
         responseId as string
       );
 
-      console.log("RESPONSE", response);
-
       if (response?.success) {
         setResponse(response);
       }

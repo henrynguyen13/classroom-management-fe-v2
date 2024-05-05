@@ -146,7 +146,6 @@ export const EditorMenu = ({ editor, upload }: Props) => {
   const handleClick = (index: number) => {
     setActiveIndex(index);
     items[index].action();
-    console.log("index", activeIndex);
   };
   return (
     <>

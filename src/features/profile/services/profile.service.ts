@@ -30,8 +30,10 @@ class UserService extends ApiService {
     });
   }
 
-  async getAllUserWithoutPagination() {
-    return this.client.get<IUser, any>(`${this.baseUrl}/all`);
+  async getAllUserWithoutPagination(queryString: ICommonListQuery) {
+    return this.client.get<IUser, any>(`${this.baseUrl}/all`, {
+      params: queryString,
+    });
   }
 
   async deleteUserById(id: string): Promise<IBodyResponse<any>> {

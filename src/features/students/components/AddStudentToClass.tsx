@@ -1,31 +1,89 @@
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect, useState } from "react";
+import { styled } from "styled-components";
+import { Avatar, OutlinedInput, Chip } from "@mui/material";
+
 import {
   showErrorNotificationFunction,
   showSuccessNotificationFunction,
-  IAddStudent,
+  ROLES,
+  ICommonListQuery,
+  IStudent,
 } from "@/common";
-import { InputText, Form, CustomButton } from "@/components";
-import { classService } from "@/features";
-import { useForm } from "@/plugins";
-import { studentSchema } from "../index";
+import { Form, CustomButton } from "@/components";
+import { IUser, classService, userService } from "@/features";
+
 interface Props {
+  studentsInClass: IStudent[];
   isOpenForm: boolean;
   id: string;
   handleClose: () => void;
   updateStudentList?: () => void;
 }
-export const AddStudentToClass = (props: Props) => {
-  const { isOpenForm, handleClose, id, updateStudentList } = props;
-  const { control, handleSubmit, reset } = useForm({
-    resolver: yupResolver(studentSchema),
-    defaultValues: { email: "" },
-  });
 
-  const handleCreate = handleSubmit(async (dto: IAddStudent) => {
+export const AddStudentToClass = (props: Props) => {
+  const { isOpenForm, handleClose, id, updateStudentList, studentsInClass } =
+    props;
+
+  const [students, setStudents] = useState<IStudent[]>([]);
+  const [selectedStudents, setSelectedStudents] = useState<IStudent[]>([]);
+  const [isShowStudentList, setIsShowStudentList] = useState<boolean>(false);
+
+  const getAllStudents = async (query: ICommonListQuery) => {
+    try {
+      const response = await userService.getAllUserWithoutPagination(query);
+      if (response?.success) {
+        setStudents(
+          response.users
+            .filter((user: IUser) => user.role === ROLES.STUDENT)
+            .filter(
+              (student: IStudent) =>
+                !studentsInClass.map((i) => i._id).includes(student._id)
+            )
+        );
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+    }
+  };
+
+  const getAllStudentsWithoutSelected = async (query: ICommonListQuery) => {
+    try {
+      const response = await userService.getAllUserWithoutPagination(query);
+      if (response?.success) {
+        setStudents(
+          response.users
+            .filter((user: IUser) => user.role === ROLES.STUDENT)
+            .filter(
+              (student: IStudent) =>
+                !studentsInClass.map((i) => i._id).includes(student._id)
+            )
+            .filter(
+              (student: IStudent) =>
+                !selectedStudents
+                  .map((selected) => selected._id)
+                  .includes(student._id)
+            )
+        );
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    getAllStudents({});
+  }, []);
+
+  const handleCreate = async () => {
+    const dto = selectedStudents.map((selected) => selected.email);
     const response = await classService.addToClass(id, dto);
     if (response?.success) {
       showSuccessNotificationFunction("Thêm học sinh thành công");
-      reset({ email: "" });
+      setStudents([]);
+      setSelectedStudents([]);
+      setIsShowStudentList(false);
       if (updateStudentList) {
         updateStudentList();
       }
@@ -35,27 +93,115 @@ export const AddStudentToClass = (props: Props) => {
         "Email này đã có trong lớp học hoặc chưa đăng ký tài khoản"
       );
     }
-  });
+  };
 
   const handleCancel = () => {
     handleClose();
-    reset({ email: "" });
+    setStudents([]);
+    setSelectedStudents([]);
+    setIsShowStudentList(false);
   };
+
+  const handleSearch = async (e: any) => {
+    if (e.target.value.length > 0) {
+      setIsShowStudentList(true);
+    } else {
+      setIsShowStudentList(false);
+    }
+    const query: ICommonListQuery = {
+      textFilter: e.target.value,
+    };
+    await getAllStudentsWithoutSelected(query);
+  };
+
+  const handleSelect = (id: string) => {
+    const selectedStudent = students.find((student) => student._id === id);
+    if (selectedStudent) {
+      setStudents((prevStudents) =>
+        prevStudents.filter((student) => student._id !== id)
+      );
+      setSelectedStudents((prevSelected) => [...prevSelected, selectedStudent]);
+    }
+  };
+
+  const handleDelete = (id: string) => {
+    setSelectedStudents((prevSelected) =>
+      prevSelected.filter((student) => student._id !== id)
+    );
+    const deletedStudent = selectedStudents.find(
+      (student) => student._id === id
+    );
+    if (deletedStudent) {
+      setStudents((prevStudents) => [...prevStudents, deletedStudent]);
+    }
+  };
+
   return (
     <Form
       title="Thêm học sinh"
       isOpenForm={isOpenForm}
       handleClose={handleCancel}
+      width="700px"
+      height="77vh"
     >
-      <InputText
-        control={control}
-        name="email"
-        label="Email học sinh"
-        placeholder="Nhập email học sinh"
-        width="430"
+      <Down $height="100px">
+        <div className="dropdown">
+          {selectedStudents &&
+            selectedStudents.map((student) => (
+              <Chip
+                key={student._id}
+                label={student.username}
+                variant="outlined"
+                sx={{
+                  margin: "2px",
+                }}
+                onDelete={() => handleDelete(student._id)}
+              />
+              //BUG: DANG CÓ 11 HỌC SINH MA SAO HIEN CÓ 10
+            ))}
+        </div>
+      </Down>
+      <OutlinedInput
+        sx={{
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderRadius: "8px !important",
+          },
+          "& .MuiInputBase-input": {
+            padding: "12px",
+          },
+          width: "100%",
+          marginTop: 3,
+        }}
+        onChange={handleSearch}
+        placeholder="Tìm kiếm theo tên hoặc email"
       />
+      <Down>
+        <div className="dropdown">
+          {isShowStudentList &&
+            students.map((student) => (
+              <div
+                key={student._id}
+                className="flex items-center h-16 hover:bg-neutral-7 cursor-pointer pl-3"
+                onClick={() => handleSelect(student._id)}
+              >
+                <Avatar
+                  sx={{ marginRight: 1, width: 40, height: 40 }}
+                  src={
+                    student.avatar
+                      ? student.avatar
+                      : `/src/assets/images/no-avatar/webp`
+                  }
+                />
+                <div className="ml-3">
+                  <h1>{student.username}</h1>
+                  <p className="text-xs text-neutral-4">{student.email}</p>
+                </div>
+              </div>
+            ))}
+        </div>
+      </Down>
 
-      <div className="flex justify-end mt-10">
+      <div className="flex justify-end mt-20">
         <CustomButton
           text="Hủy"
           size="large"
@@ -76,3 +222,18 @@ export const AddStudentToClass = (props: Props) => {
     </Form>
   );
 };
+
+const Down = styled.div<{ $height?: string }>`
+  .dropdown {
+    height: ${(props) => props.$height || "300px"};
+    overflow-y: auto;
+  }
+
+  .dropdown::-webkit-scrollbar {
+    width: 8px;
+  }
+  .dropdown::-webkit-scrollbar-thumb {
+    background-color: #e1e3e9;
+    border-radius: 2px;
+  }
+`;

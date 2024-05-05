@@ -20,7 +20,6 @@ export const TestResultPage = () => {
 
       if (response?.success) {
         setResponse(response);
-        console.log("response", response);
       }
     };
 

@@ -17,8 +17,13 @@ class ClassService extends ApiService {
       { params: queryString }
     );
   }
-  async getClassDetail(id: string) {
-    return this._getDetail<IClassDetail>(id);
+  async getClassDetail(id: string, query: ICommonListQuery) {
+    return this.client.get<any, any>(`${this.baseUrl}/${id}`, {
+      params: query,
+    });
+  }
+  async getClassDetailWithoutPagination(id: string) {
+    return this.client.get<any, any>(`${this.baseUrl}/${id}/all`);
   }
 
   async update(id: string, dto: IUpdateClass) {
@@ -29,8 +34,8 @@ class ClassService extends ApiService {
     return this._delete<IBodyResponse<IClass>>(id);
   }
 
-  async addToClass(id: string, dto: IAddStudent) {
-    return this.client.post<IAddStudent, IBodyResponse<IClass>>(
+  async addToClass(id: string, dto: string[]) {
+    return this.client.post<string[], IBodyResponse<IClass>>(
       `${this.baseUrl}/${id}/students`,
       dto
     );

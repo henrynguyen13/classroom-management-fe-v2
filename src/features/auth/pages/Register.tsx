@@ -24,7 +24,6 @@ export const Register = () => {
   });
 
   const handleRegister = handleSubmit(async (user: any) => {
-    console.log("---user", user);
     const response = await authService.register(user);
     if (response?.success) {
       await showSuccessNotificationFunction("Đăng ký thành công");

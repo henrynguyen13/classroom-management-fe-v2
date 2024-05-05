@@ -48,7 +48,6 @@ export const ListAttendance = ({ classId, students }: Props) => {
       const response = await attendanceService.getAttendanceByClassId(classId);
       if (response.success) {
         setAttendanceList(response?.data.items ?? []);
-        console.log("response", response);
       }
     };
 

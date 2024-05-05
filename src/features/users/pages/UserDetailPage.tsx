@@ -22,7 +22,6 @@ export const UserDetailPage = () => {
       const response = await userService.getUserById(id as string);
       if (response?.success) {
         setProfile(response);
-        console.log("response", response);
       }
     };
     getMyProfile();
@@ -31,7 +30,6 @@ export const UserDetailPage = () => {
   const updateProfile = async () => {
     const response = await userService.getUserById(id as string);
     setProfile(response);
-    console.log("responseUpdate", response);
   };
 
   const listItems: ICard[] = [

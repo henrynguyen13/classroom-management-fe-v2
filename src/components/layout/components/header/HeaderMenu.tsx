@@ -29,7 +29,6 @@ export const HeaderMenu = ({ onClose }: Props) => {
 
   const handleLogOut = async (userId: string) => {
     const response = await authService.logout(userId);
-    console.log("------", response);
     if (response?.success) {
       await showSuccessNotificationFunction("Đăng xuất thành công");
       dispatch(loggedout());

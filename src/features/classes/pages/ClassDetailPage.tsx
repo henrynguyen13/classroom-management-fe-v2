@@ -12,6 +12,7 @@ import {
   formatDate,
   isTeacher,
   AuthStorageService,
+  IStudent,
 } from "@/common";
 import { Clock, Teacher, Code, Calendar, Status, Logout } from "@/assets";
 import { Collapse } from "@/components";
@@ -33,23 +34,32 @@ export const ClassDetailPage = () => {
   const [createdAt, setCreatedAt] = useState("");
   const [status, setStatus] = useState("");
   const [teacher, setTeacher] = useState("");
-  const [students, setStudents] = useState([]);
+  const [students, setStudents] = useState<IStudent[]>([]);
+  const [allStudents, setAllStudents] = useState<IStudent[]>([]);
+  const [totalStudents, setTotalStudents] = useState<number>(0);
   const [absences, setAbsences] = useState<string>("");
 
-  useEffect(() => {
-    const getClassDetail = async () => {
-      const response = await classService.getClassDetail(id as string);
-      console.log("response", response);
-      setName(response?.class?.name || "");
-      setCode(response?.class?.code || "");
-      setDescription(response?.class?.description || []);
-      setCreatedAt(response?.class?.createdAt.toLocaleString() || "");
-      setStatus(response?.class?.status || "");
-      setTeacher(response?.class?.teacher.username || "");
-      setStudents(response?.class?.users.slice(1) || []);
-    };
+  const getAllStudentsWithoutSelected = async () => {
+    const response = await classService.getClassDetailWithoutPagination(
+      id as string
+    );
+    setAllStudents(response?.class?.users ?? []);
+  };
+  const getClassDetail = async () => {
+    const response = await classService.getClassDetail(id as string, {});
+    setName(response?.class?.name || "");
+    setCode(response?.class?.code || "");
+    setDescription(response?.class?.description || []);
+    setCreatedAt(response?.class?.createdAt.toLocaleString() || "");
+    setStatus(response?.class?.status || "");
+    setTeacher(response?.class?.teacher.username || "");
+    setStudents(response?.class?.users || []);
+    setTotalStudents(response?.totalStudents || 0);
+  };
 
+  useEffect(() => {
     getClassDetail();
+    getAllStudentsWithoutSelected();
   }, [id]);
 
   useEffect(() => {
@@ -58,7 +68,6 @@ export const ClassDetailPage = () => {
         id as string,
         userCode as string
       );
-      console.log("absent", response);
       setAbsences(response?.absences ?? "0");
     };
     getStudentAbsencesInClass();
@@ -110,9 +119,8 @@ export const ClassDetailPage = () => {
   };
 
   const updateStudentList = async () => {
-    const response = await classService.getClassDetail(id as string);
-
-    setStudents(response?.class?.users.slice(1));
+    getClassDetail();
+    getAllStudentsWithoutSelected();
   };
 
   const isTeacherRole = isTeacher();
@@ -126,7 +134,7 @@ export const ClassDetailPage = () => {
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <TabList onChange={handleChange}>
-                <Tab label="Học sinh" value="1" />
+                <Tab label="Người dùng" value="1" />
                 <Tab label="Bài tập về nhà" value="2" />
                 <Tab label="Bài kiểm tra" value="3" />
                 {isTeacherRole ? <Tab label="Điểm danh" value="4" /> : null}
@@ -135,8 +143,11 @@ export const ClassDetailPage = () => {
             <TabPanel value="1">
               <StudentList
                 id={id as string}
-                students={students as []}
+                students={students}
                 updateStudentList={updateStudentList}
+                setStudents={setStudents}
+                total={totalStudents}
+                allStudents={allStudents}
               />
             </TabPanel>
             <TabPanel value="2">
