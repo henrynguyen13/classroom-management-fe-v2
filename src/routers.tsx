@@ -14,6 +14,9 @@ import {
   TestPage,
   TestResultPage,
   UserDetailPage,
+  MyClassListPage,
+  QuestionBankListPage,
+  QuestionBankDetailPage,
 } from "@/features";
 
 import Root from "./app";
@@ -70,10 +73,10 @@ export const router = createBrowserRouter([
         path: "/classes/:id/assignment/:assignmentId/response",
         element: <ResponseDetailPage />,
       },
-      //   {
-      //     path: "/my-classes",
-      //     element: <MyClassListPage />,
-      //   },
+      {
+        path: "/my-classes",
+        element: <MyClassListPage />,
+      },
       {
         path: "/profile/:id",
         element: <ProfilePage />,
@@ -85,6 +88,14 @@ export const router = createBrowserRouter([
       {
         path: "/users/:id",
         element: <UserDetailPage />,
+      },
+      {
+        path: "/question-bank",
+        element: <QuestionBankListPage />,
+      },
+      {
+        path: "/question-bank/:id",
+        element: <QuestionBankDetailPage />,
       },
     ],
   },

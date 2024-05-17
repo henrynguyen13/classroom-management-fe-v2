@@ -15,7 +15,13 @@ import {
   showSuccessNotificationFunction,
   MAX_FILE_SIZE,
 } from "@/common";
-import { CustomButton, CardQuestion, ButtonFile, Loading } from "@/components";
+import {
+  CustomButton,
+  CardQuestion,
+  ButtonFile,
+  Loading,
+  OutputTiptap,
+} from "@/components";
 import {
   CreateQuestion,
   UpdateQuestion,
@@ -25,6 +31,7 @@ import {
   MyListResponsesPage,
 } from "@/features";
 import { UpdateAssignment, assignmentService } from "../index";
+import React from "react";
 
 export const AssignmentDetailPage = () => {
   const { id, assignmentId } = useParams();
@@ -57,18 +64,7 @@ export const AssignmentDetailPage = () => {
       setDescription(response?.description || "");
       setExpiredAt(response?.expiredAt || new Date());
     };
-
-    const getAllAQuestions = async () => {
-      const response = await assignmentService.getAllAQuestions(
-        id as string,
-        assignmentId as string
-      );
-
-      setQuestions(response.data?.items || []);
-      setTotalQuestions(response.data?.totalItems || 0);
-    };
     getAssignmentDetail();
-    getAllAQuestions();
   }, [assignmentId]);
 
   useEffect(() => {
@@ -109,34 +105,34 @@ export const AssignmentDetailPage = () => {
     setExpiredAt(updatedData.expiredAt);
   };
 
-  const handleQuestionCreateSuccess = (newQuestion: IQuestion) => {
-    setQuestions((prevQuestions) => [...prevQuestions, newQuestion]);
-    setTotalQuestions((prevTotal) => prevTotal + 1);
-  };
-  const handleQuestionUpdateSuccess = (updatedQuestion: IQuestion) => {
-    setQuestions((prevQuestions) =>
-      prevQuestions.map((question) =>
-        question._id === updatedQuestion._id ? updatedQuestion : question
-      )
-    );
-  };
+  // const handleQuestionCreateSuccess = (newQuestion: IQuestion) => {
+  //   setQuestions((prevQuestions) => [...prevQuestions, newQuestion]);
+  //   setTotalQuestions((prevTotal) => prevTotal + 1);
+  // };
+  // const handleQuestionUpdateSuccess = (updatedQuestion: IQuestion) => {
+  //   setQuestions((prevQuestions) =>
+  //     prevQuestions.map((question) =>
+  //       question._id === updatedQuestion._id ? updatedQuestion : question
+  //     )
+  //   );
+  // };
 
-  const handleDelete = async (questionId: string) => {
-    const response = await assignmentService.deleteAQuestion(
-      id as string,
-      assignmentId as string,
-      questionId
-    );
-    if (response?.success) {
-      showSuccessNotificationFunction("Xóa câu hỏi thành công");
-      setQuestions((prevQuestions) =>
-        prevQuestions.filter((question) => question._id !== questionId)
-      );
-      setTotalQuestions((prevTotal) => prevTotal - 1);
-    } else {
-      showErrorNotificationFunction("Có lỗi xảy ra. Vui lòng kiểm tra lại");
-    }
-  };
+  // const handleDelete = async (questionId: string) => {
+  //   const response = await assignmentService.deleteAQuestion(
+  //     id as string,
+  //     assignmentId as string,
+  //     questionId
+  //   );
+  //   if (response?.success) {
+  //     showSuccessNotificationFunction("Xóa câu hỏi thành công");
+  //     setQuestions((prevQuestions) =>
+  //       prevQuestions.filter((question) => question._id !== questionId)
+  //     );
+  //     setTotalQuestions((prevTotal) => prevTotal - 1);
+  //   } else {
+  //     showErrorNotificationFunction("Có lỗi xảy ra. Vui lòng kiểm tra lại");
+  //   }
+  // };
   const isTeacherRole = isTeacher();
   const isStudentRole = isStudent();
   const [value, setValue] = useState("1");
@@ -175,17 +171,17 @@ export const AssignmentDetailPage = () => {
                         <div className="mt-5 mb-3 text-base font-medium">
                           Hướng dẫn
                         </div>
-                        <div>{description}</div>
+                        <OutputTiptap value={description} />
                       </div>
                       <div className="col-span-2">
-                        <CustomButton
+                        {/* <CustomButton
                           startIcon={<Icon path={mdiPlus} size={1} />}
                           text="Tạo câu hỏi"
                           size="large"
                           width="190"
                           borderRadius="20"
                           onClick={() => setIsOpenCreateQuestionForm(true)}
-                        />
+                        /> */}
                         <div className="mt-3">
                           <CustomButton
                             text="Chỉnh sửa"
@@ -199,14 +195,14 @@ export const AssignmentDetailPage = () => {
                       </div>
                     </div>
 
-                    {questions.length > 0 && isTeacherRole ? (
+                    {/* {questions.length > 0 && isTeacherRole ? (
                       <>
                         <div className="mt-5 mb-3 text-base font-medium">
                           Câu hỏi ({totalQuestions})
                         </div>
 
                         {questions.map((question, index) => (
-                          <>
+                          <React.Fragment key={index}>
                             <div key={index}>
                               <CardQuestion
                                 id={question._id}
@@ -242,10 +238,10 @@ export const AssignmentDetailPage = () => {
                                   }
                                 />
                               )}
-                          </>
+                          </React.Fragment>
                         ))}
                       </>
-                    ) : null}
+                    ) : null} */}
                   </TabPanel>
                   <TabPanel value="2">
                     <ListResponsesPage expiredAt={expiredAt as Date} />
@@ -335,16 +331,6 @@ export const AssignmentDetailPage = () => {
         <UpdateAssignment
           setIsUpdate={setIsUpdateAssignment}
           onUpdateSuccess={onUpdateSuccess}
-        />
-      )}
-
-      {isOpenCreateQuestionForm && (
-        <CreateQuestion
-          isOpenForm={isOpenCreateQuestionForm}
-          handleClose={() => setIsOpenCreateQuestionForm(false)}
-          classId={id as string}
-          assignmentId={assignmentId as string}
-          handleQuestionCreateSuccess={handleQuestionCreateSuccess}
         />
       )}
 

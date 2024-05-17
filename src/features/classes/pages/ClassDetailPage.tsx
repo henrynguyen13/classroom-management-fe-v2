@@ -135,7 +135,7 @@ export const ClassDetailPage = () => {
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <TabList onChange={handleChange}>
                 <Tab label="Người dùng" value="1" />
-                <Tab label="Bài tập về nhà" value="2" />
+                <Tab label="Bài tập" value="2" />
                 <Tab label="Bài kiểm tra" value="3" />
                 {isTeacherRole ? <Tab label="Điểm danh" value="4" /> : null}
               </TabList>

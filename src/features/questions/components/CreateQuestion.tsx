@@ -3,14 +3,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useFieldArray, FieldValues } from "react-hook-form";
 import { Checkbox, FormControlLabel } from "@mui/material";
 
-import { showSuccessNotificationFunction } from "@/common";
-import { CustomButton, Form, Tiptap } from "@/components";
-import { assignmentService } from "@/features";
+import { LEVEL_QUESTION, showSuccessNotificationFunction } from "@/common";
+import { CustomButton, Dropdown, Form, Tiptap } from "@/components";
+import { questionBankService } from "@/features";
 import { useForm, Controller } from "@/plugins";
 import { questionSchema } from "../index";
 interface Props {
   classId?: string;
   assignmentId?: string;
+  questionBankId?: string;
   isOpenForm: boolean;
   handleClose: () => void;
   handleQuestionCreateSuccess: (data: any) => void;
@@ -18,6 +19,7 @@ interface Props {
 
 const defaultValues = {
   text: "",
+  level: "",
   answers: Array.from({ length: 4 }, () => ({ text: "", isCorrect: false })),
 };
 const letters = ["A", "B", "C", "D"];
@@ -79,10 +81,8 @@ export const CreateQuestion = (props: Props) => {
         idx: index,
       })),
     };
-
-    const response = await assignmentService.createAQuestion(
-      props.classId as string,
-      props.assignmentId as string,
+    const response = await questionBankService.createQuestion(
+      props.questionBankId as string,
       updatedDto
     );
     if (response?.success) {
@@ -100,6 +100,14 @@ export const CreateQuestion = (props: Props) => {
       isOpenForm={isOpenForm}
       handleClose={handleClose}
     >
+      <Dropdown
+        control={control}
+        placeholder="Chọn mức độ"
+        name="level"
+        options={LEVEL_QUESTION}
+        // width="100%"
+        label="Mức độ câu hỏi"
+      />
       <Tiptap
         control={control}
         name="text"
@@ -107,6 +115,8 @@ export const CreateQuestion = (props: Props) => {
         placeholder="Nhập câu hỏi"
         onChange={handleTiptapQuestionChange}
       />
+      <div className="mb-1"></div>
+
       {fields.map((field, index) => (
         <>
           <Controller
@@ -147,9 +157,9 @@ export const CreateQuestion = (props: Props) => {
               handleTiptapAnswersChange(content, index)
             }
           />
+          <div className="mb-1"></div>
         </>
       ))}
-
       <div className="flex justify-end mt-10">
         <CustomButton
           text="Hủy"

@@ -17,6 +17,12 @@ class ClassService extends ApiService {
       { params: queryString }
     );
   }
+  async getAllMyClasses(userId: string, queryString: ICommonListQuery) {
+    return this.client.get<IClass, IBodyResponse<IGetListResponse<IClass>>>(
+      `${this.baseUrl}/my/${userId}`,
+      { params: queryString }
+    );
+  }
   async getClassDetail(id: string, query: ICommonListQuery) {
     return this.client.get<any, any>(`${this.baseUrl}/${id}`, {
       params: query,

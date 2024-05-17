@@ -9,6 +9,8 @@ interface Props {
   placeholder?: string;
   width?: string;
   label?: string;
+  disabled?: boolean;
+  setType?: (e: any) => void;
 }
 
 export const Dropdown = ({
@@ -18,6 +20,8 @@ export const Dropdown = ({
   placeholder,
   width,
   label,
+  disabled = false,
+  setType,
 }: Props) => {
   return (
     <Controller
@@ -51,9 +55,11 @@ export const Dropdown = ({
               }}
               onChange={(event: any, newValue) => {
                 onChange(newValue ? newValue.id : null);
+                if (setType) setType(newValue?.id);
               }}
               id={name}
               options={options}
+              disabled={disabled}
               renderInput={(params) => (
                 <TextField {...params} label={placeholder} inputRef={ref} />
               )}

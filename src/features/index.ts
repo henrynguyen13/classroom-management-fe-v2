@@ -11,3 +11,4 @@ export * from "./responses";
 export * from "./students";
 export * from "./tests";
 export * from "./users";
+export * from "./question-bank";

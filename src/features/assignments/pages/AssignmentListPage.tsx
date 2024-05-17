@@ -27,7 +27,13 @@ import {
 } from "@/common";
 import { NoData } from "@/assets";
 import { CustomButton } from "@/components";
-import { assignmentService, AssignmentStatus, IAssignment } from "../index";
+import {
+  assignmentService,
+  AssignmentStatus,
+  IAssignment,
+  CreateAssignment,
+  CreateAssignmentPage,
+} from "../index";
 
 export const AssignmentListPage = () => {
   const { id } = useParams();
@@ -35,6 +41,8 @@ export const AssignmentListPage = () => {
 
   const [assignmentList, setAssignmentList] = useState<IAssignment[]>([]);
   const [totalItems, setTotalItems] = useState(0);
+  const [isOpenCreateAssignmentForm, setIsOpenCreateAssignmentForm] =
+    useState(false);
 
   const [page, setPage] = useState(0);
   const rowsPerPage = 10;
@@ -109,11 +117,7 @@ export const AssignmentListPage = () => {
         {isTeacherRole && (
           <div>
             <CustomButton
-              onClick={() =>
-                navigate({
-                  pathname: `/classes/${id}/assignment`,
-                })
-              }
+              onClick={() => navigate(`/classes/${id}/assignment`)}
               text="Tạo mới"
               width="100"
             />

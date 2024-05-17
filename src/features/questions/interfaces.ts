@@ -5,8 +5,10 @@ export interface IQuestion extends IBase {
   type: QuestionType;
   text: string;
   answers: IAnswer[];
-  classId: string;
-  assignmentId: string;
+  level: string;
+  classId?: string;
+  assignmentId?: string;
+  questionBankId?: string;
 }
 
 export interface ICreateQuestion

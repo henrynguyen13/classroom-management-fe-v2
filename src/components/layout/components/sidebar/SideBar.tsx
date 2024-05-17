@@ -17,8 +17,9 @@ import {
   ADMIN_AND_AFFAIR,
   ALL_MEMBERS,
   AuthStorageService,
+  ONLY_TEACHER,
 } from "@/common";
-import { Student, Class, Dashboard } from "@/assets";
+import { Student, Class, Dashboard, Question } from "@/assets";
 
 const drawerWidth = 240;
 
@@ -43,6 +44,12 @@ export const SideBar = () => {
       icon: Class,
       redirect: PAGES.MY_CLASS,
       role: STUDENT_AND_TEACHER,
+    },
+    {
+      text: "Ngân hàng câu hỏi",
+      icon: Question,
+      redirect: PAGES.QUESTION,
+      role: ONLY_TEACHER,
     },
     {
       text: "Người dùng",
@@ -89,6 +96,12 @@ export const SideBar = () => {
                 key={index}
                 sx={{
                   marginBottom: "12px",
+                  backgroundColor: `${
+                    location.pathname.includes(item.redirect)
+                      ? "#D4EEFF"
+                      : "inherit"
+                  }`,
+                  borderRadius: 4,
                   "& .MuiListItemButton-root.Mui-selected": {
                     borderRadius: 4,
                     backgroundColor: "#D4EEFF",
@@ -99,11 +112,12 @@ export const SideBar = () => {
                   },
                   "& .MuiButtonBase-root.MuiListItemButton-root.Mui-selected:hover":
                     {
-                      // backgroundColor: "#00ADEF",
-                      // color: "#ffffff",
                       borderRadius: 4,
                       backgroundColor: "#D4EEFF",
                     },
+                  "& .MuiButtonBase-root": {
+                    borderRadius: 4,
+                  },
                 }}
               >
                 <ListItemButton selected={location.pathname === item.redirect}>

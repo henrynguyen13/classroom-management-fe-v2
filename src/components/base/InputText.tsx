@@ -27,6 +27,7 @@ export const InputText = ({
   placeholder,
   disabled,
   width,
+  isRequired = true,
 }: Props) => {
   const [elementId, setElementId] = useState("");
 
@@ -50,7 +51,7 @@ export const InputText = ({
             <div className="mb-[10px]">
               <label>
                 <span className="text-base font-medium">{label}</span>
-                <span className="text-red">*</span>
+                {isRequired && <span className="text-red">*</span>}
               </label>
             </div>
             <TextField
@@ -76,6 +77,7 @@ export const InputText = ({
               onBlur={fieldOnBlur}
               helperText={error?.message}
               disabled={disabled}
+              required={isRequired}
             />
           </div>
         );

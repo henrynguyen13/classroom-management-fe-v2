@@ -78,6 +78,7 @@ export const enum PAGES {
   REGISTER = "/register",
   MY_CLASS = "/my-classes",
   USERS = "/users",
+  QUESTION = "/question-bank",
 }
 
 export const DEFAULT_FIRST_PAGE = 1;
@@ -179,3 +180,15 @@ export const ALL_MEMBERS = [
 ];
 
 export const ROWS_PER_PAGE = 10;
+
+export enum ASSIGNMENT {
+  MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
+  ESSAY = "ESSAY",
+}
+
+export enum QUESTION_LEVEL {
+  ONE = 1,
+  TWO,
+  THREE,
+  FOUR,
+}

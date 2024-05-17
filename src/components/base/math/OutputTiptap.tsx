@@ -4,6 +4,8 @@ import Image from "@tiptap/extension-image";
 import BulletList from "@tiptap/extension-bullet-list";
 import CodeBlock from "@tiptap/extension-code-block";
 import Underline from "@tiptap/extension-underline";
+import TextStyle from "@tiptap/extension-text-style";
+import FontFamily from "@tiptap/extension-font-family";
 import { Mathematics } from "@tiptap-pro/extension-mathematics";
 import StarterKit from "@tiptap/starter-kit";
 import "katex/dist/katex.min.css";
@@ -19,14 +21,18 @@ export const OutputTiptap = ({ value, onChange }: Props) => {
       Image.configure({
         inline: true,
       }),
-      BulletList,
+      // BulletList,
       Underline,
-      CodeBlock,
+      // CodeBlock,
       Mathematics.configure({
         katexOptions: {
           displayMode: true,
         },
       }),
+      // TextStyle,
+      // FontFamily.configure({
+      //   types: ["textStyle"],
+      // }),
     ],
     content: value ? JSON.parse(value) : null,
   });
@@ -34,5 +40,6 @@ export const OutputTiptap = ({ value, onChange }: Props) => {
   useEffect(() => {
     editor?.commands.setContent(JSON.parse(value!));
   }, [value]);
+
   return <EditorContent editor={editor} />;
 };

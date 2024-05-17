@@ -12,19 +12,23 @@ import {
   mdiCheckboxOutline,
   mdiLeadPencil,
   mdiTrashCan,
+  mdiPlus,
 } from "@mdi/js";
 
-import { showAlert } from "@/common";
+import { LEVEL_QUESTION, showAlert } from "@/common";
 import { IAnswer, QuestionType } from "@/features";
 import { OutputTiptap } from "./math/OutputTiptap";
+import { useLocation } from "react-router-dom";
 interface Props {
   text: string;
   answers: IAnswer[];
   type: QuestionType;
   index?: number;
   id: string;
-  handleDelete: (id: string) => void;
-  handleUpdate: () => void;
+  level?: string;
+  handleDelete?: (id: string) => void;
+  handleUpdate?: () => void;
+  handleAdd?: () => void;
 }
 
 export const CardQuestion = ({
@@ -33,9 +37,12 @@ export const CardQuestion = ({
   answers,
   index,
   id,
+  level,
   handleDelete,
   handleUpdate,
+  handleAdd,
 }: Props) => {
+  const location = useLocation();
   const letters = ["A", "B", "C", "D"];
 
   const handleClickDelete = (id: string) => {
@@ -43,7 +50,9 @@ export const CardQuestion = ({
       title: "Bạn có chắc muốn xóa câu hỏi này",
     }).then((result) => {
       if (result.isConfirmed) {
-        return handleDelete(id);
+        if (handleDelete) {
+          return handleDelete(id);
+        }
       }
     });
   };
@@ -73,32 +82,53 @@ export const CardQuestion = ({
               sx={{ color: "#1D8FE4", borderColor: "#1D8FE4", marginLeft: -1 }}
             />
             <Chip
-              label="1 điểm"
+              label={
+                LEVEL_QUESTION.find((i) => i?.id === level?.toString())?.label
+              }
               variant="outlined"
               sx={{ color: "#ed3a3a", borderColor: "#ed3a3a", marginLeft: 2 }}
             />
           </div>
           <div>
-            <Tooltip title="Sửa">
-              <IconButton
-                sx={{ color: "#e28d0f" }}
-                onClick={() => {
-                  handleUpdate();
-                }}
-              >
-                <Icon path={mdiLeadPencil} size={1} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Xóa">
-              <IconButton
-                sx={{ color: "#ED3A3A" }}
-                onClick={() => {
-                  handleClickDelete(id);
-                }}
-              >
-                <Icon path={mdiTrashCan} size={1} />
-              </IconButton>
-            </Tooltip>
+            {location.pathname.includes("/assignment") ? (
+              <Tooltip title="Thêm">
+                <IconButton
+                  sx={{ color: "#e28d0f" }}
+                  onClick={() => {
+                    if (handleAdd) {
+                      handleAdd();
+                    }
+                  }}
+                >
+                  <Icon path={mdiPlus} size={1} />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <>
+                <Tooltip title="Sửa">
+                  <IconButton
+                    sx={{ color: "#e28d0f" }}
+                    onClick={() => {
+                      if (handleUpdate) {
+                        handleUpdate();
+                      }
+                    }}
+                  >
+                    <Icon path={mdiLeadPencil} size={1} />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Xóa">
+                  <IconButton
+                    sx={{ color: "#ED3A3A" }}
+                    onClick={() => {
+                      handleClickDelete(id);
+                    }}
+                  >
+                    <Icon path={mdiTrashCan} size={1} />
+                  </IconButton>
+                </Tooltip>
+              </>
+            )}
           </div>
         </div>
         <div className="text-base pb-4 flex">
@@ -113,6 +143,7 @@ export const CardQuestion = ({
               {type === QuestionType.SINGLE_CHOICE ? (
                 <Radio checked={answer.isCorrect} />
               ) : (
+                // <Checkbox checked={answer.isCorrect} />
                 <Checkbox checked={answer.isCorrect} />
               )}
               {letters[index]}. <OutputTiptap value={answer.text} />

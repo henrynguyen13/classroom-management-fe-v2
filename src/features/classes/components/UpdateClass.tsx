@@ -30,7 +30,7 @@ export const UpdateClass = (props: Props) => {
 
   const getAllTeachers = async () => {
     try {
-      const response = await userService.getAllUserWithoutPagination();
+      const response = await userService.getAllUserWithoutPagination({});
       if (response?.success) {
         setTeachers(
           response.users
@@ -46,7 +46,7 @@ export const UpdateClass = (props: Props) => {
 
   useEffect(() => {
     const getClassDetail = async () => {
-      const response = await classService.getClassDetail(classId);
+      const response = await classService.getClassDetail(classId, {});
       reset({
         code: response.class?.code ?? "",
         name: response.class?.name ?? "",
