@@ -3,12 +3,13 @@ import { TextField, Autocomplete } from "@mui/material";
 import { IOption } from "@/common";
 
 interface Props {
-  control: any;
+  control?: any;
   name: any;
   options: IOption[];
   placeholder?: string;
   width?: string;
   label?: string;
+  defaultValue?: IOption;
   disabled?: boolean;
   setType?: (e: any) => void;
 }
@@ -21,6 +22,7 @@ export const Dropdown = ({
   width,
   label,
   disabled = false,
+  defaultValue,
   setType,
 }: Props) => {
   return (
@@ -43,13 +45,7 @@ export const Dropdown = ({
               )}
             </div>
             <Autocomplete
-              value={
-                value
-                  ? options.find((option) => {
-                      return value === option.id;
-                    }) ?? null
-                  : null
-              }
+              value={options.find((option) => option.id === value) || null}
               getOptionLabel={(option) => {
                 return option.label;
               }}
@@ -57,6 +53,7 @@ export const Dropdown = ({
                 onChange(newValue ? newValue.id : null);
                 if (setType) setType(newValue?.id);
               }}
+              // defaultValue={defaultValue ? defaultValue : field?.value}
               id={name}
               options={options}
               disabled={disabled}

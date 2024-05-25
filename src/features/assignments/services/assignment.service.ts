@@ -22,8 +22,8 @@ import {
 } from "@/features/responses/interfaces";
 
 class AssignmentService extends ApiService {
-  async create(dto: ICreateAssignment, classId: string) {
-    return this.client.post<ICreateAssignment, IAssignment>(
+  async create(dto: any, classId: string) {
+    return this.client.post<any, IAssignment>(
       `${this.baseUrl}/${classId}/assignment`,
       dto
     );
@@ -35,13 +35,13 @@ class AssignmentService extends ApiService {
     >(`${this.baseUrl}/${classId}/assignment`, { params: queryString });
   }
   async getAssignmentById(classId: string, assignmentId: string) {
-    return this.client.get<IAssignment, IAssignment>(
+    return this.client.get<any, any>(
       `${this.baseUrl}/${classId}/assignment/${assignmentId}`
     );
   }
 
-  async update(classId: string, assignmentId: string, dto: IUpdateAssignment) {
-    return this.client.patch<IUpdateAssignment, IAssignment>(
+  async update(classId: string, assignmentId: string, dto: any) {
+    return this.client.patch<any, IAssignment>(
       `${this.baseUrl}/${classId}/assignment/${assignmentId}`,
       dto
     );

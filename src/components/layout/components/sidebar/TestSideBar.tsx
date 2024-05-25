@@ -20,17 +20,17 @@ export const TestSideBar = () => {
   );
   const [totalQuestions, setTotalQuestions] = useState(0);
 
-  useEffect(() => {
-    const getAllAQuestions = async () => {
-      const response = await assignmentService.getAllAQuestions(
-        id as string,
-        assignmentId as string
-      );
+  const getAllAQuestions = async () => {
+    const response = await assignmentService.getAssignmentById(
+      id as string,
+      assignmentId as string
+    );
 
-      if (response?.success) {
-        setTotalQuestions(response.data?.totalItems || 0);
-      }
-    };
+    if (response?.success) {
+      setTotalQuestions(response.questions?.length || 0);
+    }
+  };
+  useEffect(() => {
     getAllAQuestions();
   }, [assignmentId]);
 

@@ -22,18 +22,18 @@ export const TestPage = () => {
   const [responses, setResponses] = useState<ICreateResponse[]>([]);
   const letters = ["A", "B", "C", "D"];
 
-  useEffect(() => {
-    const getAllAQuestions = async () => {
-      const response = await assignmentService.getAllAQuestions(
-        id as string,
-        assignmentId as string
-      );
+  const getAllAQuestions = async () => {
+    const response = await assignmentService.getAssignmentById(
+      id as string,
+      assignmentId as string
+    );
 
-      if (response?.success) {
-        setQuestions(response.data?.items || []);
-        setTotalQuestions(response.data?.totalItems || 0);
-      }
-    };
+    if (response?.success) {
+      setQuestions(response.questions || []);
+      setTotalQuestions(response.questions.length || 0);
+    }
+  };
+  useEffect(() => {
     getAllAQuestions();
   }, [assignmentId]);
 

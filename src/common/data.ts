@@ -1,3 +1,4 @@
+import { QuestionType } from "@/features";
 import { ASSIGNMENT, ROLES } from ".";
 
 export const time = [
@@ -90,7 +91,7 @@ export const Roles = [
 ];
 
 export const ASSIGNMENT_TYPE = [
-  { id: ASSIGNMENT.MULTIPLE_CHOICE, label: "Trắc nghiệm" },
+  { id: ASSIGNMENT.TEST, label: "Trắc nghiệm" },
   { id: ASSIGNMENT.ESSAY, label: "Tự luận" },
 ];
 
@@ -99,4 +100,13 @@ export const LEVEL_QUESTION = [
   { id: "2", label: "Thông hiểu" },
   { id: "3", label: "Vận dụng" },
   { id: "4", label: "Vận dụng cao" },
+];
+
+export const TYPE_QUESTION = [
+  {
+    id: QuestionType.MULTIPLE_CHOICE,
+    label: "Trắc nghiệm",
+  },
+  { id: QuestionType.TRUE_FALSE, label: "Đúng/Sai" },
+  { id: QuestionType.SHORT_ANSWER, label: "Điền vào chỗ trống" },
 ];

@@ -29,10 +29,10 @@ export const OutputTiptap = ({ value, onChange }: Props) => {
           displayMode: true,
         },
       }),
-      // TextStyle,
-      // FontFamily.configure({
-      //   types: ["textStyle"],
-      // }),
+      TextStyle,
+      FontFamily.configure({
+        types: ["textStyle"],
+      }),
     ],
     content: value ? JSON.parse(value) : null,
   });

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthStorageService } from "@/common";
-
+import DashboardImage from "@/assets/images/dashboard.png";
 export const DashBoard = () => {
   const navigate = useNavigate();
   useEffect(() => {
@@ -29,6 +29,10 @@ export const DashBoard = () => {
           <div className="text-lg mb-5">Số bài kiểm tra đã làm</div>
           <div className="text-3xl">13</div>
         </div>
+      </div>
+
+      <div className="w-full mt-5">
+        <img className="w-[1200px]" src={DashboardImage} />
       </div>
     </>
   );

@@ -182,7 +182,7 @@ export const ALL_MEMBERS = [
 export const ROWS_PER_PAGE = 10;
 
 export enum ASSIGNMENT {
-  MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
+  TEST = "TEST",
   ESSAY = "ESSAY",
 }
 

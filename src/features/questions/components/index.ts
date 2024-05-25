@@ -1,2 +1,2 @@
-export * from "./CreateQuestion";
-export * from "./UpdateQuestion";
+export * from "./create/CreateQuestion";
+export * from "./update/UpdateQuestion";

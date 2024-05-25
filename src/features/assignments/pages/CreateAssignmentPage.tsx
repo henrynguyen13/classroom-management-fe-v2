@@ -42,14 +42,16 @@ export const CreateAssignmentPage = () => {
     setTiptapQuestionContent(content);
   };
 
-  const handleCreate = handleSubmit(async (dto: ICreateAssignment) => {
+  const handleCreate = handleSubmit(async (dto: any) => {
     console.log("dto", dto);
     const updatedDto = {
       ...dto,
       type: type,
       description: tiptapQuestionContent,
-      questions: questionsDto,
+      questions: questionsDto.map((question) => question._id),
     };
+
+    console.log("-----", updatedDto);
     const response = await assignmentService.create(updatedDto, id as string);
     console.log("RES", response);
 
@@ -105,7 +107,7 @@ export const CreateAssignmentPage = () => {
         />
       )}
 
-      {type === ASSIGNMENT.MULTIPLE_CHOICE && (
+      {type === ASSIGNMENT.TEST && (
         <CustomButton
           width="250px"
           text="Chọn câu hỏi từ ngân hàng"

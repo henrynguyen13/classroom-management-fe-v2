@@ -21,3 +21,4 @@ export * from "./ButtonIcon";
 export * from "./MultiSelect";
 export * from "./icons";
 export * from "./math";
+export * from "./CustomDropdown";

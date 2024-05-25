@@ -14,6 +14,7 @@ import {
   showErrorNotificationFunction,
   showSuccessNotificationFunction,
   MAX_FILE_SIZE,
+  ASSIGNMENT,
 } from "@/common";
 import {
   CustomButton,
@@ -30,7 +31,7 @@ import {
   IResponseList,
   MyListResponsesPage,
 } from "@/features";
-import { UpdateAssignment, assignmentService } from "../index";
+import { BankModal, UpdateAssignment, assignmentService } from "../index";
 import React from "react";
 
 export const AssignmentDetailPage = () => {
@@ -48,8 +49,10 @@ export const AssignmentDetailPage = () => {
   const [expiredAt, setExpiredAt] = useState<Date>();
   const [questions, setQuestions] = useState<IQuestion[]>([]);
   const [totalQuestions, setTotalQuestions] = useState(0);
+  const [type, setType] = useState("");
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isOpenBankModal, setIsOpenBankModal] = useState(false);
 
   const [response, setResponse] = useState<IResponseList>();
   const [list, setList] = useState<IResponseList[]>([]);
@@ -60,9 +63,14 @@ export const AssignmentDetailPage = () => {
         id as string,
         assignmentId as string
       );
+
+      console.log("-------", response);
       setName(response?.name || "");
       setDescription(response?.description || "");
       setExpiredAt(response?.expiredAt || new Date());
+      setQuestions(response?.questions || []);
+      setTotalQuestions(response?.questions?.length);
+      setType(response?.type || "");
     };
     getAssignmentDetail();
   }, [assignmentId]);
@@ -117,22 +125,28 @@ export const AssignmentDetailPage = () => {
   //   );
   // };
 
-  // const handleDelete = async (questionId: string) => {
-  //   const response = await assignmentService.deleteAQuestion(
-  //     id as string,
-  //     assignmentId as string,
-  //     questionId
-  //   );
-  //   if (response?.success) {
-  //     showSuccessNotificationFunction("Xóa câu hỏi thành công");
-  //     setQuestions((prevQuestions) =>
-  //       prevQuestions.filter((question) => question._id !== questionId)
-  //     );
-  //     setTotalQuestions((prevTotal) => prevTotal - 1);
-  //   } else {
-  //     showErrorNotificationFunction("Có lỗi xảy ra. Vui lòng kiểm tra lại");
-  //   }
-  // };
+  const handleDelete = async (questionId: string) => {
+    const updatedQuestions = questions.filter(
+      (question) => question._id !== questionId
+    );
+
+    setQuestions(updatedQuestions);
+
+    const response = await assignmentService.update(
+      id as string,
+      assignmentId as string,
+      { questions: updatedQuestions.map((question) => question?._id) }
+    );
+    if (response?.success) {
+      showSuccessNotificationFunction("Xóa câu hỏi thành công");
+      setQuestions((prevQuestions) =>
+        prevQuestions.filter((question) => question._id !== questionId)
+      );
+      setTotalQuestions((prevTotal) => prevTotal - 1);
+    } else {
+      showErrorNotificationFunction("Có lỗi xảy ra. Vui lòng kiểm tra lại");
+    }
+  };
   const isTeacherRole = isTeacher();
   const isStudentRole = isStudent();
   const [value, setValue] = useState("1");
@@ -143,6 +157,25 @@ export const AssignmentDetailPage = () => {
 
   const handleFileSelect = (file: File | null) => {
     setSelectedFile(file);
+  };
+
+  const handleAddQuestionsDto = async (question: IQuestion) => {
+    const updatedQuestions = [...questions, question];
+    console.log("updated", updatedQuestions);
+
+    const response = await assignmentService.update(
+      id as string,
+      assignmentId as string,
+      { questions: updatedQuestions.map((question) => question?._id) }
+    );
+    if (response?.success) {
+      showSuccessNotificationFunction("Thêm câu hỏi thành công");
+      setQuestions(updatedQuestions);
+
+      setTotalQuestions((prevTotal) => prevTotal + 1);
+    } else {
+      showErrorNotificationFunction("Có lỗi xảy ra. Vui lòng kiểm tra lại");
+    }
   };
   return (
     <div>
@@ -183,11 +216,21 @@ export const AssignmentDetailPage = () => {
                           onClick={() => setIsOpenCreateQuestionForm(true)}
                         /> */}
                         <div className="mt-3">
+                          {type === ASSIGNMENT.TEST && (
+                            <div className="mb-3">
+                              <CustomButton
+                                width="250"
+                                size="medium"
+                                text="Chọn câu hỏi từ ngân hàng"
+                                onClick={() => setIsOpenBankModal(true)}
+                              />
+                            </div>
+                          )}
                           <CustomButton
                             text="Chỉnh sửa"
-                            size="large"
-                            width="190"
-                            borderRadius="20"
+                            size="medium"
+                            width="250"
+                            // borderRadius="20"
                             startIcon={<Icon path={mdiPencil} size={1} />}
                             onClick={() => setIsUpdateAssignment(true)}
                           />
@@ -195,7 +238,7 @@ export const AssignmentDetailPage = () => {
                       </div>
                     </div>
 
-                    {/* {questions.length > 0 && isTeacherRole ? (
+                    {questions.length > 0 ? (
                       <>
                         <div className="mt-5 mb-3 text-base font-medium">
                           Câu hỏi ({totalQuestions})
@@ -210,6 +253,8 @@ export const AssignmentDetailPage = () => {
                                 text={question.text}
                                 answers={question.answers}
                                 type={question.type}
+                                level={question.level}
+                                typeButton="delete"
                                 handleDelete={() => handleDelete(question._id)}
                                 handleUpdate={() =>
                                   setIsOpenUpdateQuestionForm({
@@ -219,29 +264,10 @@ export const AssignmentDetailPage = () => {
                                 }
                               />
                             </div>
-
-                            {isOpenUpdateQuestionForm.state &&
-                              isOpenUpdateQuestionForm.id === question._id && (
-                                <UpdateQuestion
-                                  isOpenForm={isOpenUpdateQuestionForm}
-                                  handleClose={() =>
-                                    setIsOpenUpdateQuestionForm({
-                                      id: question._id,
-                                      state: false,
-                                    })
-                                  }
-                                  classId={id as string}
-                                  assignmentId={assignmentId as string}
-                                  questionId={question._id as string}
-                                  handleUpdateSuccess={
-                                    handleQuestionUpdateSuccess
-                                  }
-                                />
-                              )}
                           </React.Fragment>
                         ))}
                       </>
-                    ) : null} */}
+                    ) : null}
                   </TabPanel>
                   <TabPanel value="2">
                     <ListResponsesPage expiredAt={expiredAt as Date} />
@@ -286,7 +312,9 @@ export const AssignmentDetailPage = () => {
                       <div className="mt-5 mb-3 text-base font-medium">
                         Hướng dẫn
                       </div>
-                      <div className="mb-5">{description}</div>
+                      <div className="mb-5">
+                        <OutputTiptap value={description} />
+                      </div>
                     </div>
 
                     <div className="col-span-1">
@@ -333,6 +361,12 @@ export const AssignmentDetailPage = () => {
           onUpdateSuccess={onUpdateSuccess}
         />
       )}
+
+      <BankModal
+        isOpenForm={isOpenBankModal}
+        handleClose={() => setIsOpenBankModal(false)}
+        onAddQuestions={handleAddQuestionsDto}
+      />
 
       {isLoading ? <Loading isLoading={isLoading} /> : null}
     </div>

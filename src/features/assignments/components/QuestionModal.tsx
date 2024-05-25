@@ -44,6 +44,7 @@ export const QuestionModal = ({
                 answers={question.answers}
                 type={question.type}
                 level={question.level}
+                typeButton="add"
                 handleAdd={() => onAddQuestions(question)}
                 //   handleDelete={() => handleDelete(question._id)}
                 //   handleUpdate={() =>

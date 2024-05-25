@@ -70,7 +70,7 @@ export const router = createBrowserRouter([
         element: <AssignmentDetailPage />,
       },
       {
-        path: "/classes/:id/assignment/:assignmentId/response",
+        path: "/classes/:id/assignment/:assignmentId/response/:responseId",
         element: <ResponseDetailPage />,
       },
       {
@@ -104,7 +104,7 @@ export const router = createBrowserRouter([
     element: <TestLayout />,
     children: [
       {
-        path: "/classes/:id/assignment/:assignmentId",
+        path: "/classes/:id/assignment/:assignmentId/test",
         element: <TestPage />,
       },
     ],
@@ -114,7 +114,7 @@ export const router = createBrowserRouter([
     element: <BaseLayout />,
     children: [
       {
-        path: "classes/:id/assignment/:assignmentId/result",
+        path: "classes/:id/assignment/:assignmentId/result/:resultId",
         element: <TestResultPage />,
       },
     ],

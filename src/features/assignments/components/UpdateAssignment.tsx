@@ -16,6 +16,7 @@ import {
   Tiptap,
 } from "@/components";
 import { assignmentService, IUpdateAssignment } from "../index";
+import { IQuestion } from "@/features";
 
 interface Props {
   setIsUpdate: any;
