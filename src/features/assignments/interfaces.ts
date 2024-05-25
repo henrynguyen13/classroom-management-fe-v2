@@ -6,8 +6,9 @@ export interface IAssignment extends IBase {
   _id: string;
   name: string;
   description: string;
+  type: string;
   expiredAt: Date;
-  question?: IQuestion;
+  questions?: IQuestion[];
   class?: IClass;
 }
 

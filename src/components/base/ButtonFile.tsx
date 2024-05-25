@@ -39,6 +39,7 @@ export const ButtonFile = ({
     if (event.target.files && event.target.files.length > 0) {
       const selectedFile = event.target.files[0];
       onSelectedFile(selectedFile);
+      console.log("----e", event.target.files);
     }
   };
 
@@ -68,11 +69,14 @@ export const ButtonFile = ({
         />
       </Button>
 
-      {previewTable!.length === 0 && (
+      {/* {previewTable && previewTable!.length === 0 && (
         <label className="ml-4" htmlFor="contained-button-file">
           {selectedFile?.name}
         </label>
-      )}
+      )} */}
+      <label className="ml-4" htmlFor="contained-button-file">
+        {selectedFile?.name}
+      </label>
     </div>
   );
 };

@@ -198,7 +198,12 @@ export const StudentList = ({
                 >
                   <TableCell width="5%">{index + 1}</TableCell>
 
-                  <TableCell width="20%" align="left">
+                  <TableCell
+                    width="20%"
+                    align="left"
+                    sx={{ "&:hover": { cursor: "pointer", opacity: 0.7 } }}
+                    onClick={() => navigate(`/users/${user._id}`)}
+                  >
                     <div className="flex flex-start items-center text-sm">
                       <Avatar
                         sx={{ marginRight: 1, width: 32, height: 32 }}

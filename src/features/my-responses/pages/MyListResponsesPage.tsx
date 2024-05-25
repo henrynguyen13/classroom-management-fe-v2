@@ -34,6 +34,7 @@ export const MyListResponsesPage = ({ expiredAt }: Props) => {
         id as string,
         assignmentId as string
       );
+      console.log("---ré---", response);
       if (response?.success) {
         setList(response?.data.items);
       }

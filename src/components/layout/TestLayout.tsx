@@ -6,7 +6,7 @@ export const TestLayout = () => {
     <div className="flex h-full w-full">
       <div className="relative flex-1 m-h-full h-full">
         <HeaderBar />
-        <div className="mt-[20px] mx-[50px] grid grid-cols-12 gap-4">
+        <div className="mt-[100px] mx-[50px] grid grid-cols-12 gap-4">
           <div className="col-span-3">
             <TestSideBar />
           </div>
@@ -16,5 +16,15 @@ export const TestLayout = () => {
         </div>
       </div>
     </div>
+
+    // <div className=" h-full w-full">
+    //   <HeaderBar />
+    //   <div className="block h-full">
+    //     <TestSideBar />
+    //     <div className="ml-[290px] mr-[50px] mt-[100px]">
+    //       <Outlet />
+    //     </div>
+    //   </div>
+    // </div>
   );
 };

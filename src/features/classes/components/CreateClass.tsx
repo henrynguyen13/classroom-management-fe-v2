@@ -40,7 +40,7 @@ export const CreateClass = (props: Props) => {
   useEffect(() => {
     const getAllTeachers = async () => {
       try {
-        const response = await userService.getAllUserWithoutPagination();
+        const response = await userService.getAllUserWithoutPagination({});
         if (response?.success) {
           setTeachers(
             response.users

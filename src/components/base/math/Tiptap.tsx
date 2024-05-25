@@ -5,6 +5,8 @@ import Placeholder from "@tiptap/extension-placeholder";
 import BulletList from "@tiptap/extension-bullet-list";
 import CodeBlock from "@tiptap/extension-code-block";
 import { Mathematics } from "@tiptap-pro/extension-mathematics";
+import TextStyle from "@tiptap/extension-text-style";
+import FontFamily from "@tiptap/extension-font-family";
 import Underline from "@tiptap/extension-underline";
 import StarterKit from "@tiptap/starter-kit";
 import { EditorMenu } from "./EditorMenu";
@@ -59,9 +61,9 @@ export const Tiptap = ({
       //     },
       //   },
       // }),
-      BulletList,
+      // BulletList,
       Underline,
-      CodeBlock,
+      // CodeBlock,
       Image.configure({
         inline: true,
       }),
@@ -72,6 +74,8 @@ export const Tiptap = ({
       //   CharacterCount.configure({
       //     limit: props.wordCount || 1000,
       //   }),
+      TextStyle,
+      FontFamily,
     ],
     // onUpdate({ editor }) {
     //   setEditorContent(JSON.stringify(editor.getJSON()));
@@ -115,6 +119,9 @@ export const Tiptap = ({
               </div>
               <EditorMenu editor={editor as Editor} />
               <EditorContent className={styles.custom_scroll} editor={editor} />
+              {/* {error ? (
+                <span className="text-error text-xs">{error.message}</span>
+              ) : null} */}
             </>
           );
         }}

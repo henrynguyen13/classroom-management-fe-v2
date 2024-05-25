@@ -5,8 +5,13 @@ export interface IQuestion extends IBase {
   type: QuestionType;
   text: string;
   answers: IAnswer[];
-  classId: string;
-  assignmentId: string;
+  answerTF: string;
+  answerShort: string;
+  level: string;
+
+  // classId?: string;
+  // assignmentId?: string;
+  questionBankId?: string;
 }
 
 export interface ICreateQuestion
@@ -24,7 +29,18 @@ export enum QuestionType {
   SINGLE_CHOICE = "SINGLE_CHOICE",
   MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
   TRUE_FALSE = "TRUE_FALSE",
-  MATCHING = "MATCHING",
-  FILL_IN = "FILL_IN",
-  ORDER = "ORDER",
+  SHORT_ANSWER = "SHORT_ANSWER",
+}
+
+export interface IQuestionProps {
+  questionType?: QuestionType;
+  questionLevel?: string;
+  questionBankId?: string;
+  questionId?: string;
+  setSelectedLevelQuestion?: (e: any) => void;
+  setSelectedTypeQuestion?: (e: any) => void;
+  handleQuestionCreateSuccess?: (data: any) => void;
+  handleQuestionUpdateSuccess?: (data: any) => void;
+  handleClose?: () => void;
+  handleTiptapQuestionChange?: (e: any) => void;
 }

@@ -17,9 +17,9 @@ export const HeaderBreadcrumnbs = ({ pathname }: { pathname: string }) => {
     } else if (pathname === "/dashboard") {
       return "Trang chủ";
     } else if (pathname.includes("/assignment/")) {
-      return "Chi tiết tập về nhà";
+      return "Chi tiết bài tập";
     } else if (pathname.includes("/assignment")) {
-      return "Bài tập về nhà";
+      return "Bài tập ";
     } else if (pathname.includes("/profile")) {
       return "Thông tin cá nhân";
     } else {

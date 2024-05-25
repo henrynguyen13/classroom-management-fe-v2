@@ -80,7 +80,7 @@ export const Login = () => {
       </div>
 
       <InputText
-        label="email"
+        label="Email"
         placeholder="Nhập email"
         control={control}
         name="email"
@@ -88,7 +88,7 @@ export const Login = () => {
       />
 
       <InputPassword
-        label="password"
+        label="Mật khẩu"
         placeholder="Nhập password"
         control={control}
         name="password"

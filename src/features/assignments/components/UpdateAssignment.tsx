@@ -2,27 +2,33 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
-import { showSuccessNotificationFunction } from "@/common";
+import {
+  ASSIGNMENT,
+  ASSIGNMENT_TYPE,
+  showSuccessNotificationFunction,
+} from "@/common";
 import {
   CustomButton,
   InputText,
   CustomDatePicker,
   InputTextArea,
+  Dropdown,
+  Tiptap,
 } from "@/components";
 import { assignmentService, IUpdateAssignment } from "../index";
+import { IQuestion } from "@/features";
 
 interface Props {
   setIsUpdate: any;
   onUpdateSuccess: (data: any) => void;
 }
+
 export const UpdateAssignment = ({ setIsUpdate, onUpdateSuccess }: Props) => {
   const { id, assignmentId } = useParams();
 
   const [expiredAt, setExpiredAt] = useState<Date>();
-
-  const { control, handleSubmit, reset } = useForm({
-    // resolver: yupResolver(homeWorkSchema),
-  });
+  const [type, setType] = useState<string>("");
+  const [tiptapQuestionContent, setTiptapQuestionContent] = useState("");
 
   useEffect(() => {
     const getAssignmentDetail = async () => {
@@ -30,22 +36,36 @@ export const UpdateAssignment = ({ setIsUpdate, onUpdateSuccess }: Props) => {
         id as string,
         assignmentId as string
       );
-      reset({
-        name: response?.name ?? "",
-        description: response?.description ?? "",
-        expiredAt: response?.expiredAt ?? Date.now(),
-      });
-      setExpiredAt(response?.expiredAt ?? Date.now());
+      if (response?.success) {
+        console.log("response", response);
+        reset({
+          name: response?.name ?? "",
+          description: response?.description ?? "",
+          expiredAt: response?.expiredAt ?? Date.now(),
+          type: response?.type ?? "",
+        });
+        setExpiredAt(response?.expiredAt ?? Date.now());
+        setType(response?.type ?? "");
+        setTiptapQuestionContent(response?.description ?? "");
+      }
     };
 
     getAssignmentDetail();
   }, [assignmentId]);
 
-  const handleUpdate = handleSubmit(async (dto: IUpdateAssignment) => {
+  const { control, handleSubmit, reset } = useForm({
+    // resolver: yupResolver(homeWorkSchema),
+  });
+  const handleUpdate = handleSubmit(async (dto: any) => {
+    console.log("--des", tiptapQuestionContent);
+    const updatedDto = {
+      ...dto,
+      description: tiptapQuestionContent,
+    };
     const response = await assignmentService.update(
       id as string,
       assignmentId as string,
-      dto
+      updatedDto
     );
     if (response?.success) {
       showSuccessNotificationFunction("Cập nhật bài tập thành công");
@@ -53,6 +73,12 @@ export const UpdateAssignment = ({ setIsUpdate, onUpdateSuccess }: Props) => {
       onUpdateSuccess(dto);
     }
   });
+
+  const handleTiptapQuestionChange = (content: string) => {
+    setTiptapQuestionContent(content);
+  };
+
+  //BUG: KHI ĐANG Ở TRẠNG THÁI TỰ LUẬN MÀ THÊM CÂU HỎI LÀ CHUYỂN SANG TRẮC NGHIỆM
 
   return (
     <div>
@@ -64,21 +90,13 @@ export const UpdateAssignment = ({ setIsUpdate, onUpdateSuccess }: Props) => {
         placeholder="Nhập tên bài tập"
         width="500"
       />
-
-      <InputTextArea
-        control={control}
-        label="Mô tả"
-        value="description"
-        name="description"
-        placeholder="Nhập mô tả bài tập "
-      />
       <div className="mb-2">
         <label>
           <span className="text-base font-medium">Hạn bài tập</span>
           <span className="text-red">*</span>
         </label>
       </div>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-5">
         <CustomDatePicker
           control={control}
           value={expiredAt}
@@ -86,6 +104,25 @@ export const UpdateAssignment = ({ setIsUpdate, onUpdateSuccess }: Props) => {
           width="500px"
         />
       </div>
+
+      <Dropdown
+        control={control}
+        label="Loại bài tập"
+        placeholder="Chọn loại bài tập"
+        options={ASSIGNMENT_TYPE}
+        disabled={true}
+        name="type"
+        width="500px"
+        setType={setType}
+      />
+      <Tiptap
+        control={control}
+        name="description"
+        label="Câu hỏi"
+        placeholder="Nhập câu hỏi"
+        value={tiptapQuestionContent}
+        onChange={handleTiptapQuestionChange}
+      />
 
       <div className="flex justify-end mt-10">
         <CustomButton
