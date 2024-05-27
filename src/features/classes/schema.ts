@@ -11,4 +11,5 @@ export const classSchema = yup.object({
     })
   ),
   teacher: yup.string().required("Giáo viên là trường bắt buộc"),
+  duration: yup.array().required("Giáo viên là trường bắt buộc"),
 });

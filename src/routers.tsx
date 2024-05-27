@@ -17,9 +17,11 @@ import {
   MyClassListPage,
   QuestionBankListPage,
   QuestionBankDetailPage,
+  TimeTablePage,
 } from "@/features";
 
 import Root from "./app";
+import { PAGES } from "./common";
 
 export const router = createBrowserRouter([
   {
@@ -96,6 +98,10 @@ export const router = createBrowserRouter([
       {
         path: "/question-bank/:id",
         element: <QuestionBankDetailPage />,
+      },
+      {
+        path: PAGES.TIME_TABLE,
+        element: <TimeTablePage />,
       },
     ],
   },

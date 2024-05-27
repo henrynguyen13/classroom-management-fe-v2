@@ -22,6 +22,7 @@ export const Form = (props: Props) => {
     height = "auto",
   } = props;
   const style = {
+    zIndex: 30,
     position: "absolute" as "absolute",
     top: "50%",
     left: "50%",
