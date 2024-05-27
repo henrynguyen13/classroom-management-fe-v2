@@ -22,3 +22,4 @@ export * from "./MultiSelect";
 export * from "./icons";
 export * from "./math";
 export * from "./CustomDropdown";
+export * from "./DateRangePicker";

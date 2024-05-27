@@ -17,6 +17,7 @@ export interface IClass extends IBase {
   name: string;
   teacher: ITeacher;
   description: IDescriptionClass[];
+  duration: string[];
   status: string;
   users: any;
 }

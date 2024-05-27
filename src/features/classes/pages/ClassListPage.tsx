@@ -44,6 +44,7 @@ import {
   UpdateClass,
   CreateClass,
 } from "../index";
+import dayjs from "dayjs";
 
 export const ClassListPage = () => {
   const navigate = useNavigate();
@@ -254,17 +255,31 @@ export const ClassListPage = () => {
               </TableCell>
               <TableCell
                 sx={{ backgroundColor: "#e3e1e1" }}
-                width="25%"
+                width="10%"
                 align="center"
               >
                 Giáo viên
               </TableCell>
               <TableCell
                 sx={{ backgroundColor: "#e3e1e1" }}
-                width="25%"
+                width="20%"
                 align="center"
               >
                 Lịch học
+              </TableCell>
+              <TableCell
+                sx={{ backgroundColor: "#e3e1e1" }}
+                width="10%"
+                align="center"
+              >
+                Ngày khai giảng
+              </TableCell>
+              <TableCell
+                sx={{ backgroundColor: "#e3e1e1" }}
+                width="10%"
+                align="center"
+              >
+                Ngày kết thúc
               </TableCell>
               <TableCell
                 sx={{ backgroundColor: "#e3e1e1" }}
@@ -301,11 +316,12 @@ export const ClassListPage = () => {
                   <TableCell width="15%" align="center">
                     {row.name}
                   </TableCell>
-                  <TableCell width="25%" align="center">
+                  <TableCell width="10%" align="center">
                     <div className="line-clamp-2 text-sm">
                       {row.teacher.username}
                     </div>
                   </TableCell>
+
                   <TableCell width="20%" align="center">
                     {row.description.map((i, index) => (
                       <li className="text-sm" key={index}>
@@ -313,7 +329,13 @@ export const ClassListPage = () => {
                       </li>
                     ))}
                   </TableCell>
-                  <TableCell padding="none" width="15%" align="center">
+                  <TableCell width="10%" align="center">
+                    {dayjs(row?.duration[0]).format("DD/MM/YYYY")}
+                  </TableCell>
+                  <TableCell width="10%" align="center">
+                    {dayjs(row?.duration[1]).format("DD/MM/YYYY")}
+                  </TableCell>
+                  <TableCell padding="none" width="10%" align="center">
                     <div className="flex items-center">
                       <Icon
                         color={convertStatusColor(row.status)}

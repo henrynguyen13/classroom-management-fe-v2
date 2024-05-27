@@ -79,6 +79,7 @@ export const enum PAGES {
   MY_CLASS = "/my-classes",
   USERS = "/users",
   QUESTION = "/question-bank",
+  TIME_TABLE = "/time-table",
 }
 
 export const DEFAULT_FIRST_PAGE = 1;

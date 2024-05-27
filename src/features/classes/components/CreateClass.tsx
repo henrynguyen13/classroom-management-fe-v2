@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { IconButton, Tooltip } from "@mui/material";
 import Icon from "@mdi/react";
 import { mdiTrashCan } from "@mdi/js";
+import styled from "styled-components";
 
 import {
   IOption,
@@ -12,10 +13,18 @@ import {
   showSuccessNotificationFunction,
   time,
 } from "@/common";
-import { Form, InputText, CustomButton, Dropdown } from "@/components";
+import {
+  Form,
+  InputText,
+  CustomButton,
+  Dropdown,
+  DateRangePicker,
+} from "@/components";
 import { Add } from "@/assets";
 import { userService, IUser } from "@/features";
 import { classSchema, classService } from "../index";
+import { Controller } from "@/plugins";
+import dayjs from "dayjs";
 interface Props {
   isOpenForm: boolean;
   handleClose: () => void;
@@ -31,6 +40,7 @@ const defaultValues = {
     date: "",
   })),
   teacher: "",
+  duration: [],
 };
 
 export const CreateClass = (props: Props) => {
@@ -57,7 +67,12 @@ export const CreateClass = (props: Props) => {
     getAllTeachers();
   }, []);
 
-  const { control, handleSubmit, reset } = useForm({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(classSchema),
     defaultValues,
   });
@@ -67,7 +82,9 @@ export const CreateClass = (props: Props) => {
     name: "description",
   });
 
+  console.log("error", errors);
   const handleCreate = handleSubmit(async (mclass: any) => {
+    console.log("mclass", mclass);
     const response = await classService.create(mclass);
     if (response?.success) {
       showSuccessNotificationFunction("Tạo lớp học thành công");
@@ -106,14 +123,14 @@ export const CreateClass = (props: Props) => {
         name="code"
         label="Mã lớp học"
         placeholder="Nhập mã lớp học"
-        width="570"
+        width="578"
       />
       <InputText
         control={control}
         name="name"
         label="Tên lớp học"
         placeholder="Nhập tên lớp học"
-        width="570"
+        width="578"
       />
       <Tooltip title="Thêm" placement="right">
         <img
@@ -126,7 +143,7 @@ export const CreateClass = (props: Props) => {
       {fields.map((field, index) => (
         <div
           key={index}
-          className="flex justify-between items-center w-[570px]"
+          className="flex justify-between items-center w-[578px]"
         >
           <Dropdown
             control={control}
@@ -164,6 +181,32 @@ export const CreateClass = (props: Props) => {
           </div>
         </div>
       ))}
+      <div className="mb-6">
+        <div className="mb-[10px]">
+          <span className="text-base font-medium">
+            Thời gian diễn ra lớp học
+          </span>
+          <span className="text-red">*</span>
+        </div>
+
+        <Controller
+          control={control}
+          name="duration"
+          // defaultValue={dayjs(Date.now()).toDate()}
+          render={({ field }) => {
+            const { onChange: fieldOnChange } = field;
+            return (
+              <DateRangePicker
+                // defaultValue={[dayjs(Date.now()).toDate(), _]}
+                onChange={(e) => {
+                  fieldOnChange(e);
+                  console.log("e", e);
+                }}
+              />
+            );
+          }}
+        />
+      </div>
 
       <Dropdown
         control={control}
@@ -194,3 +237,11 @@ export const CreateClass = (props: Props) => {
     </Form>
   );
 };
+
+// const Wrapper = styled.div`
+//   .range-picker {
+//     .ant-picker-dropdown {
+//       z-index: 1056;
+//     }
+//   }
+// `;
