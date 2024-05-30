@@ -14,15 +14,19 @@ export interface IResponseList extends IBase {
 }
 
 export enum ResponseType {
-  TEST = "TEST",
+  MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
   UPLOAD_FILE = "UPLOAD_FILE",
 }
 
 export interface IResponse extends IBase {
   seq: number;
-  userAnswer: string;
-  correctAnswer: string;
-  isCorrect: boolean;
+  userAnswer: string[];
+  questionId: string;
+  correctAnswer?: string[];
+  isCorrect?: boolean;
+  questions?: IQuestion[];
+  // correctAnswer: string[];
+  // isCorrect: boolean;
 }
 
 export interface ICreateResponse extends Omit<IResponse, baseFields> {}

@@ -206,7 +206,12 @@ export const MyClassListPage = () => {
                       />
                     ) : null}
                   </TableCell>
-                  <TableCell width="15%" align="center">
+                  <TableCell
+                    width="15%"
+                    align="center"
+                    sx={{ "&:hover": { cursor: "pointer", opacity: 0.7 } }}
+                    onClick={() => navigate(`/classes/${row._id}`)}
+                  >
                     {row.name}
                   </TableCell>
                   <TableCell width="25%" align="center">

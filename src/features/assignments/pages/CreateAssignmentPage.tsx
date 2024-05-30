@@ -122,6 +122,8 @@ export const CreateAssignmentPage = () => {
             index={index + 1}
             text={question.text}
             answers={question.answers}
+            answerTF={question?.answerTF}
+            answerShort={question?.answerShort}
             type={question.type}
             level={question.level}
             // handleAdd={() => onAddQuestions(question)}
