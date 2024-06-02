@@ -211,6 +211,7 @@ export const ClassListPage = () => {
       </div>
       <TableContainer
         sx={{
+          marginBottom: 10,
           maxHeight: "70vh",
           "&::-webkit-scrollbar": {
             width: 8,
@@ -337,16 +338,26 @@ export const ClassListPage = () => {
                   </TableCell>
                   <TableCell padding="none" width="10%" align="center">
                     <div className="flex items-center">
-                      <Icon
+                      {/* <Icon
                         color={convertStatusColor(row.status)}
                         path={mdiCircleSmall}
                         size={1.2}
+                      /> */}
+                      <Chip
+                        sx={{ backgroundColor: "#1D8FE4", color: "#ffffff" }}
+                        label={convertStatusClass(
+                          dayjs(row?.duration[0]).toDate(),
+                          dayjs(row?.duration[1]).toDate()
+                        )}
                       />
-                      <div className="text-sm mr-2">
-                        {convertStatusClass(row.status)}
-                      </div>
+                      {/* <div className="text-sm mr-2">
+                        {convertStatusClass(
+                          dayjs(row?.duration[0]).toDate(),
+                          dayjs(row?.duration[1]).toDate()
+                        )}
+                      </div> */}
 
-                      {row.status === ClassStatus.CREATED && (
+                      {/* {row.status === ClassStatus.CREATED && (
                         <Tooltip title="Mở lớp học">
                           <IconButton
                             sx={{ color: "#e28d0f" }}
@@ -370,7 +381,7 @@ export const ClassListPage = () => {
                             <Icon path={mdiLockOpenVariantOutline} size={1} />
                           </IconButton>
                         </Tooltip>
-                      )}
+                      )} */}
                     </div>
                   </TableCell>
                   <TableCell padding="none" width="10%" align="center">

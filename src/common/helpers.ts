@@ -149,12 +149,22 @@ export const classNames = (...classes: any) => {
   return classes.filter(Boolean).join(" ");
 };
 
-export const convertStatusClass = (status: string) => {
-  return status === ClassStatus.CREATED
-    ? "Đã tạo"
-    : status === ClassStatus.OPENING
-    ? "Đang mở"
-    : "Đã đóng";
+export const convertStatusClass = (openDate: Date, closeDate: Date) => {
+  let expiredTime = new Date(closeDate).getTime();
+  let openTime = new Date(openDate).getTime();
+  const nowTime = new Date();
+  const time = checkExpiredTime(nowTime, expiredTime);
+  const time2 = checkExpiredTime(openTime, nowTime);
+
+  if (time > 0) {
+    if (time2 > 0) {
+      return AssignmentStatus.HAPPENNING;
+    } else {
+      return "Đã tạo";
+    }
+  } else {
+    return AssignmentStatus.EXPIRED;
+  }
 };
 
 export const convertUserRole = (role: string) => {
