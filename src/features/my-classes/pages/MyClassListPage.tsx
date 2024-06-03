@@ -27,6 +27,7 @@ import {
 } from "@/common";
 import { IClass, classService, ClassStatus } from "@/features";
 import { NoData } from "@/assets";
+import dayjs from "dayjs";
 
 export const MyClassListPage = () => {
   const navigate = useNavigate();
@@ -62,9 +63,9 @@ export const MyClassListPage = () => {
   };
 
   const convertStatusColor = (status: string) => {
-    return status === ClassStatus.CREATED
+    return status === "Đã tạo"
       ? "#FA8C16"
-      : status === ClassStatus.OPENING
+      : status === "Đang diễn ra"
       ? "#52C41A"
       : "#D9D9D9";
   };
@@ -229,12 +230,20 @@ export const MyClassListPage = () => {
                   <TableCell padding="none" width="15%" align="center">
                     <div className="flex items-center">
                       <Icon
-                        color={convertStatusColor(row.status)}
+                        color={convertStatusColor(
+                          convertStatusClass(
+                            dayjs(row?.duration[0]).toDate(),
+                            dayjs(row?.duration[1]).toDate()
+                          )
+                        )}
                         path={mdiCircleSmall}
                         size={1.2}
                       />
                       <div className="text-sm mr-2">
-                        {convertStatusClass(row.status)}
+                        {convertStatusClass(
+                          dayjs(row?.duration[0]).toDate(),
+                          dayjs(row?.duration[1]).toDate()
+                        )}
                       </div>
                     </div>
                   </TableCell>

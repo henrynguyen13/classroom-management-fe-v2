@@ -1,14 +1,38 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthStorageService } from "@/common";
+import {
+  AuthStorageService,
+  showSuccessAlert,
+  showSuccessNotificationFunction,
+} from "@/common";
 import DashboardImage from "@/assets/images/dashboard.png";
+// import { getFirebaseToken, onMessageListener } from "@/config";
 export const DashBoard = () => {
   const navigate = useNavigate();
+
+  // const [notification, setNotification] = useState({ title: "", body: "" });
+
   useEffect(() => {
     const isAuthenticated = AuthStorageService.checkAuthentication();
     if (!isAuthenticated) {
       navigate("/login");
     }
+    // getFirebaseToken();
+    // const channel = new BroadcastChannel("notifications");
+    // channel.addEventListener("message", (event) => {
+    //   console.log("Receive background: ", event.data);
+    // });
+    // onMessageListener()
+    //   .then((payload: any) => {
+    //     setNotification({
+    //       title: payload?.notification?.title,
+    //       body: payload?.notification?.body,
+    //     });
+    //     showSuccessNotificationFunction(
+    //       `${payload?.notification?.title}: ${payload?.notification?.body}`
+    //     );
+    //   })
+    //   .catch((err: any) => console.log("failed: ", err));
   }, []);
   return (
     <>
