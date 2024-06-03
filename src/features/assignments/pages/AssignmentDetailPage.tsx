@@ -5,6 +5,7 @@ import Icon from "@mdi/react";
 import { mdiPlus, mdiPencil, mdiCheck } from "@mdi/js";
 import { Box, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
+import { NoData } from "@/assets";
 
 import {
   convertStatusSubmit,
@@ -15,6 +16,7 @@ import {
   showSuccessNotificationFunction,
   MAX_FILE_SIZE,
   ASSIGNMENT,
+  convertStatusAssignment,
 } from "@/common";
 import {
   CustomButton,
@@ -31,7 +33,12 @@ import {
   IResponseList,
   MyListResponsesPage,
 } from "@/features";
-import { BankModal, UpdateAssignment, assignmentService } from "../index";
+import {
+  AssignmentStatus,
+  BankModal,
+  UpdateAssignment,
+  assignmentService,
+} from "../index";
 import React from "react";
 
 export const AssignmentDetailPage = () => {
@@ -252,6 +259,8 @@ export const AssignmentDetailPage = () => {
                                 index={index + 1}
                                 text={question.text}
                                 answers={question.answers}
+                                answerTF={question?.answerTF}
+                                answerShort={question?.answerShort}
                                 type={question.type}
                                 level={question.level}
                                 typeButton="delete"
@@ -318,7 +327,10 @@ export const AssignmentDetailPage = () => {
                     </div>
 
                     <div className="col-span-1">
-                      {questions.length === 0 ? (
+                      {questions.length === 0 &&
+                      expiredAt &&
+                      convertStatusAssignment(expiredAt) !==
+                        AssignmentStatus.EXPIRED ? (
                         <CustomButton
                           text="Nộp bài"
                           width="150"
@@ -329,21 +341,38 @@ export const AssignmentDetailPage = () => {
                     </div>
                   </div>
 
-                  {questions.length > 0 ? (
-                    <CustomButton
-                      onClick={() =>
-                        navigate(
-                          `/classes/${id}/assignment/${assignmentId}/test`
-                        )
-                      }
-                      text="Bắt đầu làm bài"
-                    />
+                  {expiredAt &&
+                  convertStatusAssignment(expiredAt) !==
+                    AssignmentStatus.EXPIRED ? (
+                    <>
+                      {questions.length > 0 ? (
+                        <CustomButton
+                          onClick={() =>
+                            navigate(
+                              `/classes/${id}/assignment/${assignmentId}/test`
+                            )
+                          }
+                          text="Bắt đầu làm bài"
+                        />
+                      ) : (
+                        <ButtonFile
+                          title="Tải file lên"
+                          onSelectedFile={handleFileSelect}
+                          selectedFile={selectedFile}
+                        />
+                      )}
+                    </>
                   ) : (
-                    <ButtonFile
-                      title="Tải file lên"
-                      onSelectedFile={handleFileSelect}
-                      selectedFile={selectedFile}
-                    />
+                    <div className="mt-2">
+                      <img
+                        src={NoData}
+                        className="h-60 flex my-0 mx-auto"
+                        alt="No-data"
+                      />
+                      <div className="mt-4 font-medium text-center">
+                        Bài tập đã quá hạn để nộp bài.
+                      </div>
+                    </div>
                   )}
                 </TabPanel>
                 <TabPanel value="2">

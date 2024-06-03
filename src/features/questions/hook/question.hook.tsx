@@ -11,6 +11,7 @@ export const useFunctionQuestion = () => {
   );
 
   const handleChangeLevelQuestion = (_: any, value: any) => {
+    console.log("----", value);
     setSelectedLevelQuestion(value?.id);
   };
 

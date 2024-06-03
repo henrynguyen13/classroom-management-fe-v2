@@ -9,7 +9,6 @@ import { useFunctionMultipleChoice } from "@/features";
 export const UpdateMultipleChoiceQuestion = (props: IQuestionProps) => {
   const {
     form,
-    letters,
     selectedAnswer,
     tiptapQuestionContent,
     handleChange,
@@ -43,12 +42,12 @@ export const UpdateMultipleChoiceQuestion = (props: IQuestionProps) => {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={selectedAnswer.includes(letters[index] as never)}
+                      checked={selectedAnswer.includes(index)}
                       onChange={handleChange}
-                      value={letters[index]}
+                      value={index.toString()}
                     />
                   }
-                  label={`${letters[index]}`}
+                  label={`Đáp án ${index + 1}`}
                 />
               );
             }}
@@ -58,8 +57,8 @@ export const UpdateMultipleChoiceQuestion = (props: IQuestionProps) => {
             control={control}
             value={tiptapAnswersContent[index]}
             name={`answers[${index}].text`}
-            label={`Đáp án ${letters[index]}`}
-            placeholder={`Nhập đáp án ${letters[index]}`}
+            label={`Đáp án ${index + 1}`}
+            placeholder={`Nhập đáp án ${index + 1}`}
             onChange={(content: string) =>
               handleTiptapAnswersChange(content, index)
             }

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { formatDate, isTeacher } from "@/common";
-import { IQuestion, assignmentService } from "@/features";
+import { IQuestion, QuestionType, assignmentService } from "@/features";
 import { CardQuestionResult, CustomButton } from "@/components";
 import { MarkForm, IResponseList, ResponseType } from "../index";
 
@@ -13,31 +13,29 @@ export const ResponseDetailPage = () => {
   const [totalQuestions, setTotalQuestions] = useState(0);
 
   const [isOpenMarkForm, setIsOpenMarkForm] = useState<boolean>(false);
+  const getAResponseById = async () => {
+    const response = await assignmentService.getAResponseById(
+      id as string,
+      assignmentId as string,
+      responseId as string
+    );
+
+    if (response?.success) {
+      setResponse(response);
+    }
+  };
   useEffect(() => {
-    const getAResponseById = async () => {
-      const response = await assignmentService.getAResponseById(
-        id as string,
-        assignmentId as string,
-        responseId as string
-      );
+    // const getAllAQuestions = async () => {
+    //   const response = await assignmentService.getAllAQuestions(
+    //     id as string,
+    //     assignmentId as string
+    //   );
 
-      if (response?.success) {
-        setResponse(response);
-      }
-    };
-
-    const getAllAQuestions = async () => {
-      const response = await assignmentService.getAllAQuestions(
-        id as string,
-        assignmentId as string
-      );
-
-      setQuestions(response.data?.items || []);
-      setTotalQuestions(response.data?.totalItems || 0);
-    };
+    //   setQuestions(response.data?.items || []);
+    //   setTotalQuestions(response.data?.totalItems || 0);
+    // };
 
     getAResponseById();
-    getAllAQuestions();
   }, []);
 
   const isTeacherRole = isTeacher();
@@ -91,22 +89,25 @@ export const ResponseDetailPage = () => {
         </>
       ) : null}
 
-      {questions.length > 0 ? (
+      {response?.type === ResponseType.MULTIPLE_CHOICE ? (
         <>
           <div className="mt-5 mb-3 text-base font-medium">
-            Câu hỏi ({totalQuestions})
+            Câu hỏi ({response?.response.length})
           </div>
 
-          {questions.map((question, index) => (
+          {response?.response.map((res: any, index: any) => (
             <>
               <div key={index}>
                 <CardQuestionResult
-                  id={question._id}
+                  id={res?.questionId}
                   idx={index}
-                  text={question.text}
-                  type={question.type}
-                  answers={question.answers}
-                  studentAnswer={response?.response ?? []}
+                  text={res?.question?.text}
+                  type={res?.question?.type}
+                  answers={res?.question?.answers}
+                  answerTF={res?.question?.answerTF}
+                  answerShort={res?.question?.answerShort}
+                  userAnswer={res?.userAnswer}
+                  correctAnswer={res?.correctAnswer}
                 />
               </div>
             </>

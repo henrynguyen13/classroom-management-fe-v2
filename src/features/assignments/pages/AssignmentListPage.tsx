@@ -231,7 +231,14 @@ export const AssignmentListPage = () => {
                 >
                   <TableCell width="5%">{index + 1}</TableCell>
 
-                  <TableCell width="15%" align="center">
+                  <TableCell
+                    width="15%"
+                    align="center"
+                    sx={{ "&:hover": { cursor: "pointer", opacity: 0.7 } }}
+                    onClick={() =>
+                      navigate(`/classes/${id}/assignment/${row._id}`)
+                    }
+                  >
                     <div className="line-clamp-2">{row.name}</div>
                   </TableCell>
 

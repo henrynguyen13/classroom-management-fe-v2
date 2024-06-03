@@ -57,6 +57,12 @@ export const CreateQuestion = (props: Props) => {
         // onChange={(_, value: any) => {
         //   setSelectedLevelQuestion(value?.id);
         // }}
+        value={{
+          id: selectedLevelQuestion,
+          label: LEVEL_QUESTION.find(
+            (level) => level?.id === selectedLevelQuestion
+          )?.label!,
+        }}
         onChange={handleChangeLevelQuestion}
         options={LEVEL_QUESTION}
         label="Mức độ câu hỏi"
@@ -68,6 +74,19 @@ export const CreateQuestion = (props: Props) => {
         // onChange={(_, value: any) => {
         //   setSelectedTypeQuestion(value?.id);
         // }}
+        value={{
+          id:
+            selectedTypeQuestion === QuestionType.SINGLE_CHOICE
+              ? QuestionType.MULTIPLE_CHOICE
+              : selectedTypeQuestion,
+          label: TYPE_QUESTION.find(
+            (type) =>
+              type?.id ===
+              (selectedTypeQuestion === QuestionType.SINGLE_CHOICE
+                ? QuestionType.MULTIPLE_CHOICE
+                : selectedTypeQuestion)
+          )?.label!,
+        }}
         onChange={handleChangeTypeQuestion}
         defaultValue={TYPE_QUESTION[0]}
         label="Chọn loại câu hỏi"
