@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
-import { Avatar } from "@mui/material";
+import { Avatar, Badge } from "@mui/material";
 import { HeaderMenu } from "./HeaderMenu";
 import { IUser, userService } from "@/features";
 import { LogoText } from "@/assets";
-import { AuthStorageService } from "@/common";
+import { AuthStorageService, ICommonListQuery, PAGES } from "@/common";
 import Icon from "@mdi/react";
 import { mdiBellOutline } from "@mdi/js";
 import io from "socket.io-client";
 import { showSuccessNotificationFunction } from "@/common";
-const socket = io("http://localhost:8080");
-
+import { ItemList } from "@/components";
+import { notificationService } from "@/features/notifications/services/notifications.service";
+import { useNavigate } from "react-router-dom";
+// const socket = io("http://localhost:8080");
+const user = AuthStorageService.getLoginUser();
+const socket = io("http://localhost:8080", {
+  query: { userId: user._id },
+});
 interface Notification {
   message: string;
   user?: IUser;
@@ -33,12 +39,23 @@ export const HeaderBar = () => {
     getAvatar();
   }, []);
 
+  const getAllNotifications = async (query: ICommonListQuery) => {
+    const response = await notificationService.getAllNotifications(
+      query,
+      user?._id!
+    );
+    setNotifications(response?.notifications ?? []);
+  };
+  useEffect(() => {
+    getAllNotifications({});
+  }, []);
   useEffect(() => {
     socket.on("notification", (notification: any) => {
-      setNotifications((prevNotifications) => [
-        notification,
-        ...prevNotifications,
-      ]);
+      // setNotifications((prevNotifications) => [
+      //   notification,
+      //   ...prevNotifications,
+      // ]);
+      getAllNotifications({});
       showSuccessNotificationFunction(notification?.message);
     });
 
@@ -47,36 +64,46 @@ export const HeaderBar = () => {
     };
   }, []);
 
+  const navigate = useNavigate();
+
   return (
-    <div className="bg-primary-1 flex h-16 justify-between items-center fixed top-0 left-0 right-0 z-20">
-      <div>
-        <img src={LogoText} alt="Logo Text" />
-      </div>
-      {/* <div className=" flex items-center ml-2">
+    <>
+      <div className="bg-primary-1 flex h-16 justify-between items-center fixed top-0 left-0 right-0 z-20">
+        <div
+          className="cursor-pointer hover:opacity-90"
+          onClick={() => navigate(PAGES.DASHBOARD)}
+        >
+          <img src={LogoText} alt="Logo Text" />
+        </div>
+        {/* <div className=" flex items-center ml-2">
         <span className="text-lg">/ Lớp học</span>
         <HeaderBreadcrumnbs pathname={pathname} />
       </div> */}
-      <div className="flex items-center">
-        <div
-          className="mr-5 hover:cursor-pointer"
-          onClick={() => setIsOpenNotification(!isOpenNotification)}
-        >
-          <Icon path={mdiBellOutline} size={1} color="#FFFFFF" />
-          {notifications.length > 0 && (
-            <span className="badge">{notifications.length}</span>
-          )}
-        </div>
-        <div
-          className="mr-3 cursor-pointer "
-          onClick={() => setIsOpenMenu(!isOpenMenu)}
-        >
-          <div className="flex items-center">
-            <div className="mr-2 text-white">{user?.username}</div>
-            <Avatar alt="avatar" src={avatar} />
+        <div className="flex items-center">
+          <div
+            className="mr-5 hover:cursor-pointer"
+            onClick={() => setIsOpenNotification(!isOpenNotification)}
+          >
+            <Badge badgeContent={notifications.length} color="error">
+              <Icon path={mdiBellOutline} size={1} color="#FFFFFF" />
+            </Badge>
+            {/* {notifications.length > 0 && (
+              <span className="badge">{notifications.length}</span>
+            )} */}
+            {isOpenNotification && <ItemList items={notifications} />}
           </div>
-          {isOpenMenu && <HeaderMenu onClose={() => setIsOpenMenu(false)} />}
+          <div
+            className="mr-3 cursor-pointer "
+            onClick={() => setIsOpenMenu(!isOpenMenu)}
+          >
+            <div className="flex items-center">
+              <div className="mr-2 text-white">{user?.username}</div>
+              <Avatar alt="avatar" src={avatar} />
+            </div>
+            {isOpenMenu && <HeaderMenu onClose={() => setIsOpenMenu(false)} />}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

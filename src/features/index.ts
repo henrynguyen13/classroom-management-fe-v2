@@ -13,3 +13,4 @@ export * from "./tests";
 export * from "./users";
 export * from "./question-bank";
 export * from "./time-table";
+export * from "./forum";

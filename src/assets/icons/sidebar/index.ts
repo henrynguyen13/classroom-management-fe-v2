@@ -4,5 +4,6 @@ import Dashboard from "./dashboard.svg";
 import Student from "./student.svg";
 import Teacher from "./teacher.svg";
 import Question from "./question.svg";
+import Group from "./group.svg";
 
-export { Book, Class, Dashboard, Student, Teacher, Question };
+export { Book, Class, Dashboard, Student, Teacher, Question, Group };
