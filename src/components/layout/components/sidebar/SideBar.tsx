@@ -19,7 +19,7 @@ import {
   AuthStorageService,
   ONLY_TEACHER,
 } from "@/common";
-import { Student, Class, Dashboard, Question, Calendar } from "@/assets";
+import { Student, Class, Dashboard, Question, Calendar, Group } from "@/assets";
 
 const drawerWidth = 240;
 
@@ -56,6 +56,12 @@ export const SideBar = () => {
       icon: Student,
       redirect: PAGES.USERS,
       role: ADMIN_AND_AFFAIR,
+    },
+    {
+      text: "Diễn đàn",
+      icon: Group,
+      redirect: PAGES.FORUM,
+      role: ALL_MEMBERS,
     },
     {
       text: "Thời khóa biểu",

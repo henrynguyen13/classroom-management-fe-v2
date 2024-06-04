@@ -80,6 +80,7 @@ export const enum PAGES {
   USERS = "/users",
   QUESTION = "/question-bank",
   TIME_TABLE = "/time-table",
+  FORUM = "/forum",
 }
 
 export const DEFAULT_FIRST_PAGE = 1;

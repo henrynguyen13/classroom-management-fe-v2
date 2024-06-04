@@ -18,6 +18,7 @@ import {
   QuestionBankListPage,
   QuestionBankDetailPage,
   TimeTablePage,
+  ForumPage,
 } from "@/features";
 
 import Root from "./app";
@@ -122,6 +123,10 @@ export const router = createBrowserRouter([
       {
         path: "classes/:id/assignment/:assignmentId/result/:resultId",
         element: <TestResultPage />,
+      },
+      {
+        path: PAGES.FORUM,
+        element: <ForumPage />,
       },
     ],
   },
