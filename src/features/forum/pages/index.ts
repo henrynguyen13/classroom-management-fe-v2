@@ -1,1 +1,2 @@
-export * from "./ForumPage";
+export * from "./GroupPage";
+export * from "./GroupDetailPage";

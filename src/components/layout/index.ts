@@ -3,3 +3,4 @@ export * from "./BaseLayout";
 export * from "./MainLayout";
 export * from "./TestLayout";
 export * from "./components";
+export * from "./ForumLayout";

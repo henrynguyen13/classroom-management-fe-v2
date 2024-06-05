@@ -14,6 +14,7 @@ import { ROLES } from "./constants";
 import { AuthStorageService } from "./storages/authStorage.service";
 import { loggedout } from "@/features/auth/reducers/auth.reducer";
 import { useNavigate } from "react-router-dom";
+import { ForumState } from "@/features";
 export function isValidJSON(str: string) {
   try {
     const object = JSON.parse(str);
@@ -247,4 +248,23 @@ export const convertArrayToJSON = (array: any[]) => {
   }
 
   return jsonData;
+};
+
+export const getStatus = (status: string) => {
+  if (status === ForumState.PUBLIC) return "Công khai";
+  else return "Riêng tư";
+};
+
+export const getStatusColor = (status: string) => {
+  if (status === ForumState.PUBLIC) {
+    return {
+      backgroundColor: "#EDFFDF",
+      dotColor: "#57AA16",
+    };
+  } else {
+    return {
+      backgroundColor: "#FBEAEA",
+      dotColor: "#D62828",
+    };
+  }
 };

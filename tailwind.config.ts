@@ -44,6 +44,12 @@ const config: Config = {
       },
       boxShadow: {
         sidebar: "0 4px 8px 0 rgba(0, 0, 0, 0.25)",
+        forumBox:
+          "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px",
+      },
+
+      height: {
+        custom: "calc(100vh - 64px)",
       },
     },
   },
