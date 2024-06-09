@@ -1,5 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
-import { AuthLayout, MainLayout, TestLayout, BaseLayout } from "@/components";
+import {
+  AuthLayout,
+  MainLayout,
+  TestLayout,
+  BaseLayout,
+  ForumLayout,
+} from "@/components";
 import {
   Register,
   Login,
@@ -19,6 +25,7 @@ import {
   QuestionBankDetailPage,
   TimeTablePage,
   ForumPage,
+  GroupDetailPage,
 } from "@/features";
 
 import Root from "./app";
@@ -124,9 +131,19 @@ export const router = createBrowserRouter([
         path: "classes/:id/assignment/:assignmentId/result/:resultId",
         element: <TestResultPage />,
       },
+    ],
+  },
+
+  {
+    element: <ForumLayout />,
+    children: [
       {
         path: PAGES.FORUM,
         element: <ForumPage />,
+      },
+      {
+        path: `${PAGES.FORUM}/:id`,
+        element: <GroupDetailPage />,
       },
     ],
   },

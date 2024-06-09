@@ -1,4 +1,4 @@
-import { QuestionType } from "@/features";
+import { ForumState, QuestionType } from "@/features";
 import { ASSIGNMENT, ROLES } from ".";
 
 export const time = [
@@ -109,4 +109,9 @@ export const TYPE_QUESTION = [
   },
   { id: QuestionType.TRUE_FALSE, label: "Đúng/Sai" },
   { id: QuestionType.SHORT_ANSWER, label: "Điền vào chỗ trống" },
+];
+
+export const GroupStatus = [
+  { id: ForumState.PUBLIC, label: "Công khai" },
+  { id: ForumState.PRIVATE, label: "Riêng tư" },
 ];
