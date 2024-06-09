@@ -41,6 +41,36 @@ class PostService extends ApiService {
       params: queryString,
     });
   }
+
+  async getPostDetail(groupId: string, postId: string) {
+    return this.client.get<any, any>(
+      `${this.baseUrl}/group/${groupId}/${postId}`
+    );
+  }
+
+  async addComment(groupId: string, postId: string, content: string) {
+    return this.client.put<any, any>(
+      `${this.baseUrl}/group/${groupId}/${postId}/comment`,
+      {
+        content,
+      }
+    );
+  }
+
+  async addReaction(groupId: string, postId: string, reactionType: string) {
+    return this.client.put<any, any>(
+      `${this.baseUrl}/group/${groupId}/${postId}/reaction`,
+      {
+        reactionType,
+      }
+    );
+  }
+
+  async removeReaction(groupId: string, postId: string) {
+    return this.client.delete<any, any>(
+      `${this.baseUrl}/group/${groupId}/${postId}/reaction`
+    );
+  }
 }
 export const postService = new PostService(
   { baseUrl: `${import.meta.env.VITE_API}/post` },

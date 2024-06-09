@@ -97,14 +97,17 @@ export const CreatePostForm = (props: Props) => {
       />
 
       <div>
-        <label>Images (up to 4)</label>
-        <input
-          type="file"
-          multiple
-          onChange={handleImageChange}
-          accept="image/*"
-          className="mb-4"
-        />
+        <label className="mr-2">Chọn tối đa 4 ảnh</label>
+
+        {images.length < 4 && (
+          <input
+            type="file"
+            multiple
+            onChange={handleImageChange}
+            accept="image/*"
+            className="mb-4"
+          />
+        )}
         <div className="flex flex-wrap gap-4">
           {previews.map((preview, index) => (
             <div key={index} className="relative w-24 h-24">

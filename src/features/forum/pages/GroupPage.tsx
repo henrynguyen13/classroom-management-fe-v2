@@ -5,7 +5,7 @@ import { CustomButton } from "@/components";
 import { CreateGroupForm } from "../components";
 import { ForumState } from "../interface";
 import { useNavigate } from "react-router-dom";
-import { getStatus } from "@/common";
+import { getStatus, getStatusColor } from "@/common";
 export const ForumPage = () => {
   const navigate = useNavigate();
   const {
@@ -30,7 +30,7 @@ export const ForumPage = () => {
       </div>
 
       {groups.length > 0 ? (
-        <div className="grid grid-cols-12">
+        <div className="grid grid-cols-12 gap-5">
           {groups.map((group) => (
             <div
               key={group?._id}
@@ -42,8 +42,10 @@ export const ForumPage = () => {
                 avatar={group?.avatar ?? GroupNoAvatar}
                 totalMembers={group?.users.length + 1}
                 status={getStatus(group?.status)}
-                backgroundColor="#EDFFDF"
-                dotColor="#57AA16"
+                // backgroundColor="#EDFFDF"
+                // dotColor="#57AA16"
+                backgroundColor={getStatusColor(group?.status!).backgroundColor}
+                dotColor={getStatusColor(group?.status!).dotColor}
               />
             </div>
           ))}

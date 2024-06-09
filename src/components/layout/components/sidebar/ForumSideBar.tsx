@@ -8,7 +8,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import _ from "lodash";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import {
   ROLES,
@@ -16,10 +16,12 @@ import {
   PAGES,
   ALL_MEMBERS,
   AuthStorageService,
+  ICommonListQuery,
 } from "@/common";
 import { Group } from "@/assets";
 import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { IGroup, groupService } from "@/features";
 
 const drawerWidth = 280;
 
@@ -35,10 +37,12 @@ export const ForumSideBar = () => {
     },
   ];
 
-  const role = AuthStorageService.getLoginUser().role;
+  const user = AuthStorageService.getLoginUser();
+  const [groups, setGroups] = useState<IGroup[]>([]);
+  const [total, setTotal] = useState(0);
 
   const menuItems: ISideBar[] = sidebarItems.filter((item) => {
-    return item.role.includes(role as ROLES);
+    return item.role.includes(user?.role as ROLES);
   });
 
   const [open, setOpen] = useState(true);
@@ -47,6 +51,17 @@ export const ForumSideBar = () => {
     setOpen(!open);
   };
 
+  async function getAllMyGroups(query: ICommonListQuery) {
+    const response = await groupService.getAllMyGroups(user?._id!, query);
+    setGroups(response.data?.items);
+    setTotal(response.data?.totalItems);
+  }
+
+  useEffect(() => {
+    getAllMyGroups({});
+  }, []);
+
+  const navigate = useNavigate();
   return (
     <>
       <Drawer
@@ -148,36 +163,41 @@ export const ForumSideBar = () => {
           </ListItemButton>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItemButton
-                sx={{
-                  pl: 4,
-                  marginBottom: "12px",
-                  //   backgroundColor: `${
-                  //     location.pathname.includes(item.redirect)
-                  //       ? "#D4EEFF"
-                  //       : "inherit"
-                  //   }`,
-                  borderRadius: 4,
-                  "& .MuiListItemButton-root.Mui-selected": {
+              {groups.map((group) => (
+                <ListItemButton
+                  sx={{
+                    pl: 4,
+                    marginBottom: "12px",
+                    //   backgroundColor: `${
+                    //     location.pathname.includes(item.redirect)
+                    //       ? "#D4EEFF"
+                    //       : "inherit"
+                    //   }`,
                     borderRadius: 4,
-                    backgroundColor: "#D4EEFF",
-                  },
-                  "& .MuiListItemButton-root:hover": {
-                    borderRadius: 4,
-                    backgroundColor: "#D4EEFF",
-                  },
-                  "& .MuiButtonBase-root.MuiListItemButton-root.Mui-selected:hover":
-                    {
+                    "& .MuiListItemButton-root.Mui-selected": {
                       borderRadius: 4,
                       backgroundColor: "#D4EEFF",
                     },
-                  "& .MuiButtonBase-root": {
-                    borderRadius: 4,
-                  },
-                }}
-              >
-                <ListItemText primary="Starred" />
-              </ListItemButton>
+                    "& .MuiListItemButton-root:hover": {
+                      borderRadius: 4,
+                      backgroundColor: "#D4EEFF",
+                    },
+                    "& .MuiButtonBase-root.MuiListItemButton-root.Mui-selected:hover":
+                      {
+                        borderRadius: 4,
+                        backgroundColor: "#D4EEFF",
+                      },
+                    "& .MuiButtonBase-root": {
+                      borderRadius: 4,
+                    },
+                  }}
+                >
+                  <ListItemText
+                    primary={group?.name}
+                    onClick={() => navigate(`/forum/${group._id}`)}
+                  />
+                </ListItemButton>
+              ))}
             </List>
           </Collapse>
         </List>

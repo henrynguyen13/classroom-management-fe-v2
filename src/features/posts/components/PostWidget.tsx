@@ -8,46 +8,55 @@ import {
 } from "@mui/icons-material";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { useState } from "react";
-import { IPost } from "../interface";
+import { useFunctionPost } from "../hook/post.hook";
+import { IGroupProps } from "@/features/forum";
+import { CommentBox } from "./CommentBox";
+import { AuthStorageService } from "@/common";
+import { useEffect, useState } from "react";
 
 dayjs.extend(relativeTime);
 
-interface IProps {
-  post: IPost;
-}
-
-export const PostWidget = ({ post }: IProps) => {
-  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
-    null
+export const PostWidget = ({ post, groupId }: IGroupProps) => {
+  const [isLiked, setIsLiked] = useState(false);
+  const [likedPosts, setLikedPosts] = useState<string[]>(
+    post?.reactions.map((reaction) => reaction.author._id) || []
   );
+  const user = AuthStorageService.getLoginUser();
+  useEffect(() => {
+    setIsLiked(likedPosts?.includes(user?._id!) ?? false);
+  }, [post!._id]);
 
-  const handleImageClick = (index: number) => {
-    setSelectedImageIndex(index);
-  };
+  const {
+    handleImageClick,
+    handleNextImage,
+    handlePreviousImage,
+    handleCloseModal,
+    selectedImageIndex,
+    isOpenCommentBox,
+    setIsOpenCommentBox,
+    postDetail,
+    addReaction,
+    removeReaction,
+  } = useFunctionPost({ post, groupId });
 
-  const handleNextImage = () => {
-    if (
-      selectedImageIndex !== null &&
-      selectedImageIndex < post.images!.length - 1
-    ) {
-      setSelectedImageIndex(selectedImageIndex + 1);
+  const handleAddOrRemoveReaction = async () => {
+    try {
+      if (isLiked) {
+        await removeReaction(post!._id);
+        setLikedPosts(likedPosts.filter((id) => id !== user!._id));
+        setIsLiked(false);
+      } else {
+        await addReaction(post!._id, "LIKE");
+        setLikedPosts((prev) => [...prev, user!._id!]);
+        setIsLiked(true);
+      }
+    } catch (error) {
+      console.error("Error adding or removing reaction:", error);
     }
-  };
-
-  const handlePreviousImage = () => {
-    if (selectedImageIndex !== null && selectedImageIndex > 0) {
-      setSelectedImageIndex(selectedImageIndex - 1);
-    }
-  };
-
-  const handleCloseModal = () => {
-    setSelectedImageIndex(null);
   };
 
   return (
     <div className="bg-white rounded-lg shadow-md p-4 mb-4">
-      {/* Avatar and Author Info */}
       <div className="flex items-center">
         <Avatar alt="avatar" src={post?.author?.avatar} />
         <div className="ml-4">
@@ -63,7 +72,6 @@ export const PostWidget = ({ post }: IProps) => {
         </div>
       </div>
 
-      {/* Content */}
       <div className="mt-4">
         <p>{post?.content}</p>
         {post?.images && (
@@ -81,17 +89,24 @@ export const PostWidget = ({ post }: IProps) => {
         )}
       </div>
 
-      {/* Interaction Buttons */}
       <div className="flex items-center mt-4">
-        <IconButton>
-          <FavoriteBorderOutlined />
-        </IconButton>
-        <IconButton>
-          <CommentOutlined />
-        </IconButton>
+        <div className="flex items-center">
+          <IconButton
+            onClick={handleAddOrRemoveReaction}
+            style={{ color: isLiked ? "red" : "inherit" }}
+          >
+            <FavoriteBorderOutlined />
+          </IconButton>
+          <span>{postDetail?.reactions?.length || 0}</span>
+        </div>
+        <div className="flex items-center ml-4">
+          <IconButton onClick={() => setIsOpenCommentBox(true)}>
+            <CommentOutlined />
+          </IconButton>
+          <span>{postDetail?.comments?.length || 0}</span>
+        </div>
       </div>
 
-      {/* Modal for Large Image */}
       {post?.images && post?.images.length > 0 && (
         <Modal open={selectedImageIndex !== null} onClose={handleCloseModal}>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -121,6 +136,12 @@ export const PostWidget = ({ post }: IProps) => {
           </div>
         </Modal>
       )}
+
+      <CommentBox
+        post={postDetail}
+        isOpenForm={isOpenCommentBox}
+        handleClose={() => setIsOpenCommentBox(false)}
+      />
     </div>
   );
 };

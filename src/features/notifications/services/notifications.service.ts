@@ -11,7 +11,7 @@ class NotificationService extends ApiService {
   async updateReadStatus(id: string, isRead: boolean) {
     return this.client.put<any, any>(
       `${this.baseUrl}/update-read-status/${id}`,
-      isRead
+      { isRead }
     );
   }
 

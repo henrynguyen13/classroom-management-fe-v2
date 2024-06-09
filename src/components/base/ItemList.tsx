@@ -5,11 +5,20 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ImageIcon from "@mui/icons-material/Image";
 import { styled } from "styled-components";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
+dayjs.extend(relativeTime);
 interface IProps {
   items?: any[];
+  onItemClick: (item: any) => void;
+  markAllNotificationsAsRead: () => void;
 }
-export const ItemList = ({ items }: IProps) => {
+export const ItemList = ({
+  onItemClick,
+  items,
+  markAllNotificationsAsRead,
+}: IProps) => {
   return (
     <List
       sx={{
@@ -27,7 +36,13 @@ export const ItemList = ({ items }: IProps) => {
       <div className="ml-5 font-semibold">Thông báo</div>
       <div className="flex justify-between my-5">
         <div className="ml-5 font-medium text-sm">Gần đây</div>
-        <div className="font-medium text-sm mr-5 text-primary-1">
+        <div
+          className="font-medium text-sm mr-5 text-primary-1"
+          onClick={(e) => {
+            e.stopPropagation();
+            markAllNotificationsAsRead();
+          }}
+        >
           Đánh dấu tất cả là đã đọc
         </div>
       </div>
@@ -40,13 +55,17 @@ export const ItemList = ({ items }: IProps) => {
                   borderTop: "rgb(231, 232, 233) solid 1px",
                   backgroundColor: `${item?.isRead ? "#FFFFFF" : "#F3F3F3"}`,
                 }}
+                onClick={() => onItemClick(item)}
               >
                 <ListItemAvatar>
                   <Avatar>
                     <ImageIcon />
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText primary={item?.message} secondary="Jan 9, 2014" />
+                <ListItemText
+                  primary={item?.message}
+                  secondary={dayjs(item?.createdAt).fromNow()}
+                />
               </ListItem>
             ))
           ) : (

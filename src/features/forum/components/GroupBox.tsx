@@ -20,7 +20,7 @@ export const GroupBox = ({
   dotColor,
 }: IProps) => {
   return (
-    <div className="grid grid-cols-12 max-w-[400px] p-[12px]  rounded-md shadow-forumBox hover:opacity-90 cursor-pointer">
+    <div className="grid grid-cols-12 gap-5 max-w-[400px] p-[12px]  rounded-md shadow-forumBox hover:opacity-90 cursor-pointer">
       <div className="col-span-4">
         <img src={avatar} alt={avatar} />
       </div>

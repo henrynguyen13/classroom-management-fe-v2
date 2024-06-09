@@ -7,6 +7,7 @@ export const useFunctionGroup = () => {
   const [groups, setGroups] = useState<IGroup[]>([]);
   const [isOpenCreateForm, setIsOpenCreateForm] = useState(false);
   const [isOpenUpdateForm, setIsOpenUpdateForm] = useState(false);
+
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(0);
   const rowsPerPage = ROWS_PER_PAGE;
@@ -34,6 +35,7 @@ export const useFunctionGroup = () => {
     total,
     isOpenCreateForm,
     isOpenUpdateForm,
+
     setTotal,
     setGroups,
     setIsOpenCreateForm,

@@ -17,11 +17,19 @@ const socket = io("http://localhost:8080", {
   query: { userId: user._id },
 });
 interface Notification {
+  _id: string;
   message: string;
   user?: IUser;
   type?: string;
   isRead?: boolean;
+  redirectId?: string;
   // Add other fields as necessary
+}
+
+export enum NotificationType {
+  ADD_TO_CLASS = "add_to_class",
+  ADD_TO_GROUP = "add_to_group",
+  POST = "post",
 }
 export const HeaderBar = () => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
@@ -29,6 +37,29 @@ export const HeaderBar = () => {
   const user = AuthStorageService.getLoginUser();
   const [isOpenNotification, setIsOpenNotification] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
+
+  const handleItemClick = async (notification: Notification) => {
+    const response = await notificationService.updateReadStatus(
+      notification._id,
+      true
+    );
+
+    if (notification.type === NotificationType.ADD_TO_CLASS) {
+      navigate(`/classes/${notification.redirectId}`); // Adjust the path as per your routes
+    } else if (
+      notification.type === NotificationType.ADD_TO_GROUP ||
+      notification.type === NotificationType.POST
+    ) {
+      navigate(`/forum/${notification.redirectId}`); // Adjust the path as per your routes
+    }
+    getAllNotifications({});
+    setIsOpenNotification(false);
+  };
+
+  const markAllNotificationsAsRead = async () => {
+    await notificationService.markAllAsRead();
+    getAllNotifications({});
+  };
   useEffect(() => {
     const getAvatar = async () => {
       const response = await userService.getUserById(user?._id as string);
@@ -44,6 +75,7 @@ export const HeaderBar = () => {
       query,
       user?._id!
     );
+    console.log("-----, ", response);
     setNotifications(response?.notifications ?? []);
   };
   useEffect(() => {
@@ -66,6 +98,9 @@ export const HeaderBar = () => {
 
   const navigate = useNavigate();
 
+  const unreadCount = notifications.filter(
+    (notification) => !notification.isRead
+  ).length;
   return (
     <>
       <div className="bg-primary-1 flex h-16 justify-between items-center fixed top-0 left-0 right-0 z-20">
@@ -84,13 +119,19 @@ export const HeaderBar = () => {
             className="mr-5 hover:cursor-pointer"
             onClick={() => setIsOpenNotification(!isOpenNotification)}
           >
-            <Badge badgeContent={notifications.length} color="error">
+            <Badge badgeContent={unreadCount} color="error">
               <Icon path={mdiBellOutline} size={1} color="#FFFFFF" />
             </Badge>
             {/* {notifications.length > 0 && (
               <span className="badge">{notifications.length}</span>
             )} */}
-            {isOpenNotification && <ItemList items={notifications} />}
+            {isOpenNotification && (
+              <ItemList
+                markAllNotificationsAsRead={markAllNotificationsAsRead}
+                items={notifications}
+                onItemClick={handleItemClick}
+              />
+            )}
           </div>
           <div
             className="mr-3 cursor-pointer "

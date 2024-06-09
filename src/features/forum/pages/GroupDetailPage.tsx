@@ -1,10 +1,17 @@
 import GroupNoAvatar from "@/assets/images/group-no-avatar.jpg";
-import { CreatePostForm, ForumState, IGroup, groupService } from "@/features";
+import {
+  AddUsersToGroup,
+  CreatePostForm,
+  ForumState,
+  IGroup,
+  groupService,
+  useFunctionGroupDetail,
+} from "@/features";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Icon from "@mdi/react";
 import { mdiEarth, mdiLock } from "@mdi/js";
-import { AppStatus } from "@/components";
+import { AppStatus, CustomButton } from "@/components";
 import { AuthStorageService, getStatus, getStatusColor } from "@/common";
 import { Avatar } from "@mui/material";
 import dayjs from "dayjs";
@@ -12,33 +19,37 @@ import { useFunctionPost } from "@/features/posts/hook/post.hook";
 import { PostWidget } from "@/features";
 export const GroupDetailPage = () => {
   const { id } = useParams();
-  const [group, setGroup] = useState<IGroup>();
 
+  console.log("-ID", id);
   const {
     posts,
-    total,
+    totalPosts,
+    totalUsers,
     isOpenCreateForm,
     isOpenUpdateForm,
-    setTotal,
+    setTotalPosts,
+    setTotalUsers,
     setPosts,
     setIsOpenCreateForm,
     setIsOpenUpdateForm,
     updatePostList,
+    isOpenCommentBox,
+    setIsOpenCommentBox,
   } = useFunctionPost({ groupId: id });
+
+  const {
+    isOpenAddUsers,
+    setIsOpenAddUsers,
+    group,
+    usersInGroups,
+    updateUserList,
+  } = useFunctionGroupDetail({
+    groupId: id,
+    setTotalUsers,
+  });
+
   const user = AuthStorageService.getLoginUser();
 
-  async function getGroupDetail() {
-    const response = await groupService.getGroupById(id!);
-    if (response?.success) {
-      console.log("--------", response);
-      setGroup(response?.data?.group);
-      setTotal(response?.data?.totalUsers);
-    }
-  }
-
-  useEffect(() => {
-    getGroupDetail();
-  }, []);
   return (
     <div>
       <div className="w-full h-[200px] shadow-forumBox rounded-b-lg">
@@ -50,20 +61,30 @@ export const GroupDetailPage = () => {
       </div>
       <div className="mt-5 text-2xl uppercase font-semibold">{group?.name}</div>
 
-      <div className="flex items-center mt-2">
-        <div className="mr-3">
-          {group?.status === ForumState.PUBLIC ? (
-            <Icon path={mdiEarth} size={1} />
-          ) : (
-            <Icon path={mdiLock} size={1} />
-          )}
+      <div className="flex items-center justify-between mt-2">
+        <div className="flex items-center ">
+          <div className="mr-3">
+            {group?.status === ForumState.PUBLIC ? (
+              <Icon path={mdiEarth} size={1} />
+            ) : (
+              <Icon path={mdiLock} size={1} />
+            )}
+          </div>
+          <AppStatus
+            label={getStatus(group?.status!)}
+            backgroundColor={getStatusColor(group?.status!).backgroundColor}
+            dotColor={getStatusColor(group?.status!).dotColor}
+          />
+          <span className="ml-3">{totalUsers} thành viên</span>
         </div>
-        <AppStatus
-          label={getStatus(group?.status!)}
-          backgroundColor={getStatusColor(group?.status!).backgroundColor}
-          dotColor={getStatusColor(group?.status!).dotColor}
-        />
-        <span className="ml-3">{total} thành viên</span>
+        {user?._id === group?.manager?._id && (
+          <CustomButton
+            onClick={() => {
+              setIsOpenAddUsers(true);
+            }}
+            text="Thêm thành viên"
+          />
+        )}
       </div>
 
       <div className="grid grid-cols-12 gap-8 mt-5">
@@ -80,7 +101,9 @@ export const GroupDetailPage = () => {
           </div>
 
           {posts &&
-            posts.map((post) => <PostWidget key={post._id} post={post} />)}
+            posts.map((post) => (
+              <PostWidget key={post._id} post={post} groupId={id} />
+            ))}
         </div>
 
         <div className="col-span-4">
@@ -102,6 +125,14 @@ export const GroupDetailPage = () => {
         handleClose={() => setIsOpenCreateForm(false)}
         updatePostList={updatePostList}
         groupId={id!}
+      />
+
+      <AddUsersToGroup
+        usersInGroups={usersInGroups}
+        isOpenForm={isOpenAddUsers}
+        handleClose={() => setIsOpenAddUsers(false)}
+        groupId={id!}
+        updateUserList={updateUserList}
       />
     </div>
   );
