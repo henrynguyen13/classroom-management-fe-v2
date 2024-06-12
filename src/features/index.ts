@@ -15,3 +15,4 @@ export * from "./question-bank";
 export * from "./time-table";
 export * from "./forum";
 export * from "./posts";
+export * from "./review";
