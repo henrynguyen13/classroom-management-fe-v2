@@ -3,22 +3,12 @@ import GroupNoAvatar from "@/assets/images/group-no-avatar.jpg";
 import { useFunctionGroup } from "../hook/group.hook";
 import { CustomButton } from "@/components";
 import { CreateGroupForm } from "../components";
-import { ForumState } from "../interface";
 import { useNavigate } from "react-router-dom";
 import { getStatus, getStatusColor } from "@/common";
 export const ForumPage = () => {
   const navigate = useNavigate();
-  const {
-    groups,
-    total,
-    setGroups,
-    setTotal,
-    isOpenUpdateForm,
-    setIsOpenUpdateForm,
-    updateGroupList,
-    isOpenCreateForm,
-    setIsOpenCreateForm,
-  } = useFunctionGroup();
+  const { groups, updateGroupList, isOpenCreateForm, setIsOpenCreateForm } =
+    useFunctionGroup();
 
   return (
     <div>

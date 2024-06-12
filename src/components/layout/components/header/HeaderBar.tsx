@@ -39,10 +39,7 @@ export const HeaderBar = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   const handleItemClick = async (notification: Notification) => {
-    const response = await notificationService.updateReadStatus(
-      notification._id,
-      true
-    );
+    await notificationService.updateReadStatus(notification._id, true);
 
     if (notification.type === NotificationType.ADD_TO_CLASS) {
       navigate(`/classes/${notification.redirectId}`); // Adjust the path as per your routes

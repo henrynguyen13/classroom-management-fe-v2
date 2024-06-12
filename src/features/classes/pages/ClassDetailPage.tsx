@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Card, Box, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-
+import dayjs from "dayjs";
 import {
   ADMIN_AND_AFFAIR_AND_TEACHER,
   ALL_MEMBERS,
@@ -21,6 +21,7 @@ import {
   AssignmentListPage,
   ListAttendance,
   attendanceService,
+  ReviewPage,
 } from "@/features";
 import { classService, IDescriptionClass } from "../index";
 
@@ -39,6 +40,8 @@ export const ClassDetailPage = () => {
   const [totalStudents, setTotalStudents] = useState<number>(0);
   const [absences, setAbsences] = useState<string>("");
 
+  const [duration, setDuration] = useState([]);
+
   const getAllStudentsWithoutSelected = async () => {
     const response = await classService.getClassDetailWithoutPagination(
       id as string
@@ -47,11 +50,13 @@ export const ClassDetailPage = () => {
   };
   const getClassDetail = async () => {
     const response = await classService.getClassDetail(id as string, {});
+
     setName(response?.class?.name || "");
     setCode(response?.class?.code || "");
     setDescription(response?.class?.description || []);
     setCreatedAt(response?.class?.createdAt.toLocaleString() || "");
     setStatus(response?.class?.status || "");
+    setDuration(response?.class?.duration || []);
     setTeacher(response?.class?.teacher.username || "");
     setStudents(response?.class?.users || []);
     setTotalStudents(response?.totalStudents || 0);
@@ -95,7 +100,10 @@ export const ClassDetailPage = () => {
     {
       title: "Trạng thái",
       icon: Status,
-      content: convertStatusClass(status),
+      content: convertStatusClass(
+        dayjs(duration[0]).toDate(),
+        dayjs(duration[1]).toDate()
+      ),
       role: ADMIN_AND_AFFAIR_AND_TEACHER,
     },
     {
@@ -136,8 +144,9 @@ export const ClassDetailPage = () => {
               <TabList onChange={handleChange}>
                 <Tab label="Người dùng" value="1" />
                 <Tab label="Bài tập" value="2" />
-                <Tab label="Bài kiểm tra" value="3" />
-                {isTeacherRole ? <Tab label="Điểm danh" value="4" /> : null}
+                <Tab label="Ôn tập" value="3" />
+                <Tab label="Bài kiểm tra" value="4" />
+                {isTeacherRole ? <Tab label="Điểm danh" value="5" /> : null}
               </TabList>
             </Box>
             <TabPanel value="1">
@@ -153,9 +162,11 @@ export const ClassDetailPage = () => {
             <TabPanel value="2">
               <AssignmentListPage />
             </TabPanel>
-            <TabPanel value="3">Item Three</TabPanel>
-
-            <TabPanel value="4">
+            <TabPanel value="3">
+              <ReviewPage />
+            </TabPanel>
+            <TabPanel value="4">Bài kiểm tra</TabPanel>
+            <TabPanel value="5">
               <ListAttendance
                 classId={id as string}
                 students={students as []}

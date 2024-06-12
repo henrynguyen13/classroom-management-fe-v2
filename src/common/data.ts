@@ -1,5 +1,6 @@
 import { ForumState, QuestionType } from "@/features";
 import { ASSIGNMENT, ROLES } from ".";
+import { Section_Type } from "@/features/review/interface";
 
 export const time = [
   { id: "6:45", label: "6:45" },
@@ -114,4 +115,10 @@ export const TYPE_QUESTION = [
 export const GroupStatus = [
   { id: ForumState.PUBLIC, label: "Công khai" },
   { id: ForumState.PRIVATE, label: "Riêng tư" },
+];
+
+export const SectionType = [
+  { id: Section_Type.TEXT, label: "Văn bản" },
+  { id: Section_Type.QUESTION, label: "Câu hỏi" },
+  { id: Section_Type.PDF, label: "PDF" },
 ];

@@ -26,6 +26,7 @@ import {
   TimeTablePage,
   ForumPage,
   GroupDetailPage,
+  CreateSectionPage,
 } from "@/features";
 
 import Root from "./app";
@@ -110,6 +111,11 @@ export const router = createBrowserRouter([
       {
         path: PAGES.TIME_TABLE,
         element: <TimeTablePage />,
+      },
+
+      {
+        path: "/reviews/:id",
+        element: <CreateSectionPage />,
       },
     ],
   },
