@@ -1,14 +1,15 @@
 import { DatePicker, Space } from "antd";
-import styled from "styled-components";
+import { styled, css } from "styled-components";
 
 const { RangePicker } = DatePicker;
 
 interface Props {
   onChange?: (e: any) => void;
   defaultValue?: any;
+  width?: string;
 }
-export const DateRangePicker = ({ onChange, defaultValue }: Props) => (
-  <Wrapper>
+export const DateRangePicker = ({ onChange, defaultValue, width }: Props) => (
+  <Wrapper $width={width}>
     <Space direction="vertical" size={12}>
       <RangePicker
         placeholder={["Ngày bắt đầu", "Ngày kết thúc"]}
@@ -21,11 +22,14 @@ export const DateRangePicker = ({ onChange, defaultValue }: Props) => (
   </Wrapper>
 );
 
-const Wrapper = styled.div`
-  .ant-picker {
-    height: 48px;
-    width: 578px;
-  }
+const Wrapper = styled.div<{ $width?: string }>`
+  ${({ $width }) =>
+    css`
+      .ant-picker {
+        height: 48px;
+        width: ${$width ? $width : "578px"};
+      }
+    `}
   .ant-picker-outlined {
     border-color: #aeaeae;
   }

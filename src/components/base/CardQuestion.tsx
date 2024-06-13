@@ -113,7 +113,7 @@ export const CardQuestion = ({
                 </IconButton>
               </Tooltip>
             )}
-            {typeButton === "delete" && (
+            {typeButton === "delete" ? (
               <Tooltip title="Xóa">
                 <IconButton
                   sx={{ color: "#e28d0f" }}
@@ -122,8 +122,7 @@ export const CardQuestion = ({
                   <Icon path={mdiTrashCan} size={1} />
                 </IconButton>
               </Tooltip>
-            )}
-            {!location.pathname.includes("/assignment") && (
+            ) : (
               <>
                 <Tooltip title="Sửa">
                   <IconButton

@@ -1,3 +1,4 @@
+import { NoData } from "@/assets";
 import { ICommonListQuery } from "@/common";
 import { Form } from "@/components";
 import {
@@ -60,21 +61,32 @@ export const BankModal = ({
         isOpenForm={isOpenForm}
         handleClose={handleClose}
       >
-        <div className="grid grid-cols-3 gap-4">
-          {questionBankList?.length > 0
-            ? questionBankList.map((row, index) => (
-                <div
-                  onClick={() => {
-                    setIsOpenQuestionModal(true), setCurrentId(row?._id);
-                  }}
-                  className="border border-l-[8px] border-l-[#1D8FE4] rounded-[8px] p-4 cursor-pointer hover:opacity-80"
-                >
-                  <div className="font-medium h-[48px]">{row.name}</div>
-                  <div>Số lượng câu hỏi: {row.questions.length}</div>
-                </div>
-              ))
-            : null}
-        </div>
+        {questionBankList?.length > 0 ? (
+          <div className="grid grid-cols-3 gap-4">
+            {questionBankList.map((row, index) => (
+              <div
+                onClick={() => {
+                  setIsOpenQuestionModal(true), setCurrentId(row?._id);
+                }}
+                className="border border-l-[8px] border-l-[#1D8FE4] rounded-[8px] p-4 cursor-pointer hover:opacity-80"
+              >
+                <div className="font-medium h-[48px]">{row.name}</div>
+                <div>Số lượng câu hỏi: {row.questions.length}</div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="block mx-auto">
+            <img
+              src={NoData}
+              className="h-80 flex my-0 mx-auto"
+              alt="No-data"
+            />
+            <div className="mt-2 font-medium text-center">
+              Hiện chưa có ngân hàng câu hỏi nào.
+            </div>
+          </div>
+        )}
       </Form>
       <QuestionModal
         id={currentId}

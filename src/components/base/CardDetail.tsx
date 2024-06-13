@@ -9,7 +9,7 @@ export const CardDetail = ({ list }: Props) => {
   const role = AuthStorageService.getLoginUser().role;
   return (
     <Card>
-      <div className="w-full  rounded-lg  p-8 ">
+      <div className="w-full  rounded-lg  px-8 pb-8">
         {/* <div className="text-xl pb-8">{title}</div>
         <div className="border-[1px] border-border"></div> */}
         <div className="grid grid-cols-2">

@@ -5,6 +5,7 @@ export interface ISection extends IBase {
   name: string;
   type: string;
   content: any;
+  duration: string[];
   reviewId: string;
 }
 
@@ -20,7 +21,7 @@ export interface ICreateReview
 export type IUpdateReview = Partial<ICreateReview>;
 
 export interface ICreateSection
-  extends Omit<ISection, baseFields | "_id" | "reviewId"> {}
+  extends Omit<ISection, baseFields | "_id" | "reviewId" | "duration"> {}
 
 export type IUpdateSection = Partial<ICreateSection>;
 export interface IReviewProps {
