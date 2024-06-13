@@ -27,6 +27,7 @@ import {
   ForumPage,
   GroupDetailPage,
   CreateSectionPage,
+  SectionDetailPage,
 } from "@/features";
 
 import Root from "./app";
@@ -114,8 +115,13 @@ export const router = createBrowserRouter([
       },
 
       {
-        path: "/reviews/:id",
+        path: "/classes/:id/reviews/:reviewId",
         element: <CreateSectionPage />,
+      },
+
+      {
+        path: "/classes/:id/reviews/:reviewId/sections/:sectionId",
+        element: <SectionDetailPage />,
       },
     ],
   },

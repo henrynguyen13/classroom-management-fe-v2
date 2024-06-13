@@ -1,6 +1,6 @@
 import { IBase, baseFields } from "@/common";
 
-export interface ISection {
+export interface ISection extends IBase {
   _id: string;
   name: string;
   type: string;
@@ -11,15 +11,16 @@ export interface ISection {
 export interface IReview extends IBase {
   _id: string;
   name: string;
-  section: ISection[];
+  sections: ISection[];
   classId: string;
 }
 export interface ICreateReview
-  extends Omit<IReview, baseFields | "_id" | "section"> {}
+  extends Omit<IReview, baseFields | "_id" | "sections"> {}
 
 export type IUpdateReview = Partial<ICreateReview>;
 
-export interface ICreateSection extends Omit<ISection, baseFields | "_id"> {}
+export interface ICreateSection
+  extends Omit<ISection, baseFields | "_id" | "reviewId"> {}
 
 export type IUpdateSection = Partial<ICreateSection>;
 export interface IReviewProps {
@@ -27,6 +28,14 @@ export interface IReviewProps {
   section?: ISection;
   classId?: string;
   reviewId?: string;
+}
+
+export interface ISectionProps {
+  type?: string;
+  reviewId?: string;
+  sectionId?: string;
+  handleClose?: () => void;
+  update?: () => void;
 }
 
 export enum Section_Type {

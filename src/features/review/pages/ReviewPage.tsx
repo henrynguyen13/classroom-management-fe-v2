@@ -33,7 +33,7 @@ export const ReviewPage = () => {
       )}
 
       {reviews.map((review) => (
-        <ReviewFolder review={review} />
+        <ReviewFolder classId={id} review={review} />
       ))}
 
       <CreateFolder
