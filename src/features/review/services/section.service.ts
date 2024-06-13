@@ -8,13 +8,24 @@ class SectionService extends ApiService {
     reviewId: string,
     dto: any,
     file?: File | any,
-    content?: any
+    content?: any | any[]
   ) {
     const formData = new FormData();
     formData.append("name", dto?.name);
     formData.append("type", dto?.type);
-    formData.append("content", content);
     formData.append("file", file);
+    if (dto?.duration) {
+      formData.append("duration", dto.duration);
+    }
+
+    if (typeof content === "object") {
+      console.log("---object");
+      formData.append("content", JSON.stringify(content));
+    } else {
+      formData.append("content", content);
+    }
+
+    console.log("typeof content", typeof content);
 
     return this.client.post<ICreateSection, IBodyResponse<ISection>>(
       `${this.baseUrl}/${reviewId}`,

@@ -1,14 +1,9 @@
-import { useEffect, useState } from "react";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
 
 import { useForm } from "@/plugins";
-import {
-  questionBankService,
-  IQuestionProps,
-  questionSchema,
-} from "@/features";
+
 import { showSuccessNotificationFunction } from "@/common";
-import { ISectionProps, Section_Type } from "../interface";
+import { ISectionProps } from "../interface";
 import { sectionService } from "../services/section.service";
 
 export const useFunctionTextSection = (props: ISectionProps) => {
@@ -16,6 +11,7 @@ export const useFunctionTextSection = (props: ISectionProps) => {
   const form = useForm({
     // resolver: yupResolver(questionSchema),
     // defaultValues,
+    //need to validate
   });
 
   const { handleSubmit, reset } = form;
@@ -97,13 +93,12 @@ export const useFunctionTextSection = (props: ISectionProps) => {
   //   }
 
   return {
-    handleCreate,
-    handleClose,
     type,
     reviewId,
     form,
-
-    handleTiptapSectionChange,
     tiptapSectionContent,
+    handleCreate,
+    handleClose,
+    handleTiptapSectionChange,
   };
 };

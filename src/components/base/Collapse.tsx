@@ -16,7 +16,7 @@ interface Props {
 export const Collapse = ({ title, list }: Props) => {
   return (
     <div>
-      <Accordion defaultExpanded>
+      <Accordion defaultExpanded sx={{ backgroundColor: "#F5F5F5" }}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography>{title}</Typography>
         </AccordionSummary>

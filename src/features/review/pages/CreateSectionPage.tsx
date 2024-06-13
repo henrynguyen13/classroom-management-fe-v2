@@ -2,7 +2,11 @@ import { CustomDropdown, InputText } from "@/components";
 import { useFunctionReview } from "../hook";
 import { SectionType } from "@/common";
 import { Section_Type } from "../interface";
-import { CreatePdfSection, CreateTextSection } from "../components";
+import {
+  CreatePdfSection,
+  CreateQuestionSection,
+  CreateTextSection,
+} from "../components";
 import { useNavigate, useParams } from "react-router-dom";
 
 export const CreateSectionPage = () => {
@@ -53,6 +57,15 @@ export const CreateSectionPage = () => {
 
       {selectedType === Section_Type.TEXT && (
         <CreateTextSection
+          handleClose={handleClose}
+          type={selectedType}
+          reviewId={reviewId}
+          update={update}
+        />
+      )}
+
+      {selectedType === Section_Type.QUESTION && (
+        <CreateQuestionSection
           handleClose={handleClose}
           type={selectedType}
           reviewId={reviewId}
