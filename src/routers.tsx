@@ -28,6 +28,8 @@ import {
   GroupDetailPage,
   CreateSectionPage,
   SectionDetailPage,
+  SectionTestPage,
+  SectionResultPage,
 } from "@/features";
 
 import Root from "./app";
@@ -142,6 +144,14 @@ export const router = createBrowserRouter([
       {
         path: "classes/:id/assignment/:assignmentId/result/:resultId",
         element: <TestResultPage />,
+      },
+      {
+        path: "/classes/:id/reviews/:reviewId/sections/:sectionId/test",
+        element: <SectionTestPage />,
+      },
+      {
+        path: "/classes/:id/reviews/:reviewId/sections/:sectionId/result/:resultId",
+        element: <SectionResultPage />,
       },
     ],
   },
