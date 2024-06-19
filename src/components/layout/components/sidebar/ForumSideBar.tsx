@@ -19,7 +19,7 @@ import {
   ICommonListQuery,
 } from "@/common";
 import { Group } from "@/assets";
-import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { IGroup, groupService } from "@/features";
 
@@ -39,7 +39,7 @@ export const ForumSideBar = () => {
 
   const user = AuthStorageService.getLoginUser();
   const [groups, setGroups] = useState<IGroup[]>([]);
-  const [total, setTotal] = useState(0);
+  // const [total, setTotal] = useState(0);
 
   const menuItems: ISideBar[] = sidebarItems.filter((item) => {
     return item.role.includes(user?.role as ROLES);
@@ -54,7 +54,7 @@ export const ForumSideBar = () => {
   async function getAllMyGroups(query: ICommonListQuery) {
     const response = await groupService.getAllMyGroups(user?._id!, query);
     setGroups(response.data?.items);
-    setTotal(response.data?.totalItems);
+    // setTotal(response.data?.totalItems);
   }
 
   useEffect(() => {

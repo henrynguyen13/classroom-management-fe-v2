@@ -1,25 +1,13 @@
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { showAlert } from "@/common";
 import { CardQuestionTest, CustomButton } from "@/components";
-import {
-  ICreateResponse,
-  IQuestion,
-  QuestionType,
-  assignmentService,
-  selectAnswered,
-  selectResponses,
-  selectSelectedAnswer,
-  selectSelectedQuestion,
-  setResponses,
-} from "@/features";
+import { selectResponses, setResponses } from "@/features";
 import { RootState, useAppSelector } from "@/plugins";
 import {
   selectQuestion,
   answeredQuestion,
-  resetAnsweredQuestion,
   setSelectAnswer,
 } from "@/features/tests/reducers/test.reducer";
 import { TestSectionSidebar } from "@/components/layout/components/sidebar/TestSectionSidebar";

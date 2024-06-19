@@ -1,6 +1,5 @@
 import { ApiService } from "@/plugins/axios/api";
 import axiosService from "@/plugins/axios";
-import { ICreatePost } from "../interface";
 import { ICommonListQuery } from "@/common";
 
 class PostService extends ApiService {
@@ -20,7 +19,7 @@ class PostService extends ApiService {
 
     // Append images if they exist
     if (images && images.length > 0) {
-      images.forEach((image, index) => {
+      images.forEach((image) => {
         formData.append(`images`, image); // `images` is the key used in the FilesInterceptor
       });
     }

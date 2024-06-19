@@ -33,7 +33,7 @@ export const ClassDetailPage = () => {
   const [code, setCode] = useState("");
   const [description, setDescription] = useState<IDescriptionClass[]>([]);
   const [createdAt, setCreatedAt] = useState("");
-  const [status, setStatus] = useState("");
+  const [_, setStatus] = useState("");
   const [teacher, setTeacher] = useState("");
   const [students, setStudents] = useState<IStudent[]>([]);
   const [allStudents, setAllStudents] = useState<IStudent[]>([]);
@@ -122,7 +122,7 @@ export const ClassDetailPage = () => {
 
   const [value, setValue] = useState("1");
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 

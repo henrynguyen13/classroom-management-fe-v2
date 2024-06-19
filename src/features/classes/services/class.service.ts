@@ -1,12 +1,7 @@
 import { ApiService } from "@/plugins/axios/api";
 import axiosService from "@/plugins/axios";
-import {
-  IAddStudent,
-  IBodyResponse,
-  ICommonListQuery,
-  IGetListResponse,
-} from "@/common";
-import { IClass, IClassDetail, ICreateClass, IUpdateClass } from "../index";
+import { IBodyResponse, ICommonListQuery, IGetListResponse } from "@/common";
+import { IClass, ICreateClass, IUpdateClass } from "../index";
 class ClassService extends ApiService {
   async create(dto: ICreateClass) {
     return this._create<ICreateClass, IBodyResponse<IClass>>(dto);

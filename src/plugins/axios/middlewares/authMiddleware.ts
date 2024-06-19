@@ -1,4 +1,4 @@
-import axios, { type AxiosRequestConfig } from "axios";
+import axios from "axios";
 // import { HttpMiddleware } from "./httpMiddleware";
 import { logout } from "@/common/helpers";
 import { IBodyResponse, ILoginResponse } from "@/common/interfaces";

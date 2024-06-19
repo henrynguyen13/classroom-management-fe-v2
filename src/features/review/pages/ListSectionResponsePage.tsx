@@ -12,9 +12,9 @@ import {
   Tooltip,
 } from "@mui/material";
 import Icon from "@mdi/react";
-import { mdiLoginVariant, mdiCircleSmall } from "@mdi/js";
+import { mdiLoginVariant } from "@mdi/js";
 
-import { convertStatusSubmit, formatDate } from "@/common";
+import { formatDate } from "@/common";
 
 import { sectionService } from "../services/section.service";
 import { IResponseList } from "@/features/responses";
@@ -37,9 +37,6 @@ export const ListSectionResponsesPage = () => {
     getListResponses();
   }, []);
 
-  const convertStatusColor = (status: string) => {
-    return status === "Đã nộp" ? "#008000" : "#ed3a3a";
-  };
   return (
     <>
       <div className="flex justify-between items-center mb-5">

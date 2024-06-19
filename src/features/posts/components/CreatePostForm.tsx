@@ -42,12 +42,7 @@ export const CreatePostForm = (props: Props) => {
     });
   };
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     resolver: yupResolver(postSchema),
     defaultValues,
   });

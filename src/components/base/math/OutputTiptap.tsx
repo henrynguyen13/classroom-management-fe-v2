@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import Image from "@tiptap/extension-image";
-import BulletList from "@tiptap/extension-bullet-list";
-import CodeBlock from "@tiptap/extension-code-block";
 import Underline from "@tiptap/extension-underline";
 import TextStyle from "@tiptap/extension-text-style";
 import FontFamily from "@tiptap/extension-font-family";
@@ -13,7 +11,7 @@ interface Props {
   value?: string;
   onChange?: (e: any) => void;
 }
-export const OutputTiptap = ({ value, onChange }: Props) => {
+export const OutputTiptap = ({ value }: Props) => {
   const editor = useEditor({
     editable: false,
     extensions: [

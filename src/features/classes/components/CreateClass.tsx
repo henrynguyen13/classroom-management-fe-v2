@@ -4,7 +4,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { IconButton, Tooltip } from "@mui/material";
 import Icon from "@mdi/react";
 import { mdiTrashCan } from "@mdi/js";
-import styled from "styled-components";
 
 import {
   IOption,
@@ -24,7 +23,6 @@ import { Add } from "@/assets";
 import { userService, IUser } from "@/features";
 import { classSchema, classService } from "../index";
 import { Controller } from "@/plugins";
-import dayjs from "dayjs";
 interface Props {
   isOpenForm: boolean;
   handleClose: () => void;
@@ -140,7 +138,7 @@ export const CreateClass = (props: Props) => {
           alt="Add icon"
         />
       </Tooltip>
-      {fields.map((field, index) => (
+      {fields.map((_field, index) => (
         <div
           key={index}
           className="flex justify-between items-center w-[578px]"

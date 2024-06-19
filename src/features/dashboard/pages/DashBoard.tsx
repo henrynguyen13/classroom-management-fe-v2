@@ -1,10 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  AuthStorageService,
-  showSuccessAlert,
-  showSuccessNotificationFunction,
-} from "@/common";
+import { AuthStorageService } from "@/common";
 import DashboardImage from "@/assets/images/dashboard.png";
 // import { getFirebaseToken, onMessageListener } from "@/config";
 export const DashBoard = () => {

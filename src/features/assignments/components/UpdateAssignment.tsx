@@ -2,21 +2,15 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
-import {
-  ASSIGNMENT,
-  ASSIGNMENT_TYPE,
-  showSuccessNotificationFunction,
-} from "@/common";
+import { ASSIGNMENT_TYPE, showSuccessNotificationFunction } from "@/common";
 import {
   CustomButton,
   InputText,
   CustomDatePicker,
-  InputTextArea,
   Dropdown,
   Tiptap,
 } from "@/components";
-import { assignmentService, IUpdateAssignment } from "../index";
-import { IQuestion } from "@/features";
+import { assignmentService } from "../index";
 
 interface Props {
   setIsUpdate: any;
@@ -27,7 +21,7 @@ export const UpdateAssignment = ({ setIsUpdate, onUpdateSuccess }: Props) => {
   const { id, assignmentId } = useParams();
 
   const [expiredAt, setExpiredAt] = useState<Date>();
-  const [type, setType] = useState<string>("");
+  const [_, setType] = useState<string>("");
   const [tiptapQuestionContent, setTiptapQuestionContent] = useState("");
 
   useEffect(() => {

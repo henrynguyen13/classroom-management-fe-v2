@@ -1,15 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { formatDate, isTeacher } from "@/common";
-import {
-  IQuestion,
-  IResponseList,
-  QuestionType,
-  ResponseType,
-  assignmentService,
-} from "@/features";
-import { CardQuestionResult, CustomButton } from "@/components";
+import { formatDate } from "@/common";
+import { IResponseList } from "@/features";
+import { CardQuestionResult } from "@/components";
 import { sectionService } from "../services/section.service";
 
 export const SectionResultDetailPage = () => {
@@ -23,7 +17,6 @@ export const SectionResultDetailPage = () => {
     );
 
     if (response?.success) {
-      console.log("---------", response);
       setResponse(response);
     }
   };

@@ -1,22 +1,15 @@
-import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import {
   CustomButton,
-  InputText,
   CustomDatePicker,
   InputTextArea,
   Dropdown,
-  Tiptap,
   Form,
 } from "@/components";
-import {
-  ASSIGNMENT_TYPE,
-  ASSIGNMENT,
-  showSuccessNotificationFunction,
-} from "@/common";
-import { assignmentService, BankModal, ICreateAssignment } from "../index";
+import { ASSIGNMENT_TYPE, showSuccessNotificationFunction } from "@/common";
+import { assignmentService } from "../index";
 interface Props {
   isOpenForm: boolean;
   handleClose: () => void;
@@ -42,10 +35,7 @@ export const CreateAssignment = ({
   });
 
   const handleCreate = handleSubmit(async (dto: any) => {
-    console.log("dto", dto);
-
     const response = await assignmentService.create(dto, id as string);
-    console.log("RES", response);
 
     if (response?.success) {
       showSuccessNotificationFunction("Tạo bài tập thành công");

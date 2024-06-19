@@ -1,4 +1,3 @@
-import { ICommonListQuery, ROWS_PER_PAGE } from "@/common";
 import { useEffect, useState } from "react";
 import { groupService } from "../services/group.service";
 import { IGroup, IGroupProps } from "../interface";
@@ -14,7 +13,6 @@ export const useFunctionGroupDetail = (props: IGroupProps) => {
   async function getGroupDetail() {
     const response = await groupService.getGroupById(groupId!);
     if (response?.success) {
-      console.log("--------", response);
       setGroup(response?.data?.group);
       setTotalUsers?.(response?.data?.totalUsers);
       setUsersInGroups([

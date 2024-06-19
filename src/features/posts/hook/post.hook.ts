@@ -17,7 +17,7 @@ export const useFunctionPost = (props: IGroupProps) => {
   // const [isCurrentPost, setIsCurrentPost] = useState<string>("");
   const [totalPosts, setTotalPosts] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);
-  const [page, setPage] = useState(0);
+  const [page, _setPage] = useState(0);
   const rowsPerPage = ROWS_PER_PAGE;
 
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(

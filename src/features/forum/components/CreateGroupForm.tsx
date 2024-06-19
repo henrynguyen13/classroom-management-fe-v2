@@ -19,12 +19,7 @@ const defaultValues = {
 export const CreateGroupForm = (props: Props) => {
   const { isOpenForm, handleClose, updateGroupList } = props;
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     resolver: yupResolver(groupSchema),
     defaultValues,
   });

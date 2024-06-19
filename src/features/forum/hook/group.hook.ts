@@ -9,7 +9,7 @@ export const useFunctionGroup = () => {
   const [isOpenUpdateForm, setIsOpenUpdateForm] = useState(false);
 
   const [total, setTotal] = useState(0);
-  const [page, setPage] = useState(0);
+  const [page, _setPage] = useState(0);
   const rowsPerPage = ROWS_PER_PAGE;
 
   async function getAllGroups(query: ICommonListQuery) {

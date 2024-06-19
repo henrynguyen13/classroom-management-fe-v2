@@ -12,14 +12,11 @@ export const ReviewPage = () => {
 
   const {
     reviews,
-    setReviews,
     isOpenCreateForm,
     isOpenUpdateForm,
     setIsOpenCreateForm,
-    setIsOpenUpdateForm,
     update,
     handleDelete,
-    setCurrentReviewId,
     closeUpdateForm,
     openUpdateForm,
     currentReviewId,

@@ -32,7 +32,7 @@ export const UpdateMultipleChoiceQuestion = (props: IQuestionProps) => {
         onChange={handleTiptapQuestionChange}
       />
 
-      {fields.map((field, index) => (
+      {fields.map((_field, index) => (
         <div key={index}>
           <Controller
             control={control}

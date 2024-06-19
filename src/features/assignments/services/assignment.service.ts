@@ -1,10 +1,6 @@
 import { ApiService } from "@/plugins/axios/api";
 import axiosService from "@/plugins/axios";
-import {
-  IAssignment,
-  ICreateAssignment,
-  IUpdateAssignment,
-} from "../interfaces";
+import { IAssignment } from "../interfaces";
 import {
   IBodyResponse,
   ICommonListQuery,

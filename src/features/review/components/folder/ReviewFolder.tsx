@@ -1,12 +1,11 @@
 import { Tooltip } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Add, QuestionTest, Document, Pdf } from "@/assets";
-import { IReviewProps, Section_Type } from "../../interface";
+import { Section_Type } from "../../interface";
 import { IconButton } from "@mui/material";
 import Icon from "@mdi/react";
 import { mdiLeadPencil, mdiTrashCan } from "@mdi/js";
-import { ROLES, Roles, showAlert } from "@/common";
-import { UpdateFolder } from "./UpdateFolder";
+import { ROLES, showAlert } from "@/common";
 
 export const ReviewFolder = (props?: any) => {
   const navigate = useNavigate();
