@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Icon from "@mdi/react";
-import { mdiPlus, mdiPencil, mdiCheck } from "@mdi/js";
+import { mdiPencil, mdiCheck } from "@mdi/js";
 import { Box, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { NoData } from "@/assets";
@@ -26,8 +26,6 @@ import {
   OutputTiptap,
 } from "@/components";
 import {
-  CreateQuestion,
-  UpdateQuestion,
   IQuestion,
   ListResponsesPage,
   IResponseList,
@@ -45,9 +43,8 @@ export const AssignmentDetailPage = () => {
   const { id, assignmentId } = useParams();
   const navigate = useNavigate();
   const [isUpdateAssignment, setIsUpdateAssignment] = useState(false);
-  const [isOpenCreateQuestionForm, setIsOpenCreateQuestionForm] =
-    useState(false);
-  const [isOpenUpdateQuestionForm, setIsOpenUpdateQuestionForm] = useState<{
+
+  const [_, setIsOpenUpdateQuestionForm] = useState<{
     id: string;
     state: boolean;
   }>({ id: "", state: false });
@@ -71,7 +68,6 @@ export const AssignmentDetailPage = () => {
         assignmentId as string
       );
 
-      console.log("-------", response);
       setName(response?.name || "");
       setDescription(response?.description || "");
       setExpiredAt(response?.expiredAt || new Date());
@@ -158,7 +154,7 @@ export const AssignmentDetailPage = () => {
   const isStudentRole = isStudent();
   const [value, setValue] = useState("1");
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 

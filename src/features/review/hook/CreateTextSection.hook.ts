@@ -14,7 +14,7 @@ export const useFunctionTextSection = (props: ISectionProps) => {
     //need to validate
   });
 
-  const { handleSubmit, reset } = form;
+  const { handleSubmit } = form;
   const [tiptapSectionContent, setTiptapSectionContent] = useState("");
   const handleTiptapSectionChange = (content: string) => {
     setTiptapSectionContent(content);

@@ -2,8 +2,6 @@ import { useEditor, EditorContent, Editor } from "@tiptap/react";
 import Image from "@tiptap/extension-image";
 import { Controller } from "@/plugins/hook-form";
 import Placeholder from "@tiptap/extension-placeholder";
-import BulletList from "@tiptap/extension-bullet-list";
-import CodeBlock from "@tiptap/extension-code-block";
 import { Mathematics } from "@tiptap-pro/extension-mathematics";
 import TextStyle from "@tiptap/extension-text-style";
 import FontFamily from "@tiptap/extension-font-family";

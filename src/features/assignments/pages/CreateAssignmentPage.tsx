@@ -15,7 +15,7 @@ import {
   ASSIGNMENT,
   showSuccessNotificationFunction,
 } from "@/common";
-import { assignmentService, BankModal, ICreateAssignment } from "../index";
+import { assignmentService, BankModal } from "../index";
 import { IQuestion } from "@/features";
 
 const defaultValues = {

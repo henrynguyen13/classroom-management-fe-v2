@@ -25,7 +25,7 @@ import {
   convertStatusClass,
   AuthStorageService,
 } from "@/common";
-import { IClass, classService, ClassStatus } from "@/features";
+import { IClass, classService } from "@/features";
 import { NoData } from "@/assets";
 import dayjs from "dayjs";
 
@@ -49,7 +49,7 @@ export const MyClassListPage = () => {
 
   const rowsPerPage = 10;
 
-  const handleChangePage = async (event: unknown, newPage: number) => {
+  const handleChangePage = async (_event: unknown, newPage: number) => {
     setPage(newPage);
     const query: ICommonListQuery = {
       page: newPage + 1,

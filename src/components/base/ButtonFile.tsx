@@ -32,7 +32,6 @@ export const ButtonFile = ({
   borderRadius = "8",
   size = "medium",
   selectedFile,
-  previewTable,
   onSelectedFile,
 }: Props) => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

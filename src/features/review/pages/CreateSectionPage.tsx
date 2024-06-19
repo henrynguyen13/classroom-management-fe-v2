@@ -1,4 +1,4 @@
-import { CustomDropdown, InputText } from "@/components";
+import { CustomDropdown } from "@/components";
 import { useFunctionReview } from "../hook";
 import { SectionType } from "@/common";
 import { Section_Type } from "../interface";
@@ -10,8 +10,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 
 export const CreateSectionPage = () => {
-  const { setSelectedType, selectedType, handleChangeType, update } =
-    useFunctionReview();
+  const { selectedType, handleChangeType, update } = useFunctionReview();
 
   const { id, reviewId } = useParams();
 

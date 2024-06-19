@@ -5,21 +5,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { showAlert } from "@/common";
 import { CardQuestionTest, CustomButton } from "@/components";
 import {
-  ICreateResponse,
   IQuestion,
-  QuestionType,
   assignmentService,
-  selectAnswered,
   selectResponses,
-  selectSelectedAnswer,
-  selectSelectedQuestion,
   setResponses,
 } from "@/features";
 import { RootState, useAppSelector } from "@/plugins";
 import {
   selectQuestion,
   answeredQuestion,
-  resetAnsweredQuestion,
   setSelectAnswer,
 } from "@/features/tests/reducers/test.reducer";
 

@@ -1,9 +1,4 @@
-import {
-  ButtonFile,
-  ButtonFilePdf,
-  CustomButton,
-  InputText,
-} from "@/components";
+import { ButtonFilePdf, CustomButton, InputText } from "@/components";
 import { useFunctionPdfSection } from "../../hook/CreatePdfSection.hook";
 import { ISectionProps } from "../../interface";
 

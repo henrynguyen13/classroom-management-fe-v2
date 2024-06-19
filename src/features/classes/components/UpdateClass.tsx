@@ -118,7 +118,7 @@ export const UpdateClass = (props: Props) => {
           alt="Add icon"
         />
       </Tooltip>
-      {fields.map((field, index) => (
+      {fields.map((_field, index) => (
         <div
           key={index}
           className="flex justify-between items-center w-[570px]"

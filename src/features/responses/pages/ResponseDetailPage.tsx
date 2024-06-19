@@ -2,15 +2,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { formatDate, isTeacher } from "@/common";
-import { IQuestion, QuestionType, assignmentService } from "@/features";
+import { assignmentService } from "@/features";
 import { CardQuestionResult, CustomButton } from "@/components";
 import { MarkForm, IResponseList, ResponseType } from "../index";
 
 export const ResponseDetailPage = () => {
   const { id, assignmentId, responseId } = useParams();
   const [response, setResponse] = useState<IResponseList>();
-  const [questions, setQuestions] = useState<IQuestion[]>([]);
-  const [totalQuestions, setTotalQuestions] = useState(0);
 
   const [isOpenMarkForm, setIsOpenMarkForm] = useState<boolean>(false);
   const getAResponseById = async () => {

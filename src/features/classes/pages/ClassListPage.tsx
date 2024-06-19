@@ -18,14 +18,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Icon from "@mdi/react";
-import {
-  mdiLeadPencil,
-  mdiTrashCan,
-  mdiCircleSmall,
-  mdiLoginVariant,
-  mdiLockOpenVariantOutline,
-  mdiLockOutline,
-} from "@mdi/js";
+import { mdiLeadPencil, mdiTrashCan, mdiLoginVariant } from "@mdi/js";
 
 import {
   convertStatusClass,
@@ -37,13 +30,7 @@ import {
 } from "@/common";
 import { NoData } from "@/assets";
 import { CustomButton } from "@/components";
-import {
-  IClass,
-  ClassStatus,
-  classService,
-  UpdateClass,
-  CreateClass,
-} from "../index";
+import { IClass, classService, UpdateClass, CreateClass } from "../index";
 import dayjs from "dayjs";
 
 export const ClassListPage = () => {
@@ -75,7 +62,7 @@ export const ClassListPage = () => {
     setClassList(response.data?.items);
     setTotalItems(response.data?.totalItems);
   };
-  const handleChangePage = async (event: unknown, newPage: number) => {
+  const handleChangePage = async (_event: unknown, newPage: number) => {
     setPage(newPage);
     const query: ICommonListQuery = {
       page: newPage + 1,
@@ -105,54 +92,6 @@ export const ClassListPage = () => {
     }
   };
 
-  const handleClickOpen = (id: string) => {
-    showAlert({
-      title: "Bạn có chắc muốn mở lớp học này",
-      text: "",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        return handleOpen(id);
-      }
-    });
-  };
-
-  const handleOpen = async (id: string) => {
-    const response = await classService.openClass(id);
-    if (response?.success) {
-      showSuccessNotificationFunction("Mở lớp học thành công");
-      updateClassList();
-    } else {
-      showErrorNotificationFunction("Có lỗi xảy ra. Vui lòng kiểm tra lại");
-    }
-  };
-
-  const handleClickClose = (id: string) => {
-    showAlert({
-      title: "Bạn có chắc muốn đóng lớp học này",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        return handleClose(id);
-      }
-    });
-  };
-
-  const handleClose = async (id: string) => {
-    const response = await classService.closeClass(id);
-    if (response?.success) {
-      showSuccessNotificationFunction("Đóng lớp học thành công");
-      updateClassList();
-    } else {
-      showErrorNotificationFunction("Có lỗi xảy ra. Vui lòng kiểm tra lại");
-    }
-  };
-
-  const convertStatusColor = (status: string) => {
-    return status === ClassStatus.CREATED
-      ? "#FA8C16"
-      : status === ClassStatus.OPENING
-      ? "#52C41A"
-      : "#D9D9D9";
-  };
   return (
     <div>
       <h2 className="text-xl font-medium mb-2">Danh sách lớp học</h2>

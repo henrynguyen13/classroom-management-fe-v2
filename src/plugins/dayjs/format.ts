@@ -10,7 +10,11 @@ declare module "dayjs" {
   }
 }
 
-export const displayPlugin: PluginFunc = (option, dayjsClass, dayjsFactory) => {
+export const displayPlugin: PluginFunc = (
+  _option,
+  dayjsClass,
+  _dayjsFactory
+) => {
   dayjsClass.prototype.fmYYYYMMDD = function (separator = "-") {
     return this.format(`YYYY${separator}MM${separator}DD`);
   };

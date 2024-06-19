@@ -206,7 +206,7 @@ export const useFunctionMultipleChoice = (props: IQuestionProps) => {
       })),
     },
   });
-  const { control, handleSubmit, reset } = form;
+  const { control, handleSubmit } = form;
   const [tiptapQuestionContent, setTiptapQuestionContent] = useState("");
 
   const [selectedAnswer, setSelectedAnswer] = useState<number[]>([]);

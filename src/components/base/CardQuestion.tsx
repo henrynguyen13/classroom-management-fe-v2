@@ -10,19 +10,11 @@ import {
   TextField,
 } from "@mui/material";
 import Icon from "@mdi/react";
-import {
-  mdiCheckCircleOutline,
-  mdiCheckboxOutline,
-  mdiLeadPencil,
-  mdiTrashCan,
-  mdiPlus,
-} from "@mdi/js";
+import { mdiLeadPencil, mdiTrashCan, mdiPlus } from "@mdi/js";
 
 import { LEVEL_QUESTION, showAlert } from "@/common";
 import { IAnswer, QuestionType } from "@/features";
 import { OutputTiptap } from "./math/OutputTiptap";
-import { useLocation } from "react-router-dom";
-import { InputText } from "./InputText";
 interface Props {
   text: string;
   answers?: IAnswer[];
@@ -52,7 +44,6 @@ export const CardQuestion = ({
   handleUpdate,
   handleAdd,
 }: Props) => {
-  const location = useLocation();
   const letters = ["A", "B", "C", "D"];
 
   const handleClickDelete = (id: string) => {

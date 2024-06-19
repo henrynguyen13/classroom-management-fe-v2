@@ -22,7 +22,6 @@ export const Dropdown = ({
   width,
   label,
   disabled = false,
-  defaultValue,
   setType,
 }: Props) => {
   return (
@@ -49,7 +48,7 @@ export const Dropdown = ({
               getOptionLabel={(option) => {
                 return option.label;
               }}
-              onChange={(event: any, newValue) => {
+              onChange={(_event: any, newValue: any) => {
                 onChange(newValue ? newValue.id : null);
                 if (setType) setType(newValue?.id);
               }}

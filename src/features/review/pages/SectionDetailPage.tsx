@@ -1,4 +1,4 @@
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useFunctionSection } from "../hook/section.hook";
 import { Section_Type } from "../interface";
 import dayjs from "dayjs";
@@ -61,7 +61,7 @@ export const SectionDetailPage = () => {
   }, [section?._id]);
   const [value, setValue] = useState("1");
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 

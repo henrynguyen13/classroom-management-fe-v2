@@ -1,21 +1,13 @@
-import {
-  CardQuestion,
-  CustomButton,
-  DateRangePicker,
-  InputText,
-} from "@/components";
+import { CardQuestion, CustomButton, InputText } from "@/components";
 import { ISectionProps } from "../../interface";
 import { useCreateQuestionSection } from "../../hook";
 import { BankModal } from "@/features";
-import { useState } from "react";
-import { Controller } from "@/plugins";
 
 export const CreateQuestionSection = (props: ISectionProps) => {
   const {
     form,
     isOpenBankModal,
     questionsDto,
-    setQuestionsDto,
     handleDelete,
     setIsOpenBankModal,
     handleAddQuestionsDto,

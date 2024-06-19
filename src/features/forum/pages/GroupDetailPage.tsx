@@ -3,11 +3,8 @@ import {
   AddUsersToGroup,
   CreatePostForm,
   ForumState,
-  IGroup,
-  groupService,
   useFunctionGroupDetail,
 } from "@/features";
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Icon from "@mdi/react";
 import { mdiEarth, mdiLock } from "@mdi/js";
@@ -23,18 +20,11 @@ export const GroupDetailPage = () => {
   console.log("-ID", id);
   const {
     posts,
-    totalPosts,
     totalUsers,
     isOpenCreateForm,
-    isOpenUpdateForm,
-    setTotalPosts,
     setTotalUsers,
-    setPosts,
     setIsOpenCreateForm,
-    setIsOpenUpdateForm,
     updatePostList,
-    isOpenCommentBox,
-    setIsOpenCommentBox,
   } = useFunctionPost({ groupId: id });
 
   const {

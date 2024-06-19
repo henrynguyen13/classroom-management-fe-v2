@@ -1,7 +1,6 @@
 import { IQuestion, IQuestionBank } from "@/features";
 import { NoData } from "@/assets";
 import { CardQuestion, Form } from "@/components";
-import { useState } from "react";
 
 interface Props {
   isOpenForm: boolean;
@@ -14,7 +13,6 @@ interface Props {
 }
 export const QuestionModal = ({
   isOpenForm,
-  id,
   handleClose,
   questionBank,
   questions,

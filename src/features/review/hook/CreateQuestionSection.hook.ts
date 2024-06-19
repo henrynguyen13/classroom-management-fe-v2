@@ -14,7 +14,7 @@ export const useCreateQuestionSection = (props: ISectionProps) => {
   });
   const [isOpenBankModal, setIsOpenBankModal] = useState(false);
   const [questionsDto, setQuestionsDto] = useState<IQuestion[]>([]);
-  const { handleSubmit, reset } = form;
+  const { handleSubmit } = form;
 
   const handleCreate = handleSubmit(async (dto: any) => {
     const updatedDto = {

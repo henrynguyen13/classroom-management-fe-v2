@@ -63,8 +63,9 @@ export const BankModal = ({
       >
         {questionBankList?.length > 0 ? (
           <div className="grid grid-cols-3 gap-4">
-            {questionBankList.map((row, index) => (
+            {questionBankList.map((row) => (
               <div
+                key={row?._id}
                 onClick={() => {
                   setIsOpenQuestionModal(true), setCurrentId(row?._id);
                 }}

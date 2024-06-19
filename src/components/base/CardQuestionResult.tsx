@@ -10,7 +10,7 @@ import {
 import Icon from "@mdi/react";
 import { mdiCheckCircleOutline, mdiCheckboxOutline } from "@mdi/js";
 
-import { IAnswer, QuestionType, IResponse } from "@/features";
+import { IAnswer, QuestionType } from "@/features";
 import { OutputTiptap } from "./math/OutputTiptap";
 import { AppStatus } from "./AppStatus";
 interface Props {
@@ -30,7 +30,6 @@ export const CardQuestionResult = ({
   text,
   answers,
   answerTF,
-  answerShort,
   idx,
   userAnswer,
   correctAnswer,

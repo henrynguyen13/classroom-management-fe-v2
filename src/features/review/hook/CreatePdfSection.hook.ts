@@ -1,12 +1,7 @@
-import { useEffect, useState } from "react";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
 
 import { useForm } from "@/plugins";
-import {
-  questionBankService,
-  IQuestionProps,
-  questionSchema,
-} from "@/features";
+
 import { showSuccessNotificationFunction } from "@/common";
 import { ISectionProps, Section_Type } from "../interface";
 import { sectionService } from "../services/section.service";
@@ -18,7 +13,7 @@ export const useFunctionPdfSection = (props: ISectionProps) => {
     // defaultValues,
   });
 
-  const { handleSubmit, reset } = form;
+  const { handleSubmit } = form;
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const handleFileSelect = (file: File | null) => {

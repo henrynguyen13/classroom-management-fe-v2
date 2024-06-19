@@ -32,7 +32,7 @@ export const InputTextArea = ({
       control={control}
       name={name}
       defaultValue={value || ""}
-      render={({ field, fieldState }) => {
+      render={({ field }) => {
         const {
           value: fieldValue,
           onChange: fieldOnChange,

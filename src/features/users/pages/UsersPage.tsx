@@ -78,7 +78,7 @@ export const UsersPage = () => {
 
   const rowsPerPage = 10;
 
-  const handleChangePage = async (event: unknown, newPage: number) => {
+  const handleChangePage = async (_event: unknown, newPage: number) => {
     setPage(newPage);
     const query: ICommonListQuery = {
       page: newPage + 1,

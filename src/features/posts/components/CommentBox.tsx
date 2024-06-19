@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Modal, TextField, Button, Avatar } from "@mui/material";
+import { Modal, TextField, Avatar } from "@mui/material";
 import { useFunctionPost } from "../hook/post.hook";
 import { IGroupProps } from "@/features/forum";
 import { CustomButton } from "@/components";

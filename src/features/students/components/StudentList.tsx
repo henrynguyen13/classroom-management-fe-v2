@@ -28,7 +28,7 @@ import {
 } from "@/common";
 import { NoData } from "@/assets";
 import { CustomButton } from "@/components";
-import { classService, IClass } from "@/features";
+import { classService } from "@/features";
 import { AddStudentToClass } from "./AddStudentToClass";
 
 interface Props {
@@ -53,7 +53,7 @@ export const StudentList = ({
   const rowsPerPage = 10;
   const [page, setPage] = useState(0);
 
-  const handleChangePage = async (event: unknown, newPage: number) => {
+  const handleChangePage = async (_event: unknown, newPage: number) => {
     setPage(newPage);
     const query: ICommonListQuery = {
       page: newPage + 1,
