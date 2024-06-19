@@ -17,9 +17,7 @@ class ReviewService extends ApiService {
     );
   }
   async findReviewById(classId: string, id: string) {
-    return this.client.get<any, IBodyResponse<IReview>>(
-      `${this.baseUrl}/${classId}/${id}`
-    );
+    return this.client.get<any, IReview>(`${this.baseUrl}/${classId}/${id}`);
   }
 
   async updateReview(classId: string, id: string, dto: IUpdateReview) {

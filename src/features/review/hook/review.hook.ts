@@ -65,7 +65,12 @@
 import { useEffect, useState } from "react";
 import { IReview, IReviewProps } from "../interface";
 import { reviewService } from "../services/review.service";
-import { SectionType } from "@/common";
+import {
+  SectionType,
+  showErrorNotificationFunction,
+  showSuccessNotificationFunction,
+} from "@/common";
+import { sectionService } from "../services/section.service";
 
 export const useFunctionReview = (props?: IReviewProps) => {
   const { classId } = props || {};
@@ -73,10 +78,21 @@ export const useFunctionReview = (props?: IReviewProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [currentReviewId, setCurrentReviewId] = useState<string | null>(null);
   const [isOpenCreateForm, setIsOpenCreateForm] = useState(false);
   const [isOpenUpdateForm, setIsOpenUpdateForm] = useState(false);
 
   const [selectedType, setSelectedType] = useState(SectionType?.[0]?.id);
+
+  const openUpdateForm = (reviewId: string) => {
+    setCurrentReviewId(reviewId);
+    setIsOpenUpdateForm(true);
+  };
+
+  const closeUpdateForm = () => {
+    setIsOpenUpdateForm(false);
+    setCurrentReviewId(null);
+  };
   const fetchReviews = async () => {
     try {
       const response = await reviewService.findAllByClassId(classId!);
@@ -88,6 +104,18 @@ export const useFunctionReview = (props?: IReviewProps) => {
       setError(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await sectionService.deleteSection(id);
+      if (response?.success) {
+        showSuccessNotificationFunction("Xóa thành công");
+        update();
+      }
+    } catch (e: any) {
+      showErrorNotificationFunction(e);
     }
   };
 
@@ -116,5 +144,10 @@ export const useFunctionReview = (props?: IReviewProps) => {
     setSelectedType,
     selectedType,
     handleChangeType,
+    handleDelete,
+    currentReviewId,
+    setCurrentReviewId,
+    openUpdateForm,
+    closeUpdateForm,
   };
 };

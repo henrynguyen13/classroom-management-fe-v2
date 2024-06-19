@@ -29,6 +29,7 @@ export interface IReviewProps {
   section?: ISection;
   classId?: string;
   reviewId?: string;
+  handleDelete?: (e: any) => void;
 }
 
 export interface ISectionProps {

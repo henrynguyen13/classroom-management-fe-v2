@@ -141,15 +141,15 @@ export const EditorMenu = ({ editor, upload }: Props) => {
       title: "Redo",
       action: () => editor?.chain().focus().redo().run(),
     },
-    {
-      icon: <FaRedo />,
-      title: "Redo",
-      action: () => editor.chain().focus().setFontFamily("monospace").run(),
-      isActive: () =>
-        editor.isActive("textStyle", { fontFamily: "monospace" })
-          ? "is-active"
-          : "",
-    },
+    // {
+    //   icon: <FaRedo />,
+    //   title: "Redo",
+    //   action: () => editor.chain().focus().setFontFamily("monospace").run(),
+    //   isActive: () =>
+    //     editor.isActive("textStyle", { fontFamily: "monospace" })
+    //       ? "is-active"
+    //       : "",
+    // },
   ];
 
   const handleClick = (index: number) => {
