@@ -50,7 +50,7 @@ export const CreateQuestionSection = (props: ISectionProps) => {
         label="Tên tài liệu"
         placeholder="Nhập tên tài liệu"
       />
-
+      {/* 
       <div className="mb-[10px]">
         <span className="text-base font-medium">Thời gian diễn ra</span>
         <span className="text-red">*</span>
@@ -73,7 +73,7 @@ export const CreateQuestionSection = (props: ISectionProps) => {
             />
           );
         }}
-      />
+      /> */}
       <div className="mb-5"></div>
       <CustomButton
         text="Chọn câu hỏi từ ngân hàng"

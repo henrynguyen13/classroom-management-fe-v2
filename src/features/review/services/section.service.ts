@@ -79,6 +79,13 @@ class SectionService extends ApiService {
       IBodyResponse<IGetListResponse<IResponseList>>
     >(`${this.baseUrl}/${sectionId}/response`);
   }
+
+  async getAllSectionResponses(sectionId: string) {
+    return this.client.get<
+      IResponseList,
+      IBodyResponse<IGetListResponse<IResponseList>>
+    >(`${this.baseUrl}/${sectionId}/responses`);
+  }
 }
 
 export const sectionService = new SectionService(

@@ -6,7 +6,7 @@ import { CardQuestion, CustomButton, OutputTiptap } from "@/components";
 import React, { useEffect, useState } from "react";
 import { AuthStorageService, ROLES } from "@/common";
 import { sectionService } from "../services/section.service";
-import { IResponseList } from "@/features";
+import { IResponseList, ListSectionResponsesPage } from "@/features";
 import {
   Table,
   TableBody,
@@ -19,6 +19,8 @@ import {
   Tooltip,
   Chip,
 } from "@mui/material";
+import { Box, Tab } from "@mui/material";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
 import Icon from "@mdi/react";
 import { mdiLoginVariant } from "@mdi/js";
 import { formatDate } from "@/common";
@@ -33,11 +35,9 @@ export const SectionDetailPage = () => {
   const [list, setList] = useState<IResponseList[]>([]);
 
   const handleStartTest = () => {
-    console.log("--------hi", section);
     if (section?.type === Section_Type.QUESTION) {
       const questions = JSON.parse(section.content);
 
-      console.log("--------");
       navigate(
         `/classes/${id}/reviews/${reviewId}/sections/${sectionId}/test`,
         {
@@ -59,6 +59,12 @@ export const SectionDetailPage = () => {
       getMySectionResponses();
     }
   }, [section?._id]);
+  const [value, setValue] = useState("1");
+
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue);
+  };
+
   return (
     <div>
       <div className="font-medium text-2xl">
@@ -94,34 +100,54 @@ export const SectionDetailPage = () => {
         section?.content &&
         JSON.parse(section.content).length > 0 && (
           <>
-            <div className="mt-5 mb-3 text-base font-medium">
-              Câu hỏi ({JSON.parse(section.content).length})
-            </div>
+            <Box sx={{ width: "100%", typography: "body1" }}>
+              <TabContext value={value}>
+                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                  <TabList
+                    onChange={handleChange}
+                    aria-label="lab API tabs example"
+                  >
+                    <Tab label="Nội dung" value="1" />
+                    <Tab label="Danh sách nộp bài" value="2" />
+                  </TabList>
+                </Box>
+                <TabPanel value="1">
+                  <div className="mt-5 mb-3 text-base font-medium">
+                    Câu hỏi ({JSON.parse(section.content).length})
+                  </div>
 
-            {JSON.parse(section.content).map((question: any, index: any) => (
-              <React.Fragment key={index}>
-                <div key={index}>
-                  <CardQuestion
-                    id={question._id}
-                    index={index + 1}
-                    text={question.text}
-                    answers={question.answers}
-                    answerTF={question?.answerTF}
-                    answerShort={question?.answerShort}
-                    type={question.type}
-                    level={question.level}
-                    typeButton="delete"
-                    // handleDelete={() => handleDelete(question._id)}
-                    // handleUpdate={() =>
-                    //   setIsOpenUpdateQuestionForm({
-                    //     id: question._id,
-                    //     state: true,
-                    //   })
-                    // }
-                  />
-                </div>
-              </React.Fragment>
-            ))}
+                  {JSON.parse(section.content).map(
+                    (question: any, index: any) => (
+                      <React.Fragment key={index}>
+                        <div key={index}>
+                          <CardQuestion
+                            id={question._id}
+                            index={index + 1}
+                            text={question.text}
+                            answers={question.answers}
+                            answerTF={question?.answerTF}
+                            answerShort={question?.answerShort}
+                            type={question.type}
+                            level={question.level}
+                            typeButton="delete"
+                            // handleDelete={() => handleDelete(question._id)}
+                            // handleUpdate={() =>
+                            //   setIsOpenUpdateQuestionForm({
+                            //     id: question._id,
+                            //     state: true,
+                            //   })
+                            // }
+                          />
+                        </div>
+                      </React.Fragment>
+                    )
+                  )}
+                </TabPanel>
+                <TabPanel value="2">
+                  <ListSectionResponsesPage />
+                </TabPanel>
+              </TabContext>
+            </Box>
           </>
         )}
 
@@ -133,7 +159,7 @@ export const SectionDetailPage = () => {
             <CustomButton text="Bắt đầu làm bài" onClick={handleStartTest} />
 
             <>
-              <div className="flex justify-between items-center mb-5">
+              <div className="flex justify-between items-center my-5">
                 <Chip label="10 phản hồi gần nhất" />
               </div>
               <TableContainer
@@ -240,11 +266,11 @@ export const SectionDetailPage = () => {
                             <Tooltip title="Xem chi tiết">
                               <IconButton
                                 sx={{ color: "#ED3A3A" }}
-                                // onClick={() =>
-                                //   navigate(
-                                //     `/classes/${id}/assignment/${assignmentId}/response/${row._id}`
-                                //   )
-                                // }
+                                onClick={() =>
+                                  navigate(
+                                    `/classes/${id}/reviews/${reviewId}/sections/${sectionId}/response/${row?._id}`
+                                  )
+                                }
                               >
                                 <Icon path={mdiLoginVariant} size={1} />
                               </IconButton>

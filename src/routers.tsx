@@ -30,6 +30,7 @@ import {
   SectionDetailPage,
   SectionTestPage,
   SectionResultPage,
+  SectionResultDetailPage,
 } from "@/features";
 
 import Root from "./app";
@@ -124,6 +125,11 @@ export const router = createBrowserRouter([
       {
         path: "/classes/:id/reviews/:reviewId/sections/:sectionId",
         element: <SectionDetailPage />,
+      },
+
+      {
+        path: "/classes/:id/reviews/:reviewId/sections/:sectionId/response/:responseId",
+        element: <SectionResultDetailPage />,
       },
     ],
   },

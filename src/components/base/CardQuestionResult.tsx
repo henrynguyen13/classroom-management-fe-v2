@@ -12,6 +12,7 @@ import { mdiCheckCircleOutline, mdiCheckboxOutline } from "@mdi/js";
 
 import { IAnswer, QuestionType, IResponse } from "@/features";
 import { OutputTiptap } from "./math/OutputTiptap";
+import { AppStatus } from "./AppStatus";
 interface Props {
   type: QuestionType;
   text: string;
@@ -35,6 +36,10 @@ export const CardQuestionResult = ({
   correctAnswer,
 }: Props) => {
   const letters = ["A", "B", "C", "D"];
+
+  const trueAnswer =
+    correctAnswer.length === userAnswer.length &&
+    correctAnswer.every((id) => userAnswer.includes(id));
 
   return (
     <Card className="mt-2  mb-4">
@@ -67,7 +72,12 @@ export const CardQuestionResult = ({
             />
           </div>
         </div>
-        <div
+        <AppStatus
+          label={`${trueAnswer ? "Đúng" : "Sai"}`}
+          backgroundColor={`${trueAnswer ? "#EDFFDF" : "#FBEAEA"}`}
+          dotColor={`${trueAnswer ? "#57AA16" : "#D62828"}`}
+        />
+        {/* <div
           className={
             correctAnswer.length === userAnswer.length &&
             correctAnswer.every((id) => userAnswer.includes(id))
@@ -79,8 +89,8 @@ export const CardQuestionResult = ({
           correctAnswer.every((id) => userAnswer.includes(id))
             ? "Đúng"
             : "Sai"}
-        </div>
-        <div className="flex text-base pb-4">
+        </div> */}
+        <div className="flex text-base pb-4 mt-2">
           <span className="text-base font-medium mr-1">Câu {idx + 1}:</span>{" "}
           <OutputTiptap value={text} />
         </div>
