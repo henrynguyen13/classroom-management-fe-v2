@@ -7,6 +7,8 @@ import {
   showSuccessNotificationFunction,
   AuthStorageService,
   PAGES,
+  ScreenType,
+  useBreakpoint,
 } from "@/common";
 import { useForm } from "@/plugins";
 import { InputText, InputPassword, CustomButton } from "@/components";
@@ -19,31 +21,12 @@ const defaultValues = {
 
 export const Login = () => {
   const dispatch = useDispatch();
+  const { isSm } = useBreakpoint(ScreenType.SM);
   const { control, handleSubmit } = useForm({
     resolver: yupResolver(loginSchema),
     defaultValues,
   });
 
-  // useEffect(() => {
-  //   if (authUser !== null) {
-  //     setTimeout(() => {
-  //       router.push("/dashboard");
-  //     }, 1000);
-  //   }
-  // }, [authUser]);
-
-  // useEffect(() => {
-  //   const isAuthenticated = AuthStorageService.checkAuthentication();
-  //   if (!isAuthenticated) {
-  //     router.push("/login");
-  //   } else {
-  //     router.push("/dashboard");
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   AuthStorageService.resetAll();
-  // }, []);
   const handleLogin = handleSubmit(async (user: ILogin) => {
     const response = await authService.login(user);
     if (response?.success) {
@@ -53,7 +36,6 @@ export const Login = () => {
         email: response?.data.email,
         code: response?.data.code,
         role: response?.data.role,
-        // avatar?: response?.data.avatar ;
       });
       dispatch(loggedin());
       AuthStorageService.setAccessToken(response?.data?.token || "");
@@ -75,7 +57,7 @@ export const Login = () => {
 
   return (
     <>
-      <div className="text-neutral-1 text-[40px] font-semibold text-center">
+      <div className="text-neutral-1 text-2xl mb-3 sm:text-[40px] font-semibold text-center">
         Đăng nhập
       </div>
 
@@ -84,7 +66,7 @@ export const Login = () => {
         placeholder="Nhập email"
         control={control}
         name="email"
-        width="500"
+        width={`${isSm ? 500 : 300}`}
       />
 
       <InputPassword
@@ -92,24 +74,18 @@ export const Login = () => {
         placeholder="Nhập password"
         control={control}
         name="password"
+        width={`${isSm ? "500px" : "300px"}`}
       />
 
       <div className="text-primary-1 mb-8 text-right">Quên mật khẩu ?</div>
 
       <CustomButton
         color="white"
-        width="500"
+        width={`${isSm ? 500 : 300}`}
         size="large"
         text="Đăng nhập"
         onClick={() => handleLogin()}
       />
-
-      <div className="mt-6 mb-8 text-center">
-        Bạn chưa có tài khoản ?
-        <Link to="/register" className="text-primary-1 ml-1 hover:opacity-80">
-          Đăng ký
-        </Link>
-      </div>
     </>
   );
 };

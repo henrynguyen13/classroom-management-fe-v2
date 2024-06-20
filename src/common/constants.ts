@@ -194,3 +194,9 @@ export enum QUESTION_LEVEL {
   THREE,
   FOUR,
 }
+
+export enum ScreenType {
+  SM = "sm",
+  MD = "md",
+  LG = "lg",
+}
