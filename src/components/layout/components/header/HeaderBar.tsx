@@ -11,9 +11,12 @@ import { showSuccessNotificationFunction } from "@/common";
 import { ItemList } from "@/components";
 import { notificationService } from "@/features/notifications/services/notifications.service";
 import { useNavigate } from "react-router-dom";
-// const socket = io("http://localhost:8080");
 const user = AuthStorageService.getLoginUser();
-const socket = io("http://localhost:8080", {
+// const socket = io("http://localhost:8080", {
+//   query: { userId: user._id },
+// });
+
+const socket = io(`${import.meta.env.VITE_API}`, {
   query: { userId: user._id },
 });
 interface Notification {
