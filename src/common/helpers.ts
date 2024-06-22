@@ -14,6 +14,24 @@ import { AuthStorageService } from "./storages/authStorage.service";
 import { loggedout } from "@/features/auth/reducers/auth.reducer";
 import { useNavigate } from "react-router-dom";
 import { ForumState } from "@/features";
+import resolveConfig from "tailwindcss/resolveConfig";
+import tailwindConfig from "../../tailwind.config";
+import { useMediaQuery } from "react-responsive";
+
+const fullConfig: any = resolveConfig(tailwindConfig);
+const breakpoints = fullConfig.theme.screens;
+
+export function useBreakpoint(breakpointKey: any) {
+  const bool = useMediaQuery({
+    query: `(min-width: ${breakpoints[breakpointKey]})`,
+  });
+  const capitalizedKey =
+    breakpointKey[0].toUpperCase() + breakpointKey.substring(1);
+  type Key = `is${Capitalize<any>}`;
+  return {
+    [`is${capitalizedKey}`]: bool,
+  } as Record<Key, boolean>;
+}
 export function isValidJSON(str: string) {
   try {
     const object = JSON.parse(str);
