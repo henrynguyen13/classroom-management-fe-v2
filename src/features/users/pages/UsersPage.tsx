@@ -35,11 +35,14 @@ import {
   ICommonListQuery,
   ROLES,
   roles,
+  openLoading,
+  closeLoading,
 } from "@/common";
 import { CustomButton, MultiSelect } from "@/components";
 import { userService, IUser } from "@/features";
 import { NoData } from "@/assets";
 import { CreateUser, CreateUserExcel, UpdateUser } from "../index";
+import { useAppDispatch } from "@/plugins";
 
 export const UsersPage = () => {
   const navigate = useNavigate();
@@ -49,8 +52,11 @@ export const UsersPage = () => {
   const [isOpenCreateForm, setIsOpenCreateForm] = useState(false);
   const [isOpenCreateExcelForm, setIsOpenCreateExcelForm] = useState(false);
   const [isOpenUpdateForm, setIsOpenUpdateForm] = useState(false);
+  const dispatch = useAppDispatch();
 
   async function getUsers(query: ICommonListQuery) {
+    dispatch(openLoading());
+
     try {
       const response = await userService.getAllUser(query);
       if (response?.success) {
@@ -60,6 +66,7 @@ export const UsersPage = () => {
     } catch (e) {
       console.error("Error: ", e);
     } finally {
+      dispatch(closeLoading());
     }
   }
 

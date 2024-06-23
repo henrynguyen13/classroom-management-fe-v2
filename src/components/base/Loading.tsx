@@ -1,17 +1,19 @@
-import { Backdrop, CircularProgress } from "@mui/material";
+import { setHandleLoading } from "@/common/app.reducers";
+import { useAppSelector } from "@/plugins";
+import { Backdrop } from "@mui/material";
 
-interface Props {
-  isLoading: boolean;
-}
-export const Loading = ({ isLoading }: Props) => {
+export const Loading = () => {
+  const isOpenLoading = useAppSelector(setHandleLoading);
   return (
-    <div>
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={isLoading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
-    </div>
+    <Backdrop
+      className="ant-picker-dropdown"
+      sx={{
+        backgroundColor: "rgba(243, 243, 243, 0.4)",
+        opacity: 0.4,
+      }}
+      open={isOpenLoading}
+    >
+      <div className="loader"></div>
+    </Backdrop>
   );
 };

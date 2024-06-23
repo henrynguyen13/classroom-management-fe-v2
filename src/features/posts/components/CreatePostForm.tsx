@@ -1,10 +1,15 @@
-import { showSuccessNotificationFunction } from "@/common";
+import {
+  showSuccessNotificationFunction,
+  openLoading,
+  closeLoading,
+} from "@/common";
 import { CustomButton, Form, InputTextArea } from "@/components";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { postSchema } from "../schema";
 import { postService } from "../services/post.service";
 import { useEffect, useState } from "react";
+import { useAppDispatch } from "@/plugins";
 
 interface Props {
   groupId: string;
@@ -21,13 +26,12 @@ export const CreatePostForm = (props: Props) => {
   const { groupId, isOpenForm, handleClose, updatePostList } = props;
   const [images, setImages] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
-
+  const dispatch = useAppDispatch();
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files: File[] = Array.from(e.target.files);
       setImages((prevImages) => [...prevImages, ...files]);
 
-      // Generate image previews
       const newPreviews = files.map((file) => URL.createObjectURL(file));
       setPreviews((prevPreviews) => [...prevPreviews, ...newPreviews]);
     }
@@ -36,7 +40,6 @@ export const CreatePostForm = (props: Props) => {
   const removeImage = (index: number) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
     setPreviews((prevPreviews) => {
-      // Revoke the object URL
       URL.revokeObjectURL(prevPreviews[index]);
       return prevPreviews.filter((_, i) => i !== index);
     });
@@ -54,6 +57,8 @@ export const CreatePostForm = (props: Props) => {
   }, [previews]);
 
   const handleCreate = handleSubmit(async (dto: any) => {
+    dispatch(openLoading());
+
     try {
       const response = await postService.createPost(
         groupId,
@@ -63,16 +68,17 @@ export const CreatePostForm = (props: Props) => {
       if (response?.success) {
         showSuccessNotificationFunction("Tạo bài viết thành công");
 
-        // Clear form and previews after successful post creation
         reset({ content: defaultValues.content });
         setImages([]);
-        previews.forEach((preview) => URL.revokeObjectURL(preview)); // Revoke previews
+        previews.forEach((preview) => URL.revokeObjectURL(preview));
         setPreviews([]);
         handleClose();
         updatePostList();
       }
-    } catch (error) {
-      console.error("Error creating post:", error);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      dispatch(closeLoading());
     }
   });
 

@@ -8,6 +8,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Tooltip,
 } from "@mui/material";
 
 import {
@@ -18,6 +19,7 @@ import {
   showErrorNotificationFunction,
   showSuccessNotificationFunction,
 } from "@/common";
+import { Question } from "@/assets";
 import { Form, CustomButton, ButtonFile } from "@/components";
 import { authService } from "@/features";
 interface Props {
@@ -80,6 +82,22 @@ export const CreateUserExcel = (props: Props) => {
       width="700px"
       minWidth={previewTable.length > 0 ? "90vw" : ""}
     >
+      <div className="flex items-center justify-end">
+        <a
+          target="_blank"
+          className="cursor-pointer opacity-90 text-primary-1 underline float-right"
+          href="https://docs.google.com/spreadsheets/d/1OJl7_VtOIeE4oYWtoiodsQ6PMzu4jGOZyB7kLCt-DqQ/edit?usp=sharing"
+        >
+          Tải file mẫu
+        </a>
+        <Tooltip
+          className="ml-2"
+          title="Có 4 vai trò khi tạo người dùng: admin (quản trị viên), accademic_affair (giáo vụ), teacher (giáo viên), student (học sinh)"
+        >
+          <img src={Question} alt="Question" />
+        </Tooltip>
+      </div>
+
       <ButtonFile
         title="Chọn file excel"
         onSelectedFile={handleFileSelect}
@@ -128,6 +146,13 @@ export const CreateUserExcel = (props: Props) => {
                 </TableCell>
                 <TableCell
                   sx={{ backgroundColor: "#e3e1e1" }}
+                  width="10%"
+                  align="center"
+                >
+                  Mã người dùng
+                </TableCell>
+                <TableCell
+                  sx={{ backgroundColor: "#e3e1e1" }}
                   width="15%"
                   align="center"
                 >
@@ -153,12 +178,15 @@ export const CreateUserExcel = (props: Props) => {
                     <TableCell width="15%" align="center">
                       {user[0]}
                     </TableCell>
+                    <TableCell width="15%" align="center">
+                      {user[1]}
+                    </TableCell>
                     <TableCell width="25%" align="center">
-                      <div className="line-clamp-2 text-sm">{user[1]}</div>
+                      <div className="line-clamp-2 text-sm">{user[2]}</div>
                     </TableCell>
                     <TableCell width="25%" align="center">
                       <div className="line-clamp-2 text-sm">
-                        {convertUserRole(user[3])}
+                        {convertUserRole(user[4])}
                       </div>
                     </TableCell>
                   </TableRow>

@@ -1,8 +1,14 @@
-import { ICommonListQuery, ROWS_PER_PAGE } from "@/common";
+import {
+  ICommonListQuery,
+  ROWS_PER_PAGE,
+  openLoading,
+  closeLoading,
+} from "@/common";
 import { useEffect, useState } from "react";
 import { postService } from "../services/post.service";
 import { IComment, IPost } from "../interface";
 import { IGroupProps } from "@/features/forum";
+import { useAppDispatch } from "@/plugins";
 
 export const useFunctionPost = (props: IGroupProps) => {
   const { post, groupId } = props;
@@ -10,7 +16,7 @@ export const useFunctionPost = (props: IGroupProps) => {
   const [isOpenCreateForm, setIsOpenCreateForm] = useState(false);
   const [isOpenUpdateForm, setIsOpenUpdateForm] = useState(false);
   const [isOpenCommentBox, setIsOpenCommentBox] = useState(false);
-
+  const dispatch = useAppDispatch();
   const [newCommentAdd, setNewCommentAdd] = useState<IComment>();
 
   const [postDetail, setPostDetail] = useState<IPost>();
@@ -68,16 +74,19 @@ export const useFunctionPost = (props: IGroupProps) => {
   }
 
   async function addComment(postId: string, content: string) {
+    dispatch(openLoading());
+
     try {
       const response = await postService.addComment(groupId!, postId, content);
 
-      console.log("-COMMENT", response);
       if (response?.success) {
         getPostDetail();
         setNewCommentAdd(response);
       }
     } catch (error) {
       console.error("Error adding comment:", error);
+    } finally {
+      dispatch(closeLoading());
     }
   }
 

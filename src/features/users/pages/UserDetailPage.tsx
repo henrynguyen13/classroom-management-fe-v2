@@ -9,19 +9,36 @@ import {
 } from "@mdi/js";
 import { useParams } from "react-router-dom";
 
-import { ALL_MEMBERS, convertUserRole, formatDate, ICard } from "@/common";
+import {
+  ALL_MEMBERS,
+  convertUserRole,
+  formatDate,
+  ICard,
+  openLoading,
+  closeLoading,
+} from "@/common";
 import { CardProfile } from "@/components";
 import { userService, IUser } from "@/features";
+import { useAppDispatch } from "@/plugins";
 
 export const UserDetailPage = () => {
   const { id } = useParams();
   const [profile, setProfile] = useState<IUser>();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const getMyProfile = async () => {
-      const response = await userService.getUserById(id as string);
-      if (response?.success) {
-        setProfile(response);
+      dispatch(openLoading());
+
+      try {
+        const response = await userService.getUserById(id as string);
+        if (response?.success) {
+          setProfile(response);
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        dispatch(closeLoading());
       }
     };
     getMyProfile();

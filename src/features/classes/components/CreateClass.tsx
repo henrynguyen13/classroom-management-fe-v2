@@ -11,6 +11,8 @@ import {
   date,
   showSuccessNotificationFunction,
   time,
+  openLoading,
+  closeLoading,
 } from "@/common";
 import {
   Form,
@@ -22,7 +24,7 @@ import {
 import { Add } from "@/assets";
 import { userService, IUser } from "@/features";
 import { classSchema, classService } from "../index";
-import { Controller } from "@/plugins";
+import { Controller, useAppDispatch } from "@/plugins";
 interface Props {
   isOpenForm: boolean;
   handleClose: () => void;
@@ -43,6 +45,7 @@ const defaultValues = {
 
 export const CreateClass = (props: Props) => {
   const { isOpenForm, handleClose, updateClassList } = props;
+  const dispatch = useAppDispatch();
 
   const [teachers, setTeachers] = useState<IOption[]>([]);
   useEffect(() => {
@@ -65,12 +68,7 @@ export const CreateClass = (props: Props) => {
     getAllTeachers();
   }, []);
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     resolver: yupResolver(classSchema),
     defaultValues,
   });
@@ -80,19 +78,24 @@ export const CreateClass = (props: Props) => {
     name: "description",
   });
 
-  console.log("error", errors);
   const handleCreate = handleSubmit(async (mclass: any) => {
-    console.log("mclass", mclass);
-    const response = await classService.create(mclass);
-    if (response?.success) {
-      showSuccessNotificationFunction("Tạo lớp học thành công");
-      reset({
-        code: defaultValues.code,
-        name: defaultValues.name,
-        description: defaultValues.description,
-      });
-      handleClose();
-      updateClassList();
+    dispatch(openLoading());
+    try {
+      const response = await classService.create(mclass);
+      if (response?.success) {
+        showSuccessNotificationFunction("Tạo lớp học thành công");
+        reset({
+          code: defaultValues.code,
+          name: defaultValues.name,
+          description: defaultValues.description,
+        });
+        handleClose();
+        updateClassList();
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      dispatch(closeLoading());
     }
   });
 
@@ -198,7 +201,6 @@ export const CreateClass = (props: Props) => {
                 // defaultValue={[dayjs(Date.now()).toDate(), _]}
                 onChange={(e) => {
                   fieldOnChange(e);
-                  console.log("e", e);
                 }}
               />
             );
@@ -235,11 +237,3 @@ export const CreateClass = (props: Props) => {
     </Form>
   );
 };
-
-// const Wrapper = styled.div`
-//   .range-picker {
-//     .ant-picker-dropdown {
-//       z-index: 1056;
-//     }
-//   }
-// `;
