@@ -27,14 +27,18 @@ import {
   showErrorNotificationFunction,
   showSuccessNotificationFunction,
   ICommonListQuery,
+  openLoading,
+  closeLoading,
 } from "@/common";
 import { NoData } from "@/assets";
 import { CustomButton } from "@/components";
 import { IClass, classService, UpdateClass, CreateClass } from "../index";
 import dayjs from "dayjs";
+import { useAppDispatch } from "@/plugins";
 
 export const ClassListPage = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const [classList, setClassList] = useState<IClass[]>([]);
   const [totalItems, setTotalItems] = useState(0);
@@ -44,12 +48,22 @@ export const ClassListPage = () => {
   const [isOpenUpdateForm, setIsOpenUpdateForm] = useState(false);
   const rowsPerPage = ROWS_PER_PAGE;
 
-  useEffect(() => {
-    async function getClassList(query: ICommonListQuery) {
+  async function getClassList(query: ICommonListQuery) {
+    dispatch(openLoading());
+    try {
       const response = await classService.getAllClasses(query);
-      setClassList(response.data?.items);
-      setTotalItems(response.data?.totalItems);
+      if (response?.success) {
+        setClassList(response.data?.items);
+        setTotalItems(response.data?.totalItems);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      dispatch(closeLoading());
     }
+  }
+
+  useEffect(() => {
     getClassList({});
   }, []);
 
@@ -241,7 +255,7 @@ export const ClassListPage = () => {
             {classList?.length > 0 ? (
               classList.map((row, index) => (
                 <TableRow
-                  key={row._id}
+                  key={row?._id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell width="5%">{index + 1}</TableCell>
@@ -249,23 +263,23 @@ export const ClassListPage = () => {
                     {row.code ? (
                       <Chip
                         sx={{ backgroundColor: "#1D8FE4", color: "#ffffff" }}
-                        label={row.code}
+                        label={row?.code}
                       />
                     ) : null}
                   </TableCell>
                   <TableCell width="15%" align="center">
-                    {row.name}
+                    {row?.name}
                   </TableCell>
                   <TableCell width="10%" align="center">
                     <div className="line-clamp-2 text-sm">
-                      {row.teacher.username}
+                      {row?.teacher?.username}
                     </div>
                   </TableCell>
 
                   <TableCell width="20%" align="center">
-                    {row.description.map((i, index) => (
+                    {row?.description.map((i, index) => (
                       <li className="text-sm" key={index}>
-                        Từ {i.from} đến {i.to} {i.date}
+                        Từ {i?.from} đến {i?.to} {i?.date}
                       </li>
                     ))}
                   </TableCell>

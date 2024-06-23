@@ -2,8 +2,11 @@ import {
   ICommonListQuery,
   showErrorNotificationFunction,
   showSuccessNotificationFunction,
+  openLoading,
+  closeLoading,
 } from "@/common";
 import { IGroupProps, IUser, groupService, userService } from "@/features";
+import { useAppDispatch } from "@/plugins";
 import { useEffect, useState } from "react";
 
 export const useAddUserToGroup = (props?: IGroupProps) => {
@@ -11,8 +14,11 @@ export const useAddUserToGroup = (props?: IGroupProps) => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<IUser[]>([]);
   const [isShowUserList, setIsShowUserList] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
   const getAllUsers = async (query: ICommonListQuery) => {
+    dispatch(openLoading());
+
     try {
       const response = await userService.getAllUserWithoutPagination(query);
       if (response?.success) {
@@ -26,6 +32,7 @@ export const useAddUserToGroup = (props?: IGroupProps) => {
     } catch (e) {
       console.error(e);
     } finally {
+      dispatch(closeLoading());
     }
   };
 
@@ -58,19 +65,29 @@ export const useAddUserToGroup = (props?: IGroupProps) => {
   }, []);
 
   const handleCreate = async () => {
-    const dto = selectedUsers.map((selected) => selected.email);
-    const response = await groupService.addUsersToGroup(groupId!, dto);
-    if (response?.success) {
-      showSuccessNotificationFunction("Thêm người dùng thành công");
-      setUsers([]);
-      setSelectedUsers([]);
-      setIsShowUserList(false);
-      updateUserList?.();
-      handleClose?.();
-    } else {
-      showErrorNotificationFunction(
-        "Email này đã có trong lớp học hoặc chưa đăng ký tài khoản"
-      );
+    dispatch(openLoading());
+
+    try {
+      const dto = selectedUsers.map((selected) => selected.email);
+
+      const response = await groupService.addUsersToGroup(groupId!, dto);
+
+      if (response?.success) {
+        showSuccessNotificationFunction("Thêm người dùng thành công");
+        setUsers([]);
+        setSelectedUsers([]);
+        setIsShowUserList(false);
+        updateUserList?.();
+        handleClose?.();
+      } else {
+        showErrorNotificationFunction(
+          "Email này đã có trong lớp học hoặc chưa đăng ký tài khoản"
+        );
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      dispatch(closeLoading());
     }
   };
 

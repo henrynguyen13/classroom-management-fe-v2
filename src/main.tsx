@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "@/plugins/redux-toolkit/store.ts";
 import { router } from "./routers.tsx";
+import { Loading } from "./components";
 // import "./translations/i18n.ts";
 import "./index.css";
 
@@ -15,6 +16,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <PersistGate persistor={persistor}>
         <RouterProvider router={router} />
         <ToastContainer />
+        <Loading />
         {/* <Outlet /> */}
       </PersistGate>
     </Provider>

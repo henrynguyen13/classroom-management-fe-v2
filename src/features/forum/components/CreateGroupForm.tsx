@@ -1,9 +1,15 @@
-import { GroupStatus, showSuccessNotificationFunction } from "@/common";
+import {
+  GroupStatus,
+  showSuccessNotificationFunction,
+  openLoading,
+  closeLoading,
+} from "@/common";
 import { CustomButton, Dropdown, Form, InputText } from "@/components";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { groupSchema } from "../schema";
 import { groupService } from "../services";
+import { useAppDispatch } from "@/plugins";
 
 interface Props {
   isOpenForm: boolean;
@@ -18,23 +24,29 @@ const defaultValues = {
 
 export const CreateGroupForm = (props: Props) => {
   const { isOpenForm, handleClose, updateGroupList } = props;
-
+  const dispatch = useAppDispatch();
   const { control, handleSubmit, reset } = useForm({
     resolver: yupResolver(groupSchema),
     defaultValues,
   });
 
   const handleCreate = handleSubmit(async (dto: any) => {
-    console.log("dto", dto);
-    const response = await groupService.create(dto);
-    if (response?.success) {
-      showSuccessNotificationFunction("Tạo nhóm thành công");
-      reset({
-        name: defaultValues.name,
-        status: defaultValues.status,
-      });
-      handleClose();
-      updateGroupList();
+    dispatch(openLoading());
+    try {
+      const response = await groupService.create(dto);
+      if (response?.success) {
+        showSuccessNotificationFunction("Tạo nhóm thành công");
+        reset({
+          name: defaultValues.name,
+          status: defaultValues.status,
+        });
+        handleClose();
+        updateGroupList();
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      dispatch(closeLoading());
     }
   });
   return (

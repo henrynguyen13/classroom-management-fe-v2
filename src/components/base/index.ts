@@ -27,3 +27,4 @@ export * from "./ItemList";
 export * from "./EllipseBox";
 export * from "./AppStatus";
 export * from "./ButtonFilePdf";
+export * from "./Loading";

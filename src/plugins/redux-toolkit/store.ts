@@ -7,6 +7,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import { combineReducers } from "@reduxjs/toolkit";
 import responseReducer from "@/features/responses/reducers/response.reducer";
 import testReducer from "@/features/tests/reducers/test.reducer";
+import appReducer from "@/common/app.reducers";
 
 const persistConfig = {
   key: "root",
@@ -19,6 +20,7 @@ const reducer = combineReducers({
   classList: classReducer,
   responses: responseReducer,
   test: testReducer,
+  app: appReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

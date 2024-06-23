@@ -13,6 +13,8 @@ import {
   isTeacher,
   AuthStorageService,
   IStudent,
+  openLoading,
+  closeLoading,
 } from "@/common";
 import { Clock, Teacher, Code, Calendar, Status, Logout } from "@/assets";
 import { Collapse } from "@/components";
@@ -24,10 +26,12 @@ import {
   ReviewPage,
 } from "@/features";
 import { classService, IDescriptionClass } from "../index";
+import { useAppDispatch } from "@/plugins";
 
 export const ClassDetailPage = () => {
   const { id } = useParams();
   const userCode = AuthStorageService.getLoginUser().code;
+  const dispatch = useAppDispatch();
 
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
@@ -49,17 +53,25 @@ export const ClassDetailPage = () => {
     setAllStudents(response?.class?.users ?? []);
   };
   const getClassDetail = async () => {
-    const response = await classService.getClassDetail(id as string, {});
+    dispatch(openLoading());
 
-    setName(response?.class?.name || "");
-    setCode(response?.class?.code || "");
-    setDescription(response?.class?.description || []);
-    setCreatedAt(response?.class?.createdAt.toLocaleString() || "");
-    setStatus(response?.class?.status || "");
-    setDuration(response?.class?.duration || []);
-    setTeacher(response?.class?.teacher.username || "");
-    setStudents(response?.class?.users || []);
-    setTotalStudents(response?.totalStudents || 0);
+    try {
+      const response = await classService.getClassDetail(id as string, {});
+
+      setName(response?.class?.name || "");
+      setCode(response?.class?.code || "");
+      setDescription(response?.class?.description || []);
+      setCreatedAt(response?.class?.createdAt.toLocaleString() || "");
+      setStatus(response?.class?.status || "");
+      setDuration(response?.class?.duration || []);
+      setTeacher(response?.class?.teacher.username || "");
+      setStudents(response?.class?.users || []);
+      setTotalStudents(response?.totalStudents || 0);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      dispatch(closeLoading());
+    }
   };
 
   useEffect(() => {
@@ -144,8 +156,8 @@ export const ClassDetailPage = () => {
               <TabList onChange={handleChange}>
                 <Tab label="Người dùng" value="1" />
                 <Tab label="Bài tập" value="2" />
-                <Tab label="Ôn tập" value="3" />
-                <Tab label="Bài kiểm tra" value="4" />
+                <Tab label="Bài giảng" value="3" />
+                {/* <Tab label="Bài kiểm tra" value="4" /> */}
                 {isTeacherRole ? <Tab label="Điểm danh" value="5" /> : null}
               </TabList>
             </Box>
@@ -165,7 +177,7 @@ export const ClassDetailPage = () => {
             <TabPanel value="3">
               <ReviewPage />
             </TabPanel>
-            <TabPanel value="4">Bài kiểm tra</TabPanel>
+            {/* <TabPanel value="4">Bài kiểm tra</TabPanel> */}
             <TabPanel value="5">
               <ListAttendance
                 classId={id as string}

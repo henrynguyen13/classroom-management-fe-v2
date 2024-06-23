@@ -69,7 +69,7 @@ export const ItemList = ({
               </ListItem>
             ))
           ) : (
-            <div>Hiện chưa có thông báo nào</div>
+            <div className="ml-[21px]">Hiện chưa có thông báo nào</div>
           )}
         </div>
       </Down>
