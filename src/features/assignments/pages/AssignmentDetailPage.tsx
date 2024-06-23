@@ -22,7 +22,6 @@ import {
   CustomButton,
   CardQuestion,
   ButtonFile,
-  Loading,
   OutputTiptap,
 } from "@/components";
 import {
@@ -60,7 +59,6 @@ export const AssignmentDetailPage = () => {
 
   const [response, setResponse] = useState<IResponseList>();
   const [list, setList] = useState<IResponseList[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
     const getAssignmentDetail = async () => {
       const response = await assignmentService.getAssignmentById(
@@ -96,7 +94,6 @@ export const AssignmentDetailPage = () => {
     if (selectedFile && selectedFile?.size > MAX_FILE_SIZE) {
       throw new Error("This file is exceeds 10MB");
     } else {
-      setIsLoading(true);
       const response = await assignmentService.createAUploadAResponse(
         id as string,
         assignmentId as string,
@@ -104,7 +101,6 @@ export const AssignmentDetailPage = () => {
       );
       if (response?.success) {
         setSelectedFile(null);
-        setIsLoading(false);
         setResponse(response);
         showSuccessNotificationFunction("Nộp bài thành công");
       }
@@ -392,8 +388,6 @@ export const AssignmentDetailPage = () => {
         handleClose={() => setIsOpenBankModal(false)}
         onAddQuestions={handleAddQuestionsDto}
       />
-
-      {isLoading ? <Loading isLoading={isLoading} /> : null}
     </div>
   );
 };
