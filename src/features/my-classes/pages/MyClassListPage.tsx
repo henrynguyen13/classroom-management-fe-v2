@@ -24,25 +24,39 @@ import {
   ICommonListQuery,
   convertStatusClass,
   AuthStorageService,
+  openLoading,
+  closeLoading,
 } from "@/common";
 import { IClass, classService } from "@/features";
 import { NoData } from "@/assets";
 import dayjs from "dayjs";
+import { useAppDispatch } from "@/plugins";
 
 export const MyClassListPage = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const userId = AuthStorageService.getLoginUser()._id;
   const [classList, setClassList] = useState<IClass[]>([]);
   const [totalItems, setTotalItems] = useState(0);
-  useEffect(() => {
-    async function getClassList(query: ICommonListQuery) {
+
+  async function getClassList(query: ICommonListQuery) {
+    dispatch(openLoading());
+
+    try {
       const response = await classService.getAllMyClasses(
         userId as string,
         query
       );
       setClassList(response.data?.items);
       setTotalItems(response.data?.totalItems);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      dispatch(closeLoading());
     }
+  }
+  useEffect(() => {
     getClassList({});
   }, []);
   const [page, setPage] = useState(0);
