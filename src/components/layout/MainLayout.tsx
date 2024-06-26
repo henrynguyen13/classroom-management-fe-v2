@@ -1,7 +1,9 @@
 import { Outlet } from "react-router-dom";
 import { HeaderBar, SideBar } from ".";
+import { ScreenType, useBreakpoint } from "@/common";
 
 export const MainLayout = () => {
+  const { isLg } = useBreakpoint(ScreenType.LG);
   return (
     // <div className="flex h-full w-full">
     //   <SideBar />
@@ -13,8 +15,8 @@ export const MainLayout = () => {
     <div className=" h-full w-full">
       <HeaderBar />
       <div className="block h-full">
-        <SideBar />
-        <div className="ml-[290px] mr-[50px] mt-[100px]">
+        {isLg && <SideBar />}
+        <div className="lg:ml-[290px] mr-[50px] mt-[100px]">
           <Outlet />
         </div>
       </div>

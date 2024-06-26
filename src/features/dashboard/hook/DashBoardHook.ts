@@ -13,6 +13,7 @@ import {
   userService,
   groupService,
   IGroup,
+  questionBankService,
 } from "@/features";
 import { useAppDispatch } from "@/plugins";
 import { dashboardService } from "../service/dashboard.service";
@@ -75,15 +76,23 @@ export const useFunctionDashboard = () => {
       affairs: 0,
     },
   });
-  const userRole = AuthStorageService.getLoginUser()?.role;
+  const user = AuthStorageService.getLoginUser();
+
+  //admin
   const [teachers, setTeachers] = useState<IUser[]>([]);
   const [students, setStudents] = useState<IUser[]>([]);
   const [affairs, setAffairs] = useState<IUser[]>([]);
   const [classList, setClassList] = useState<IClass[]>([]);
   const [groups, setGroups] = useState<IGroup[]>([]);
-
   const [totalClasses, setTotalClasses] = useState(0);
   const [totalGroups, setTotalGroups] = useState(0);
+
+  //teacher
+  const [studentsInTeacherClass, setStudentsInTeacherClass] = useState(0);
+  const [myClasses, setMyClasses] = useState<IClass[]>();
+  const [numberMyClasses, setNumberMyClasses] = useState(0);
+  const [numberQuestionBanks, setNumberQuestionBanks] = useState(0);
+
   const [visits, setVisits] = useState([]);
   const [currentWeek, setCurrentWeek] = useState<any>();
   const [percentage, setPercentage] = useState<any>();
@@ -256,6 +265,38 @@ export const useFunctionDashboard = () => {
       : 100;
   };
 
+  //role: teacher
+  const getTotalStudents = async () => {
+    try {
+      const response = await classService.getAllMyClasses(user?._id ?? "", {});
+      if (response?.success) {
+        const total = response?.data.items
+          .map((item) => item.users)
+          .reduce((total, current) => total + current.length - 1, 0);
+        setStudentsInTeacherClass(total);
+        setMyClasses(response?.data?.items);
+        setNumberMyClasses(response?.data?.totalItems);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      //
+    }
+  };
+
+  const getQuestionBank = async () => {
+    try {
+      const response = await questionBankService.getAllQuestionBanks({});
+      if (response?.success) {
+        setNumberQuestionBanks(response.data?.totalItems);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      //
+    }
+  };
+
   useEffect(() => {
     const weekStart = currentWeekStart;
     const weekEnd = weekStart.endOf("isoWeek");
@@ -272,6 +313,8 @@ export const useFunctionDashboard = () => {
     getAllUsers();
     getAllClasses({});
     getAllGroups({});
+    getTotalStudents();
+    getQuestionBank();
   }, []);
 
   const handlePreviousWeek = () => {
@@ -283,7 +326,6 @@ export const useFunctionDashboard = () => {
   };
 
   return {
-    userRole,
     teachers,
     students,
     affairs,
@@ -298,5 +340,9 @@ export const useFunctionDashboard = () => {
     currentWeek,
     userChartData,
     percentage,
+    studentsInTeacherClass,
+    numberMyClasses,
+    myClasses,
+    numberQuestionBanks,
   };
 };

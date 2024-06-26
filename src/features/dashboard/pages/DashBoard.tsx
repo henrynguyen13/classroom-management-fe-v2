@@ -18,7 +18,11 @@ export const DashBoard = () => {
     chartData,
     totalGroups,
     handlePreviousWeek,
+    studentsInTeacherClass,
     handleNextWeek,
+    numberMyClasses,
+    numberQuestionBanks,
+    myClasses,
     currentWeek,
     userChartData,
   } = useFunctionDashboard();
@@ -60,13 +64,21 @@ export const DashBoard = () => {
 
         {userRole === ROLES.TEACHER && (
           <>
-            <div className="text-center text-white p-4  w-52 h-28 bg-[#e64848] rounded-xl ">
-              <div className="text-lg mb-4">Học sinh giảng dạy</div>
-              <div className="text-3xl"></div>
+            <div className="text-center text-white p-4  w-52 h-28 bg-[#2aa94c] rounded-xl ">
+              <div className="text-lg mb-4">Tổng số học sinh</div>
+              <div className="text-3xl">{studentsInTeacherClass}</div>
             </div>
             <div className="text-center text-white p-4  w-52 h-28 bg-[#e64848] rounded-xl ">
-              <div className="text-lg mb-4">Lớp học giảng dạy</div>
-              <div className="text-3xl"></div>
+              <div className="text-lg mb-4">Số lớp học</div>
+              <div className="text-3xl">{numberMyClasses}</div>
+            </div>
+            <div className="text-center text-white p-4  w-52 h-28 bg-[#e69a52] rounded-xl ">
+              <div className="text-lg mb-4">Ngân hàng câu hỏi</div>
+              <div className="text-3xl">{numberQuestionBanks}</div>
+            </div>
+            <div className="text-center text-white p-4  w-52 h-28 bg-[#5292e6] rounded-xl ">
+              <div className="text-lg mb-4">Diễn đàn</div>
+              <div className="text-3xl">{totalGroups}</div>
             </div>
           </>
         )}
