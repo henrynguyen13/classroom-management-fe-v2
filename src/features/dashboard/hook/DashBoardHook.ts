@@ -14,6 +14,7 @@ import {
   groupService,
   IGroup,
   questionBankService,
+  setResponses,
 } from "@/features";
 import { useAppDispatch } from "@/plugins";
 import { dashboardService } from "../service/dashboard.service";
@@ -92,6 +93,9 @@ export const useFunctionDashboard = () => {
   const [myClasses, setMyClasses] = useState<IClass[]>();
   const [numberMyClasses, setNumberMyClasses] = useState(0);
   const [numberQuestionBanks, setNumberQuestionBanks] = useState(0);
+
+  const [teacherResponses, setTeacherResponses] = useState<any[]>([]);
+  const [myResponses, setMyResponses] = useState<any[]>([]);
 
   const [visits, setVisits] = useState([]);
   const [currentWeek, setCurrentWeek] = useState<any>();
@@ -309,6 +313,37 @@ export const useFunctionDashboard = () => {
     getUserStats(weekStart, weekEnd);
   }, [currentWeekStart]);
 
+  const getRecentResponsesByTeacher = async (teacherId: string) => {
+    try {
+      const response = await dashboardService.getRecentResponsesByTeacher(
+        teacherId
+      );
+
+      if (response?.success) {
+        setTeacherResponses(response?.data?.items);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      //
+    }
+  };
+
+  const getRecentResponsesByUser = async () => {
+    try {
+      const response = await dashboardService.getRecentResponsesByUser();
+
+      if (response?.success) {
+        console.log("-----", response);
+        setMyResponses(response?.data?.items);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      //
+    }
+  };
+
   useEffect(() => {
     getAllUsers();
     getAllClasses({});
@@ -316,6 +351,15 @@ export const useFunctionDashboard = () => {
     getTotalStudents();
     getQuestionBank();
   }, []);
+
+  useEffect(() => {
+    if (user?.role === ROLES.TEACHER) {
+      getRecentResponsesByTeacher(user?._id!);
+    }
+    if (user?.role === ROLES.STUDENT) {
+      getRecentResponsesByUser();
+    }
+  }, [user?.role]);
 
   const handlePreviousWeek = () => {
     setCurrentWeekStart(currentWeekStart.subtract(1, "week"));
@@ -344,5 +388,7 @@ export const useFunctionDashboard = () => {
     numberMyClasses,
     myClasses,
     numberQuestionBanks,
+    teacherResponses,
+    myResponses,
   };
 };

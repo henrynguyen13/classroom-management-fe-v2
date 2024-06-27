@@ -31,16 +31,20 @@ import {
   ICommonListQuery,
   openLoading,
   closeLoading,
+  useBreakpoint,
+  ScreenType,
 } from "@/common";
 import { NoData } from "@/assets";
-import { CardItem, CustomButton } from "@/components";
+import { AppStatus, CardItem, CustomButton } from "@/components";
 import { IClass, classService, UpdateClass, CreateClass } from "../index";
 import dayjs from "dayjs";
 import { useAppDispatch } from "@/plugins";
+import { AssignmentStatus } from "@/features";
 
 export const ClassListPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { isSm } = useBreakpoint(ScreenType.SM);
 
   const [classList, setClassList] = useState<IClass[]>([]);
   const [totalItems, setTotalItems] = useState(0);
@@ -49,7 +53,7 @@ export const ClassListPage = () => {
   const [isOpenCreateForm, setIsOpenCreateForm] = useState(false);
   const [isOpenUpdateForm, setIsOpenUpdateForm] = useState(false);
   const rowsPerPage = ROWS_PER_PAGE;
-  const [viewMode, setViewMode] = useState("table");
+  const [viewMode, setViewMode] = useState(`${isSm ? "table" : "card"} `);
 
   async function getClassList(query: ICommonListQuery) {
     dispatch(openLoading());
@@ -111,38 +115,53 @@ export const ClassListPage = () => {
 
   return (
     <div>
-      <h2 className="text-xl font-medium mb-2">Danh sách lớp học</h2>
-      <div className="flex justify-between items-center">
-        <OutlinedInput
-          sx={{
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderRadius: "8px !important",
-            },
-            "& .MuiInputBase-input": {
-              padding: "12px",
-            },
-          }}
-          id="outlined-adornment-search"
-          startAdornment={
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          }
-          placeholder="Tìm kiếm"
-        />
-        <div>
-          <CustomButton
-            onClick={() => setIsOpenCreateForm(true)}
-            text="Tạo mới"
-            width="100"
+      <div className="mx-[20px] lg:mx-0">
+        <h2 className="text-xl font-medium mb-2">Danh sách lớp học</h2>
+        <div className="flex justify-between items-center">
+          <OutlinedInput
+            sx={{
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderRadius: "8px !important",
+              },
+              "& .MuiInputBase-input": {
+                padding: "12px",
+              },
+              width: isSm ? "auto" : "200px",
+            }}
+            id="outlined-adornment-search"
+            startAdornment={
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            }
+            placeholder="Tìm kiếm"
           />
-          <IconButton
-            onClick={() => setViewMode(viewMode === "table" ? "card" : "table")}
-          >
-            {viewMode === "table" ? <ViewModuleIcon /> : <ViewListIcon />}
-          </IconButton>
+          <div>
+            <CustomButton
+              onClick={() => setIsOpenCreateForm(true)}
+              text="Tạo mới"
+              width="100"
+            />
+            {isSm && (
+              <Tooltip
+                sx={{ marginLeft: 2 }}
+                title={`${
+                  viewMode === "table" ? "Chế độ lưới" : "Chế độ bảng"
+                }`}
+              >
+                <IconButton
+                  onClick={() =>
+                    setViewMode(viewMode === "table" ? "card" : "table")
+                  }
+                >
+                  {viewMode === "table" ? <ViewModuleIcon /> : <ViewListIcon />}
+                </IconButton>
+              </Tooltip>
+            )}
+          </div>
         </div>
       </div>
+
       {viewMode === "table" ? (
         <>
           <div className="flex justify-between items-center">
@@ -310,15 +329,28 @@ export const ClassListPage = () => {
                         path={mdiCircleSmall}
                         size={1.2}
                       /> */}
-                          <Chip
-                            sx={{
-                              backgroundColor: "#1D8FE4",
-                              color: "#ffffff",
-                            }}
+
+                          <AppStatus
                             label={convertStatusClass(
-                              dayjs(row?.duration[0]).toDate(),
-                              dayjs(row?.duration[1]).toDate()
+                              dayjs(row.duration[0]).toDate(),
+                              dayjs(row.duration[1]).toDate()
                             )}
+                            backgroundColor={`${
+                              convertStatusClass(
+                                dayjs(row.duration[0]).toDate(),
+                                dayjs(row.duration[1]).toDate()
+                              ) === AssignmentStatus.HAPPENNING
+                                ? "#EDFFDF"
+                                : "#FBEAEA"
+                            }`}
+                            dotColor={`${
+                              convertStatusClass(
+                                dayjs(row.duration[0]).toDate(),
+                                dayjs(row.duration[1]).toDate()
+                              ) === AssignmentStatus.HAPPENNING
+                                ? "#57AA16"
+                                : "#D62828"
+                            }`}
                           />
                           {/* <div className="text-sm mr-2">
                         {convertStatusClass(
@@ -406,7 +438,7 @@ export const ClassListPage = () => {
         </>
       ) : (
         <div className="grid grid-cols-12">
-          {classList?.length > 0 ? (
+          {classList?.length > 0 &&
             classList.map((row, _) => (
               <div className="col-span-12 md:col-span-6 lg:col-span-4">
                 <CardItem
@@ -418,17 +450,7 @@ export const ClassListPage = () => {
                   onViewDetails={() => navigate(`/classes/${row._id}`)}
                 />
               </div>
-            ))
-          ) : (
-            <>
-              <img
-                src={NoData}
-                className="h-80 flex my-0 mx-auto"
-                alt="No-data"
-              />
-              <div className="mt-2 font-medium">Hiện chưa có lớp học nào.</div>
-            </>
-          )}
+            ))}
         </div>
       )}
 

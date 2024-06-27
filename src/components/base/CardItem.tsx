@@ -17,6 +17,8 @@ import {
 import dayjs from "dayjs";
 import { convertStatusClass } from "@/common";
 import { useState } from "react";
+import { AppStatus } from ".";
+import { AssignmentStatus } from "@/features";
 
 export const CardItem = ({
   classItem,
@@ -35,12 +37,19 @@ export const CardItem = ({
     setAnchorEl(null);
   };
 
+  const statusClass = () => {
+    return convertStatusClass(
+      dayjs(classItem.duration[0]).toDate(),
+      dayjs(classItem.duration[1]).toDate()
+    );
+  };
   return (
     <Card
       className="shadow-forumBox"
       sx={{
+        borderRadius: 8,
         margin: "16px",
-        padding: "16px",
+        padding: "8px 16px 16px",
         position: "relative",
         backgroundColor: "white",
         boxShadow:
@@ -48,17 +57,33 @@ export const CardItem = ({
       }}
     >
       <CardContent>
-        <Typography variant="h6">{classItem.name}</Typography>
-        <Chip
-          sx={{
-            backgroundColor: "#1D8FE4",
-            color: "#ffffff",
-          }}
+        <Typography variant="h6" sx={{ paddingBottom: 1 }}>
+          {classItem.name}
+        </Typography>
+
+        <AppStatus
           label={convertStatusClass(
             dayjs(classItem.duration[0]).toDate(),
             dayjs(classItem.duration[1]).toDate()
           )}
+          backgroundColor={`${
+            convertStatusClass(
+              dayjs(classItem.duration[0]).toDate(),
+              dayjs(classItem.duration[1]).toDate()
+            ) === AssignmentStatus.HAPPENNING
+              ? "#EDFFDF"
+              : "#FBEAEA"
+          }`}
+          dotColor={`${
+            convertStatusClass(
+              dayjs(classItem.duration[0]).toDate(),
+              dayjs(classItem.duration[1]).toDate()
+            ) === AssignmentStatus.HAPPENNING
+              ? "#57AA16"
+              : "#D62828"
+          }`}
         />
+
         <Typography variant="subtitle1">
           Mã lớp học: {classItem.code}
         </Typography>
@@ -103,7 +128,11 @@ export const CardItem = ({
                 onEdit();
               }}
             >
-              <Icon path={mdiLeadPencil} size={1} />
+              <Icon
+                style={{ color: "#e28d0f" }}
+                path={mdiLeadPencil}
+                size={1}
+              />
               &nbsp; Sửa
             </MenuItem>
             <MenuItem
@@ -112,7 +141,7 @@ export const CardItem = ({
                 onDelete();
               }}
             >
-              <Icon path={mdiTrashCan} size={1} />
+              <Icon style={{ color: "#ED3A3A" }} path={mdiTrashCan} size={1} />
               &nbsp; Xóa
             </MenuItem>
             <MenuItem

@@ -19,6 +19,16 @@ class DashboardService extends ApiService {
       },
     });
   }
+
+  async getRecentResponsesByTeacher(teacherId: string) {
+    return this.client.get<any, any>(
+      `${this.baseUrl}/responses/recent/by-teacher/${teacherId}`
+    );
+  }
+
+  async getRecentResponsesByUser() {
+    return this.client.get<any, any>(`${this.baseUrl}/responses/recent/my`);
+  }
 }
 
 export const dashboardService = new DashboardService(

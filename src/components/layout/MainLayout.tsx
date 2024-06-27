@@ -16,7 +16,7 @@ export const MainLayout = () => {
       <HeaderBar />
       <div className="block h-full">
         {isLg && <SideBar />}
-        <div className="lg:ml-[290px] mr-[50px] mt-[100px]">
+        <div className="lg:ml-[290px] md:mx-[30px] mx-[16px] lg:mr-[50px] mt-[100px]">
           <Outlet />
         </div>
       </div>
