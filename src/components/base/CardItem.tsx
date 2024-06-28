@@ -3,7 +3,6 @@ import {
   CardContent,
   Typography,
   IconButton,
-  Chip,
   MenuItem,
   Menu,
 } from "@mui/material";
@@ -37,12 +36,6 @@ export const CardItem = ({
     setAnchorEl(null);
   };
 
-  const statusClass = () => {
-    return convertStatusClass(
-      dayjs(classItem.duration[0]).toDate(),
-      dayjs(classItem.duration[1]).toDate()
-    );
-  };
   return (
     <Card
       className="shadow-forumBox"
