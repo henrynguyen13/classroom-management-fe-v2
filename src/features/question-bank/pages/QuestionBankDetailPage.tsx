@@ -9,6 +9,7 @@ import {
   showSuccessNotificationFunction,
 } from "@/common";
 import { NoData } from "@/assets";
+import { ImportQuestionForm } from "../components/ImportQuestionForm";
 
 export const QuestionBankDetailPage = () => {
   const { id } = useParams();
@@ -16,6 +17,7 @@ export const QuestionBankDetailPage = () => {
   const [totalQuestions, setTotalQuestions] = useState<number>(0);
   const [isOpenCreateQuestionForm, setIsOpenCreateQuestionForm] =
     useState(false);
+  const [isOpenImportForm, setIsOpenImportForm] = useState(false);
 
   const [isOpenUpdateQuestionForm, setIsOpenUpdateQuestionForm] = useState<{
     id: string;
@@ -67,10 +69,19 @@ export const QuestionBankDetailPage = () => {
           <h2>Ngân hàng câu hỏi: {questionBank?.name} </h2>
           <h3>Mô tả: {questionBank?.description} </h3>
         </div>
-        <CustomButton
-          onClick={() => setIsOpenCreateQuestionForm(true)}
-          text="Tạo câu hỏi mới"
-        />
+        <div className="flex">
+          <div className="mr-2">
+            <CustomButton
+              onClick={() => setIsOpenImportForm(true)}
+              text="Tải file lên"
+              width="160"
+            />
+          </div>
+          <CustomButton
+            onClick={() => setIsOpenCreateQuestionForm(true)}
+            text="Tạo câu hỏi mới"
+          />
+        </div>
       </div>
 
       {questions.length > 0 ? (
@@ -136,6 +147,13 @@ export const QuestionBankDetailPage = () => {
           questionBankId={id as string}
         />
       )}
+
+      <ImportQuestionForm
+        handleQuestionCreateSuccess={handleQuestionCreateSuccess}
+        questionBankId={id!}
+        isOpenForm={isOpenImportForm}
+        handleClose={() => setIsOpenImportForm(false)}
+      />
     </>
   );
 };

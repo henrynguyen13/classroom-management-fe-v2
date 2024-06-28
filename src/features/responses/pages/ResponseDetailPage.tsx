@@ -100,6 +100,7 @@ export const ResponseDetailPage = () => {
                   id={res?.questionId}
                   idx={index}
                   text={res?.question?.text}
+                  isCorrect={res?.isCorrect}
                   type={res?.question?.type}
                   answers={res?.question?.answers}
                   answerTF={res?.question?.answerTF}

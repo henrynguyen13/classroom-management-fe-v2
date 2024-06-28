@@ -38,7 +38,6 @@ export const ButtonFile = ({
     if (event.target.files && event.target.files.length > 0) {
       const selectedFile = event.target.files[0];
       onSelectedFile(selectedFile);
-      console.log("----e", event.target.files);
     }
   };
 

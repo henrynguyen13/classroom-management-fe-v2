@@ -3,7 +3,14 @@ import { Avatar, Badge } from "@mui/material";
 import { HeaderMenu } from "./HeaderMenu";
 import { IUser, userService } from "@/features";
 import { LogoText } from "@/assets";
-import { AuthStorageService, ICommonListQuery, PAGES } from "@/common";
+import {
+  AuthStorageService,
+  ICommonListQuery,
+  PAGES,
+  Roles,
+  ScreenType,
+  useBreakpoint,
+} from "@/common";
 import Icon from "@mdi/react";
 import { mdiBellOutline } from "@mdi/js";
 import io from "socket.io-client";
@@ -40,6 +47,7 @@ export const HeaderBar = () => {
   const user = AuthStorageService.getLoginUser();
   const [isOpenNotification, setIsOpenNotification] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const { isSm } = useBreakpoint(ScreenType.SM);
 
   const handleItemClick = async (notification: Notification) => {
     await notificationService.updateReadStatus(notification._id, true);
@@ -75,7 +83,6 @@ export const HeaderBar = () => {
       query,
       user?._id!
     );
-    console.log("-----, ", response);
     setNotifications(response?.notifications ?? []);
   };
   useEffect(() => {
@@ -116,7 +123,7 @@ export const HeaderBar = () => {
       </div> */}
         <div className="flex items-center">
           <div
-            className="mr-5 hover:cursor-pointer"
+            className="mr-5 hover:cursor-pointer bg-[#035fa3] p-2 rounded-full"
             onClick={() => setIsOpenNotification(!isOpenNotification)}
           >
             <Badge badgeContent={unreadCount} color="error">
@@ -134,11 +141,18 @@ export const HeaderBar = () => {
             )}
           </div>
           <div
-            className="mr-3 cursor-pointer "
+            className="mr-3 cursor-pointer bg-[#035fa3] py-2 px-4 rounded-full"
             onClick={() => setIsOpenMenu(!isOpenMenu)}
           >
             <div className="flex items-center">
-              <div className="mr-2 text-white">{user?.username}</div>
+              {isSm && (
+                <div className="mr-4 ml-2 text-white text-sm">
+                  {user?.username} <br />
+                  <div className="text-yellow-500 font-medium text-sm">
+                    {Roles.find((item: any) => item?.id === user?.role)?.label}
+                  </div>
+                </div>
+              )}
               <Avatar alt="avatar" src={avatar} />
             </div>
             {isOpenMenu && <HeaderMenu onClose={() => setIsOpenMenu(false)} />}

@@ -191,7 +191,10 @@ export const CardQuestion = ({
           )}
 
           {type === QuestionType.SHORT_ANSWER && (
-            <TextField value={answerShort} />
+            <TextField
+              sx={{ width: "100%", minWidth: "300px" }}
+              value={answerShort}
+            />
           )}
         </div>
       </div>

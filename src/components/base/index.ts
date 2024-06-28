@@ -28,3 +28,4 @@ export * from "./EllipseBox";
 export * from "./AppStatus";
 export * from "./ButtonFilePdf";
 export * from "./Loading";
+export * from "./CardItem";

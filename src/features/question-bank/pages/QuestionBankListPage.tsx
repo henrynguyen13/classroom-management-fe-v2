@@ -32,6 +32,7 @@ import {
 } from "@/common";
 import { questionBankService, IQuestionBank } from "..";
 import { NoData } from "@/assets";
+import { ImportQuestionForm } from "../components/ImportQuestionForm";
 
 export const QuestionBankListPage = () => {
   const navigate = useNavigate();
