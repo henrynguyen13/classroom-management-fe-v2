@@ -23,7 +23,7 @@ interface Props {
   id: string;
   userAnswer: string[];
   correctAnswer: string[];
-  isCorrect: boolean;
+  isCorrect?: boolean;
 }
 
 export const CardQuestionResult = ({
