@@ -99,9 +99,30 @@ export const DashBoard = () => {
             </div>
           </>
         )}
+
+        {userRole === ROLES.STUDENT && (
+          <>
+            <div className="text-center text-white p-4  w-52 h-28 bg-[#2aa94c] rounded-xl ">
+              <div className="text-lg mb-4">Số lớp học</div>
+              <div className="text-3xl">{numberMyClasses}</div>
+            </div>
+            <div className="text-center text-white p-4  w-52 h-28 bg-[#e64848] rounded-xl ">
+              <div className="text-lg mb-4">Số lượng bài tập</div>
+              <div className="text-3xl">{numberMyClasses}</div>
+            </div>
+            <div className="text-center text-white p-4  w-52 h-28 bg-[#e69a52] rounded-xl ">
+              <div className="text-lg mb-4">Số lần vắng mặt</div>
+              <div className="text-3xl">{numberQuestionBanks}</div>
+            </div>
+            <div className="text-center text-white p-4  w-52 h-28 bg-[#5292e6] rounded-xl ">
+              <div className="text-lg mb-4">Diễn đàn</div>
+              <div className="text-3xl">{totalGroups}</div>
+            </div>
+          </>
+        )}
       </div>
 
-      <div className="w-full mt-10  grid grid-cols-12 gap-4 shadow-forumBox p-5 pb-16">
+      <div className="w-full mt-10  grid grid-cols-12 gap-4  p-5 pb-16">
         {(userRole === ROLES.ADMIN || userRole === ROLES.ACADEMIC_AFFAIR) && (
           <>
             <div className="col-span-6">
@@ -148,7 +169,7 @@ export const DashBoard = () => {
         )}
 
         {(userRole === ROLES.TEACHER || userRole === ROLES.STUDENT) && (
-          <div className="col-span-6">
+          <div className="col-span-12">
             <div className="font-medium text-center mb-2 text-xl">
               {" "}
               Các lớp học gần đây
@@ -157,7 +178,7 @@ export const DashBoard = () => {
               sx={{
                 minWidth: 650,
                 border: "1px solid #ccc",
-                borderRadius: 8,
+                borderRadius: 4,
                 overflow: "hidden",
               }}
               aria-label="sticky table"
@@ -253,7 +274,7 @@ export const DashBoard = () => {
                       <TableCell padding="none" width="10%" align="center">
                         <Tooltip title="Xem chi tiết">
                           <IconButton
-                            onClick={() => navigate(`/classes/${row._id}`)}
+                            onClick={() => navigate(`classes/${row?._id}`)}
                           >
                             <Icon path={mdiLoginVariant} size={1} />
                           </IconButton>
@@ -284,7 +305,7 @@ export const DashBoard = () => {
         )}
 
         {userRole === ROLES.TEACHER && (
-          <div className="col-span-6">
+          <div className="col-span-12">
             <div className="font-medium text-center mb-2 text-xl">
               {" "}
               Các phản hồi gần đây
@@ -293,7 +314,7 @@ export const DashBoard = () => {
               sx={{
                 minWidth: 650,
                 border: "1px solid #ccc",
-                borderRadius: 8,
+                borderRadius: 4,
                 overflow: "hidden",
               }}
               aria-label="sticky table"
@@ -371,7 +392,11 @@ export const DashBoard = () => {
                       <TableCell padding="none" width="10%" align="center">
                         <Tooltip title="Xem chi tiết">
                           <IconButton
-                            onClick={() => navigate(`/classes/${row._id}`)}
+                            onClick={() =>
+                              navigate(
+                                `/classes/${row?.classId}/assignment/${row?.assignmentId}/response/${row?._id}`
+                              )
+                            }
                           >
                             <Icon path={mdiLoginVariant} size={1} />
                           </IconButton>
@@ -395,14 +420,11 @@ export const DashBoard = () => {
                 )}
               </TableBody>
             </Table>
-            <div className="float-right mt-2">
-              <CustomButton text="Xem chi tiết" width="120px" />
-            </div>
           </div>
         )}
 
         {userRole === ROLES.STUDENT && (
-          <div className="col-span-6">
+          <div className="col-span-12">
             <div className="font-medium text-center mb-2 text-xl">
               {" "}
               Các phản hồi gần đây
@@ -411,7 +433,7 @@ export const DashBoard = () => {
               sx={{
                 minWidth: 650,
                 border: "1px solid #ccc",
-                borderRadius: 8,
+                borderRadius: 4,
                 overflow: "hidden",
               }}
               aria-label="sticky table"
@@ -489,7 +511,11 @@ export const DashBoard = () => {
                       <TableCell padding="none" width="10%" align="center">
                         <Tooltip title="Xem chi tiết">
                           <IconButton
-                            onClick={() => navigate(`/classes/${row._id}`)}
+                            onClick={() =>
+                              navigate(
+                                `/classes/${row?.classId}/assignment/${row?.assignmentId}/response/${row?._id}`
+                              )
+                            }
                           >
                             <Icon path={mdiLoginVariant} size={1} />
                           </IconButton>
@@ -513,9 +539,6 @@ export const DashBoard = () => {
                 )}
               </TableBody>
             </Table>
-            <div className="float-right mt-2">
-              <CustomButton text="Xem chi tiết" width="120px" />
-            </div>
           </div>
         )}
       </div>

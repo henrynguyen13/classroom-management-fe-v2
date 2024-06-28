@@ -123,7 +123,7 @@ export const HeaderBar = () => {
       </div> */}
         <div className="flex items-center">
           <div
-            className="mr-5 hover:cursor-pointer"
+            className="mr-5 hover:cursor-pointer bg-[#035fa3] p-2 rounded-full"
             onClick={() => setIsOpenNotification(!isOpenNotification)}
           >
             <Badge badgeContent={unreadCount} color="error">
@@ -141,12 +141,12 @@ export const HeaderBar = () => {
             )}
           </div>
           <div
-            className="mr-3 cursor-pointer "
+            className="mr-3 cursor-pointer bg-[#035fa3] py-2 px-4 rounded-full"
             onClick={() => setIsOpenMenu(!isOpenMenu)}
           >
             <div className="flex items-center">
               {isSm && (
-                <div className="mr-4 ml-2 text-white">
+                <div className="mr-4 ml-2 text-white text-sm">
                   {user?.username} <br />
                   <div className="text-yellow-500 font-medium text-sm">
                     {Roles.find((item: any) => item?.id === user?.role)?.label}

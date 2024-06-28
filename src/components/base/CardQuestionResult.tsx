@@ -23,6 +23,7 @@ interface Props {
   id: string;
   userAnswer: string[];
   correctAnswer: string[];
+  isCorrect: boolean;
 }
 
 export const CardQuestionResult = ({
@@ -32,13 +33,16 @@ export const CardQuestionResult = ({
   answerTF,
   idx,
   userAnswer,
-  correctAnswer,
+  // correctAnswer,
+  isCorrect,
 }: Props) => {
   const letters = ["A", "B", "C", "D"];
 
-  const trueAnswer =
-    correctAnswer.length === userAnswer.length &&
-    correctAnswer.every((id) => userAnswer.includes(id));
+  // const trueAnswer =
+  //   correctAnswer.length === userAnswer.length &&
+  //   correctAnswer.every((id) => userAnswer.includes(id));
+
+  const trueAnswer = isCorrect;
 
   return (
     <Card className="mt-2  mb-4">
@@ -142,7 +146,10 @@ export const CardQuestionResult = ({
           )}
 
           {type === QuestionType.SHORT_ANSWER && (
-            <TextField value={userAnswer[0]} />
+            <TextField
+              sx={{ width: "100%", minWidth: "300px" }}
+              value={userAnswer[0]}
+            />
           )}
         </div>
       </div>
