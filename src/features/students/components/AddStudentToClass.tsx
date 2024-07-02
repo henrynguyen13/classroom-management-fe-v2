@@ -8,6 +8,8 @@ import {
   ROLES,
   ICommonListQuery,
   IStudent,
+  useBreakpoint,
+  ScreenType,
 } from "@/common";
 import { Form, CustomButton } from "@/components";
 import { IUser, classService, userService } from "@/features";
@@ -23,7 +25,7 @@ interface Props {
 export const AddStudentToClass = (props: Props) => {
   const { isOpenForm, handleClose, id, updateStudentList, studentsInClass } =
     props;
-
+  const { isSm } = useBreakpoint(ScreenType.SM);
   const [students, setStudents] = useState<IStudent[]>([]);
   const [selectedStudents, setSelectedStudents] = useState<IStudent[]>([]);
   const [isShowStudentList, setIsShowStudentList] = useState<boolean>(false);
@@ -141,7 +143,7 @@ export const AddStudentToClass = (props: Props) => {
       title="Thêm học sinh"
       isOpenForm={isOpenForm}
       handleClose={handleCancel}
-      width="700px"
+      width={isSm ? "700px" : "90vw"}
       height="77vh"
     >
       <Down $height="100px">
@@ -225,7 +227,7 @@ export const AddStudentToClass = (props: Props) => {
 
 const Down = styled.div<{ $height?: string }>`
   .dropdown {
-    height: ${(props) => props.$height || "300px"};
+    max-height: ${(props) => props.$height || "300px"};
     overflow-y: auto;
   }
 

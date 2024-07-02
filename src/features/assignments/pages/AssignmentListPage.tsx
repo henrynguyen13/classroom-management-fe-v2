@@ -116,7 +116,7 @@ export const AssignmentListPage = () => {
           </div>
         )}
       </div>
-      <div className="flex justify-between items-center">
+      <div className="block sm:flex justify-between items-center">
         <div>Tổng số: {totalItems} bài tập</div>
 
         <TablePagination

@@ -274,7 +274,7 @@ export const DashBoard = () => {
                       <TableCell padding="none" width="10%" align="center">
                         <Tooltip title="Xem chi tiết">
                           <IconButton
-                            onClick={() => navigate(`classes/${row?._id}`)}
+                            onClick={() => navigate(`/classes/${row?._id}`)}
                           >
                             <Icon path={mdiLoginVariant} size={1} />
                           </IconButton>

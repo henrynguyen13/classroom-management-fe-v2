@@ -25,8 +25,10 @@ import {
   showSuccessNotificationFunction,
   IStudent,
   ICommonListQuery,
+  useBreakpoint,
+  ScreenType,
 } from "@/common";
-import { NoData } from "@/assets";
+import { Add, NoData } from "@/assets";
 import { CustomButton } from "@/components";
 import { classService } from "@/features";
 import { AddStudentToClass } from "./AddStudentToClass";
@@ -87,21 +89,32 @@ export const StudentList = ({
   };
 
   const isAdminOrAffairRole = isAdminOrAffair();
+  const { isSm } = useBreakpoint(ScreenType.SM);
   return (
     <>
       <div className="flex justify-between items-center">
         <div className="text-black">Danh sách học sinh </div>
-        {isAdminOrAffairRole && (
-          <CustomButton
-            onClick={() => {
-              setIsOpenAddStudent(true);
-            }}
-            text="Thêm học sinh vào lớp"
-          ></CustomButton>
-        )}
+        {isAdminOrAffairRole &&
+          (isSm ? (
+            <CustomButton
+              onClick={() => {
+                setIsOpenAddStudent(true);
+              }}
+              text="Thêm học sinh vào lớp"
+            />
+          ) : (
+            <img
+              className="cursor-pointer hover:opacity-70 relative mt-2"
+              src={Add}
+              onClick={() => {
+                setIsOpenAddStudent(true);
+              }}
+              alt="Add icon"
+            />
+          ))}
       </div>
 
-      <div className="flex justify-between items-center">
+      <div className="block sm:flex justify-between items-center">
         <div>Tổng số: {total} học sinh</div>
         <TablePagination
           sx={{

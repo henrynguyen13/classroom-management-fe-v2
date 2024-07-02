@@ -12,7 +12,7 @@ export const CardDetail = ({ list }: Props) => {
       <div className="w-full  rounded-lg  px-8 pb-8">
         {/* <div className="text-xl pb-8">{title}</div>
         <div className="border-[1px] border-border"></div> */}
-        <div className="grid grid-cols-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2">
           {list
             .filter((item) => item?.role.includes(role as ROLES))
             .map((item, index) => (

@@ -9,6 +9,8 @@ import {
   showSuccessNotificationFunction,
   showSuccessAlert,
   Roles,
+  useBreakpoint,
+  ScreenType,
 } from "@/common";
 import { CustomButton, Form, InputText, Dropdown } from "@/components";
 import { IUpdateUser, IUser } from "@/features";
@@ -83,10 +85,11 @@ export const UpdateProfile = (props: Props) => {
       showSuccessAlert({ title: "Cập nhật ảnh đại diện thành công" });
     }
   };
+  const { isSm } = useBreakpoint(ScreenType.SM);
   return (
     <Form
       title="Cập nhật thông tin cá nhân"
-      width="650px"
+      width={isSm ? "650px" : "90vw"}
       height="90vh"
       isOpenForm={isOpenForm}
       handleClose={handleClose}
@@ -130,7 +133,7 @@ export const UpdateProfile = (props: Props) => {
 
       {/* <button onClick={handleOpenModal}>choose avatar</button>
       <button onClick={uploadAvatar}>upload avatar</button> */}
-      <div className="flex justify-between mt-16">
+      <div className="block sm:flex justify-between mt-16">
         <InputText
           control={control}
           name=""
@@ -154,7 +157,7 @@ export const UpdateProfile = (props: Props) => {
         value="username"
         label="Họ và tên"
         placeholder="Nhập họ và tên"
-        minWidth="100%"
+        minWidth={isSm ? "100%" : "300px"}
       />
       <Dropdown
         control={control}
