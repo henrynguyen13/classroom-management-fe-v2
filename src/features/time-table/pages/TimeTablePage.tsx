@@ -2,42 +2,39 @@ import { Calendar, dayjsLocalizer } from "react-big-calendar";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { timeTableService } from "../services/time-table.service";
+import { closeLoading, openLoading, ScreenType, useBreakpoint } from "@/common";
+import { useDispatch } from "react-redux";
 const localizer = dayjsLocalizer(dayjs);
 // dayjs.locale("vn");
 export const TimeTablePage = () => {
   const [eventsData, setEventsData] = useState([]);
-
+  const { isSm } = useBreakpoint(ScreenType.SM);
+  const dispatch = useDispatch();
   const getTimeTable = async () => {
-    const response = await timeTableService.findAll();
-    console.log("---response", response);
-    const transformedData = response?.data.map((event: any) => ({
-      ...event,
-      start: new Date(event.start), // Converts string to Date object
-      end: new Date(event.end), // Converts string to Date object
-    }));
+    dispatch(openLoading());
 
-    setEventsData(transformedData);
+    try {
+      const response = await timeTableService.findAll();
+      if (response?.success) {
+        const transformedData = response?.data.map((event: any) => ({
+          ...event,
+          start: new Date(event.start), // Converts string to Date object
+          end: new Date(event.end), // Converts string to Date object
+        }));
+
+        setEventsData(transformedData);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      dispatch(closeLoading());
+    }
   };
 
   useEffect(() => {
     getTimeTable();
   }, []);
 
-  //   const handleSelect = ({ start, end }: any) => {
-  //     console.log(start);
-  //     console.log("typeOfStart", typeof start);
-  //     console.log(end);
-  //     const title = window.prompt("New Event name");
-  //     if (title)
-  //       setEventsData([
-  //         ...eventsData,
-  //         {
-  //           start,
-  //           end,
-  //           title,
-  //         },
-  //       ]);
-  //   };
   return (
     <div>
       <div className="font-medium text-2xl mb-5 text-center">
@@ -47,7 +44,7 @@ export const TimeTablePage = () => {
         localizer={localizer}
         selectable
         defaultDate={new Date()}
-        defaultView="month"
+        defaultView={isSm ? "month" : "agenda"}
         events={eventsData}
         startAccessor="start"
         endAccessor="end"

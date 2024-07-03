@@ -4,6 +4,7 @@ import { ScreenType, useBreakpoint } from "@/common";
 
 export const MainLayout = () => {
   const { isLg } = useBreakpoint(ScreenType.LG);
+
   return (
     // <div className="flex h-full w-full">
     //   <SideBar />

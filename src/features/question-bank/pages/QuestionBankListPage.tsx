@@ -25,16 +25,22 @@ import { CreateQuestionBank, UpdateQuestionBank } from "../components";
 import {
   ICommonListQuery,
   ROWS_PER_PAGE,
+  ScreenType,
+  closeLoading,
   formatDate,
+  openLoading,
   showAlert,
   showErrorNotificationFunction,
   showSuccessNotificationFunction,
+  useBreakpoint,
 } from "@/common";
 import { questionBankService, IQuestionBank } from "..";
 import { NoData } from "@/assets";
+import { useDispatch } from "react-redux";
 
 export const QuestionBankListPage = () => {
   const navigate = useNavigate();
+  const { isSm } = useBreakpoint(ScreenType.SM);
 
   const [questionBankList, setQuestionBankList] = useState<IQuestionBank[]>([]);
   const [totalItems, setTotalItems] = useState(0);
@@ -42,11 +48,19 @@ export const QuestionBankListPage = () => {
   const [currentId, setCurrentId] = useState("");
   const [isOpenUpdateForm, setIsOpenUpdateForm] = useState(false);
   const [isOpenCreateForm, setIsOpenCreateForm] = useState(false);
-
+  const dispatch = useDispatch();
   async function getQuestionBankList(query: ICommonListQuery) {
-    const response = await questionBankService.getAllQuestionBanks(query);
-    setQuestionBankList(response.data?.items);
-    setTotalItems(response.data?.totalItems);
+    dispatch(openLoading());
+
+    try {
+      const response = await questionBankService.getAllQuestionBanks(query);
+      setQuestionBankList(response.data?.items);
+      setTotalItems(response.data?.totalItems);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      dispatch(closeLoading());
+    }
   }
 
   useEffect(() => {
@@ -101,6 +115,7 @@ export const QuestionBankListPage = () => {
             "& .MuiInputBase-input": {
               padding: "12px",
             },
+            width: isSm ? "auto" : "200px",
           }}
           id="outlined-adornment-search"
           startAdornment={
@@ -119,8 +134,10 @@ export const QuestionBankListPage = () => {
         </div>
       </div>
 
-      <div className="flex justify-between items-center">
-        <div>Tổng số: {totalItems} ngân hàng câu hỏi</div>
+      <div className="block sm:flex justify-between items-center">
+        <div className="mt-4 sm:mt-0">
+          Tổng số: {totalItems} ngân hàng câu hỏi
+        </div>
         <TablePagination
           sx={{
             "& .MuiTablePagination-selectLabel": {

@@ -18,13 +18,16 @@ import {
   ALL_MEMBERS,
   AuthStorageService,
   ONLY_TEACHER,
+  closeSidebar,
 } from "@/common";
 import { Student, Class, Dashboard, Question, Calendar, Group } from "@/assets";
+import { useAppDispatch } from "@/plugins";
 
 const drawerWidth = 240;
 
 export const SideBar = () => {
   const location = useLocation();
+  const dispatch = useAppDispatch();
 
   const sidebarItems: ISideBar[] = [
     {
@@ -132,7 +135,10 @@ export const SideBar = () => {
                   },
                 }}
               >
-                <ListItemButton selected={location.pathname === item.redirect}>
+                <ListItemButton
+                  onClick={() => dispatch(closeSidebar())}
+                  selected={location.pathname === item.redirect}
+                >
                   <ListItemIcon>
                     <img src={item.icon} alt={item.icon} />
                   </ListItemIcon>
