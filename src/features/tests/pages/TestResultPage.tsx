@@ -4,6 +4,7 @@ import { Card } from "@mui/material";
 
 import { CustomButton } from "@/components";
 import { assignmentService, IResponseList } from "@/features";
+import { ScreenType, useBreakpoint } from "@/common";
 
 export const TestResultPage = () => {
   const { id, assignmentId, resultId } = useParams();
@@ -25,10 +26,11 @@ export const TestResultPage = () => {
 
     getAResponseById();
   }, []);
+  const { isSm } = useBreakpoint(ScreenType.SM);
   return (
     <Card
       variant="outlined"
-      sx={{ width: 600, margin: "0 auto", textAlign: "center" }}
+      sx={{ width: isSm ? 600 : "90vw", margin: "0 auto", textAlign: "center" }}
     >
       {response && response?.response.length > 0 ? (
         <>

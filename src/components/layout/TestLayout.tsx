@@ -7,10 +7,10 @@ export const TestLayout = () => {
       <div className="relative flex-1 m-h-full h-full">
         <HeaderBar />
         <div className="mt-[100px] mx-[50px] grid grid-cols-12 gap-4">
-          <div className="col-span-3">
+          <div className="col-span-12 sm:col-span-3">
             <TestSideBar />
           </div>
-          <div className="col-span-9">
+          <div className="col-span-12 sm:col-span-9">
             <Outlet />
           </div>
         </div>
