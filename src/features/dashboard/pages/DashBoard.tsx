@@ -11,7 +11,13 @@ import {
   Chip,
 } from "@mui/material";
 import Icon from "@mdi/react";
-import { AuthStorageService, ROLES, convertStatusClass } from "@/common";
+import {
+  AuthStorageService,
+  ROLES,
+  ScreenType,
+  convertStatusClass,
+  useBreakpoint,
+} from "@/common";
 import { useFunctionDashboard } from "../hook/DashBoardHook";
 import { VisitChart } from "..";
 import { UserChart } from "..";
@@ -51,81 +57,81 @@ export const DashBoard = () => {
     }
   }, []);
 
+  const { isSm } = useBreakpoint(ScreenType.SM);
+
   return (
     <div className="mb-5">
-      <div className="flex justify-between">
-        {(userRole === ROLES.ADMIN || userRole === ROLES.ACADEMIC_AFFAIR) && (
-          <>
-            <div className="text-center text-white p-4  w-52 h-28  bg-[#5292e6] rounded-xl ">
-              <div className="text-lg mb-4">Giáo viên</div>
-              <div className="text-3xl">{teachers.length}</div>
-            </div>
-            <div className="text-center text-white p-4  w-52 h-28 bg-[#e69a52] rounded-xl ">
-              <div className="text-lg mb-4">Học sinh</div>
-              <div className="text-3xl">{students.length}</div>
-            </div>
-            <div className="text-center text-white p-4  w-52 h-28 bg-[#e64848] rounded-xl ">
-              <div className="text-lg mb-4">Giáo vụ</div>
-              <div className="text-3xl">{affairs.length}</div>
-            </div>
-            <div className="text-center text-white p-4  w-52 h-28 bg-[#2aa94c] rounded-xl ">
-              <div className="text-lg mb-4">Lớp học</div>
-              <div className="text-3xl">{totalClasses}</div>
-            </div>
-            <div className="text-center text-white p-4  w-52 h-28 bg-[#e64848] rounded-xl ">
-              <div className="text-lg mb-4">Diễn đàn</div>
-              <div className="text-3xl">{totalGroups}</div>
-            </div>
-          </>
-        )}
+      {(userRole === ROLES.ADMIN || userRole === ROLES.ACADEMIC_AFFAIR) && (
+        <div className="grid grid-cols-5 gap-4">
+          <div className="text-center text-white p-4  h-28  bg-[#5292e6] rounded-xl col-span-2 sm:col-span-1">
+            <div className="text-lg mb-4">Giáo viên</div>
+            <div className="text-3xl">{teachers.length}</div>
+          </div>
+          <div className="text-center text-white p-4  h-28 bg-[#e69a52] rounded-xl col-span-2 sm:col-span-1">
+            <div className="text-lg mb-4">Học sinh</div>
+            <div className="text-3xl">{students.length}</div>
+          </div>
+          <div className="text-center text-white p-4  h-28 bg-[#e64848] rounded-xl col-span-2 sm:col-span-1">
+            <div className="text-lg mb-4">Giáo vụ</div>
+            <div className="text-3xl">{affairs.length}</div>
+          </div>
+          <div className="text-center text-white p-4  h-28 bg-[#2aa94c] rounded-xl col-span-2 sm:col-span-1">
+            <div className="text-lg mb-4">Lớp học</div>
+            <div className="text-3xl">{totalClasses}</div>
+          </div>
+          <div className="text-center text-white p-4  h-28 bg-[#e64848] rounded-xl col-span-2 sm:col-span-1">
+            <div className="text-lg mb-4">Diễn đàn</div>
+            <div className="text-3xl">{totalGroups}</div>
+          </div>
+        </div>
+      )}
 
-        {userRole === ROLES.TEACHER && (
-          <>
-            <div className="text-center text-white p-4  w-52 h-28 bg-[#2aa94c] rounded-xl ">
-              <div className="text-lg mb-4">Tổng số học sinh</div>
-              <div className="text-3xl">{studentsInTeacherClass}</div>
-            </div>
-            <div className="text-center text-white p-4  w-52 h-28 bg-[#e64848] rounded-xl ">
-              <div className="text-lg mb-4">Số lớp học</div>
-              <div className="text-3xl">{numberMyClasses}</div>
-            </div>
-            <div className="text-center text-white p-4  w-52 h-28 bg-[#e69a52] rounded-xl ">
-              <div className="text-lg mb-4">Ngân hàng câu hỏi</div>
-              <div className="text-3xl">{numberQuestionBanks}</div>
-            </div>
-            <div className="text-center text-white p-4  w-52 h-28 bg-[#5292e6] rounded-xl ">
-              <div className="text-lg mb-4">Diễn đàn</div>
-              <div className="text-3xl">{totalGroups}</div>
-            </div>
-          </>
-        )}
+      {userRole === ROLES.TEACHER && (
+        <div className="grid grid-cols-4 gap-4">
+          <div className="text-center text-white p-4  h-28 bg-[#2aa94c] rounded-xl col-span-2 sm:col-span-1">
+            <div className="text-lg mb-4">Tổng số học sinh</div>
+            <div className="text-3xl">{studentsInTeacherClass}</div>
+          </div>
+          <div className="text-center text-white p-4  h-28 bg-[#e64848] rounded-xl col-span-2 sm:col-span-1">
+            <div className="text-lg mb-4">Số lớp học</div>
+            <div className="text-3xl">{numberMyClasses}</div>
+          </div>
+          <div className="text-center text-white p-4  h-28 bg-[#e69a52] rounded-xl col-span-2 sm:col-span-1">
+            <div className="text-lg mb-4">Ngân hàng câu hỏi</div>
+            <div className="text-3xl">{numberQuestionBanks}</div>
+          </div>
+          <div className="text-center text-white p-4  h-28 bg-[#5292e6] rounded-xl col-span-2 sm:col-span-1">
+            <div className="text-lg mb-4">Diễn đàn</div>
+            <div className="text-3xl">{totalGroups}</div>
+          </div>
+        </div>
+      )}
 
-        {userRole === ROLES.STUDENT && (
-          <>
-            <div className="text-center text-white p-4  w-52 h-28 bg-[#2aa94c] rounded-xl ">
-              <div className="text-lg mb-4">Số lớp học</div>
-              <div className="text-3xl">{numberMyClasses}</div>
-            </div>
-            <div className="text-center text-white p-4  w-52 h-28 bg-[#e64848] rounded-xl ">
-              <div className="text-lg mb-4">Số lượng bài tập</div>
-              <div className="text-3xl">{numberMyClasses}</div>
-            </div>
-            <div className="text-center text-white p-4  w-52 h-28 bg-[#e69a52] rounded-xl ">
-              <div className="text-lg mb-4">Số lần vắng mặt</div>
-              <div className="text-3xl">{numberQuestionBanks}</div>
-            </div>
-            <div className="text-center text-white p-4  w-52 h-28 bg-[#5292e6] rounded-xl ">
-              <div className="text-lg mb-4">Diễn đàn</div>
-              <div className="text-3xl">{totalGroups}</div>
-            </div>
-          </>
-        )}
-      </div>
+      {userRole === ROLES.STUDENT && (
+        <div className="grid grid-cols-4 gap-4">
+          <div className="text-center text-white p-4  h-28 bg-[#2aa94c] rounded-xl col-span-2 sm:col-span-1 ">
+            <div className="text-lg mb-4">Số lớp học</div>
+            <div className="text-3xl">{numberMyClasses}</div>
+          </div>
+          <div className="text-center text-white p-4  h-28 bg-[#e64848] rounded-xl col-span-2 sm:col-span-1 ">
+            <div className="text-lg mb-4">Số lượng bài tập</div>
+            <div className="text-3xl">{numberMyClasses}</div>
+          </div>
+          <div className="text-center text-white p-4  h-28 bg-[#e69a52] rounded-xl col-span-2 sm:col-span-1 ">
+            <div className="text-lg mb-4">Số lần vắng mặt</div>
+            <div className="text-3xl">{numberQuestionBanks}</div>
+          </div>
+          <div className="text-center text-white p-4  h-28 bg-[#5292e6] rounded-xl col-span-2 sm:col-span-1 ">
+            <div className="text-lg mb-4">Diễn đàn</div>
+            <div className="text-3xl">{totalGroups}</div>
+          </div>
+        </div>
+      )}
 
       <div className="w-full mt-10  grid grid-cols-12 gap-4  p-5 pb-16">
         {(userRole === ROLES.ADMIN || userRole === ROLES.ACADEMIC_AFFAIR) && (
           <>
-            <div className="col-span-6">
+            <div className="col-span-12 sm:col-span-6">
               <VisitChart
                 chartData={chartData}
                 handlePreviousWeek={handlePreviousWeek}
@@ -133,7 +139,7 @@ export const DashBoard = () => {
                 currentWeek={currentWeek}
               />
             </div>
-            <div className="col-span-6">
+            <div className="col-span-12 sm:col-span-6">
               <UserChart
                 userChartData={userChartData}
                 handlePreviousWeek={handlePreviousWeek}
@@ -176,7 +182,7 @@ export const DashBoard = () => {
             </div>
             <Table
               sx={{
-                minWidth: 650,
+                minWidth: isSm ? 650 : "auto",
                 border: "1px solid #ccc",
                 borderRadius: 4,
                 overflow: "hidden",
@@ -274,7 +280,7 @@ export const DashBoard = () => {
                       <TableCell padding="none" width="10%" align="center">
                         <Tooltip title="Xem chi tiết">
                           <IconButton
-                            onClick={() => navigate(`classes/${row?._id}`)}
+                            onClick={() => navigate(`/classes/${row?._id}`)}
                           >
                             <Icon path={mdiLoginVariant} size={1} />
                           </IconButton>

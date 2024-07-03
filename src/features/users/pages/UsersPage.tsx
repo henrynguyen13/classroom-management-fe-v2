@@ -37,6 +37,8 @@ import {
   roles,
   openLoading,
   closeLoading,
+  useBreakpoint,
+  ScreenType,
 } from "@/common";
 import { CustomButton, MultiSelect } from "@/components";
 import { userService, IUser } from "@/features";
@@ -133,11 +135,13 @@ export const UsersPage = () => {
     }
   };
 
+  const { isLg } = useBreakpoint(ScreenType.LG);
+
   return (
     <div>
       <h2 className="text-xl font-medium">Danh sách người dùng</h2>
 
-      <div className="flex justify-between items-center">
+      <div className="block sm:flex flex-wrap justify-between items-center mt-2 sm:mt-0">
         <OutlinedInput
           sx={{
             "& .MuiOutlinedInput-notchedOutline": {
@@ -146,7 +150,7 @@ export const UsersPage = () => {
             "& .MuiInputBase-input": {
               padding: "12px",
             },
-            width: "400px",
+            width: isLg ? "400px" : "350px",
           }}
           id="outlined-adornment-search"
           startAdornment={
@@ -178,7 +182,7 @@ export const UsersPage = () => {
           />
         </div>
       </div>
-      <div className="flex justify-between items-center">
+      <div className="block sm:flex justify-between items-center mt-2 sm:mt-0">
         <div>Tổng số: {totalItems} người dùng</div>
         <TablePagination
           sx={{

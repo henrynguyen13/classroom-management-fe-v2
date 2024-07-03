@@ -58,7 +58,7 @@ export const CardProfile = ({ title, list, user, updateProfile }: Props) => {
             </div>
           </div>
           <div className="border-[1px] border-border"></div>
-          <div className="grid grid-cols-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2">
             {list
               .filter((item) => item?.role.includes(user?.role as ROLES))
               .map((item, index) => (
