@@ -475,116 +475,131 @@ export const DashBoard = () => {
               {" "}
               Các phản hồi gần đây
             </div>
-            <Table
+            <TableContainer
               sx={{
-                minWidth: 650,
-                border: "1px solid #ccc",
-                borderRadius: 4,
-                overflow: "hidden",
+                maxHeight: "70vh",
+                "&::-webkit-scrollbar": {
+                  width: 8,
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  backgroundColor: "#E1E3E9",
+                  borderRadius: 2,
+                },
               }}
-              aria-label="sticky table"
-              stickyHeader
             >
-              <TableHead>
-                <TableRow
-                  sx={{
-                    color: "#1b1b33",
-                  }}
-                >
-                  <TableCell sx={{ backgroundColor: "#e3e1e1" }} width="5%">
-                    STT
-                  </TableCell>
+              <Table
+                sx={{
+                  minWidth: 650,
+                  border: "1px solid #ccc",
+                  borderRadius: 4,
+                  overflow: "hidden",
+                }}
+                aria-label="sticky table"
+                stickyHeader
+              >
+                <TableHead>
+                  <TableRow
+                    sx={{
+                      color: "#1b1b33",
+                    }}
+                  >
+                    <TableCell sx={{ backgroundColor: "#e3e1e1" }} width="5%">
+                      STT
+                    </TableCell>
 
-                  <TableCell
-                    sx={{ backgroundColor: "#e3e1e1" }}
-                    width="15%"
-                    align="center"
-                  >
-                    Học sinh
-                  </TableCell>
-
-                  <TableCell
-                    sx={{ backgroundColor: "#e3e1e1" }}
-                    width="10%"
-                    align="center"
-                  >
-                    Mã học sinh
-                  </TableCell>
-
-                  <TableCell
-                    sx={{ backgroundColor: "#e3e1e1" }}
-                    width="10%"
-                    align="center"
-                  >
-                    Điểm
-                  </TableCell>
-                  <TableCell
-                    sx={{ backgroundColor: "#e3e1e1" }}
-                    width="10%"
-                    align="center"
-                  >
-                    Hành động
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {myResponses && myResponses?.length > 0 ? (
-                  myResponses.slice(0, 3).map((row: any, index: any) => (
-                    <TableRow
-                      key={row?._id}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    <TableCell
+                      sx={{ backgroundColor: "#e3e1e1" }}
+                      width="15%"
+                      align="center"
                     >
-                      <TableCell width="5%">{index + 1}</TableCell>
-                      <TableCell width="15%" align="center">
-                        {row?.user?.[0]?.username}
-                      </TableCell>
-                      <TableCell padding="none" width="10%" align="center">
-                        {row?.user?.[0]?.code ? (
-                          <Chip
-                            sx={{
-                              backgroundColor: "#1D8FE4",
-                              color: "#ffffff",
-                            }}
-                            label={row?.user?.[0]?.code}
-                          />
-                        ) : null}
-                      </TableCell>
+                      Học sinh
+                    </TableCell>
 
-                      <TableCell width="15%" align="center">
-                        {row?.mark}
-                      </TableCell>
+                    <TableCell
+                      sx={{ backgroundColor: "#e3e1e1" }}
+                      width="10%"
+                      align="center"
+                    >
+                      Mã học sinh
+                    </TableCell>
 
-                      <TableCell padding="none" width="10%" align="center">
-                        <Tooltip title="Xem chi tiết">
-                          <IconButton
-                            onClick={() =>
-                              navigate(
-                                `/classes/${row?.classId}/assignment/${row?.assignmentId}/response/${row?._id}`
-                              )
-                            }
-                          >
-                            <Icon path={mdiLoginVariant} size={1} />
-                          </IconButton>
-                        </Tooltip>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={7} align="center">
-                      <img
-                        src={NoData}
-                        className="h-80 flex my-0 mx-auto"
-                        alt="No-data"
-                      />
-                      <div className="mt-2 font-medium">
-                        Hiện chưa có phản hồi nào.
-                      </div>
+                    <TableCell
+                      sx={{ backgroundColor: "#e3e1e1" }}
+                      width="10%"
+                      align="center"
+                    >
+                      Điểm
+                    </TableCell>
+                    <TableCell
+                      sx={{ backgroundColor: "#e3e1e1" }}
+                      width="10%"
+                      align="center"
+                    >
+                      Hành động
                     </TableCell>
                   </TableRow>
-                )}
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody>
+                  {myResponses && myResponses?.length > 0 ? (
+                    myResponses.slice(0, 3).map((row: any, index: any) => (
+                      <TableRow
+                        key={row?._id}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell width="5%">{index + 1}</TableCell>
+                        <TableCell width="15%" align="center">
+                          {row?.user?.[0]?.username}
+                        </TableCell>
+                        <TableCell padding="none" width="10%" align="center">
+                          {row?.user?.[0]?.code ? (
+                            <Chip
+                              sx={{
+                                backgroundColor: "#1D8FE4",
+                                color: "#ffffff",
+                              }}
+                              label={row?.user?.[0]?.code}
+                            />
+                          ) : null}
+                        </TableCell>
+
+                        <TableCell width="15%" align="center">
+                          {row?.mark}
+                        </TableCell>
+
+                        <TableCell padding="none" width="10%" align="center">
+                          <Tooltip title="Xem chi tiết">
+                            <IconButton
+                              onClick={() =>
+                                navigate(
+                                  `/classes/${row?.classId}/assignment/${row?.assignmentId}/response/${row?._id}`
+                                )
+                              }
+                            >
+                              <Icon path={mdiLoginVariant} size={1} />
+                            </IconButton>
+                          </Tooltip>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={7} align="center">
+                        <img
+                          src={NoData}
+                          className="h-80 flex my-0 mx-auto"
+                          alt="No-data"
+                        />
+                        <div className="mt-2 font-medium">
+                          Hiện chưa có phản hồi nào.
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </div>
         )}
       </div>

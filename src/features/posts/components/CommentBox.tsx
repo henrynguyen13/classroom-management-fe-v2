@@ -31,7 +31,7 @@ export const CommentBox = (props: IGroupProps) => {
 
   return (
     <Modal open={isOpenForm!} onClose={handleClose}>
-      <Down className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg w-1/2">
+      <Down className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg w-11/12 sm:w-4/5 lg:w-1/2">
         <h2 className="text-lg font-semibold mb-4">Bình luận</h2>
         <div className="max-h-96 overflow-y-auto mb-4 custom-scroll">
           {comments!.length > 0 ? (

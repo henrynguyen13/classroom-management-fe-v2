@@ -54,6 +54,7 @@ export const HeaderBar = () => {
   const [isOpenNotification, setIsOpenNotification] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const { isSm } = useBreakpoint(ScreenType.SM);
+  const { isLg } = useBreakpoint(ScreenType.LG);
   const isOpenSidebar = useAppSelector(setHandleSidebar);
 
   const dispatch = useAppDispatch();
@@ -126,7 +127,7 @@ export const HeaderBar = () => {
   return (
     <>
       <div className="bg-primary-1 flex h-16 justify-between items-center fixed top-0 left-0 right-0 z-20">
-        {isSm ? (
+        {isLg ? (
           <div
             className="cursor-pointer hover:opacity-90"
             onClick={() => navigate(PAGES.DASHBOARD)}

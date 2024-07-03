@@ -25,8 +25,8 @@ export const GroupBox = ({
         <img src={avatar} alt={avatar} />
       </div>
       <div className="col-span-8">
-        <div className="flex justify-between items-center mb-5">
-          <h2 className="font-semibold">{name}</h2>
+        <div className="flex justify-between items-start mb-5">
+          <h2 className="font-semibold h-12">{name}</h2>
           <Icon path={mdiDotsHorizontal} size={1} />
         </div>
         <div className="flex">
