@@ -5,19 +5,25 @@ import { IUser, userService } from "@/features";
 import { LogoText } from "@/assets";
 import {
   AuthStorageService,
+  closeSidebar,
   ICommonListQuery,
+  openSidebar,
   PAGES,
   Roles,
   ScreenType,
+  setHandleSidebar,
   useBreakpoint,
 } from "@/common";
+import { useRef } from "react";
+import { useOnClickOutside } from "usehooks-ts";
 import Icon from "@mdi/react";
-import { mdiBellOutline } from "@mdi/js";
+import { mdiBellOutline, mdiMenu } from "@mdi/js";
 import io from "socket.io-client";
 import { showSuccessNotificationFunction } from "@/common";
-import { ItemList } from "@/components";
+import { ItemList, SideBar } from "@/components";
 import { notificationService } from "@/features/notifications/services/notifications.service";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@/plugins";
 const user = AuthStorageService.getLoginUser();
 // const socket = io("http://localhost:8080", {
 //   query: { userId: user._id },
@@ -48,6 +54,9 @@ export const HeaderBar = () => {
   const [isOpenNotification, setIsOpenNotification] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const { isSm } = useBreakpoint(ScreenType.SM);
+  const isOpenSidebar = useAppSelector(setHandleSidebar);
+
+  const dispatch = useAppDispatch();
 
   const handleItemClick = async (notification: Notification) => {
     await notificationService.updateReadStatus(notification._id, true);
@@ -108,15 +117,31 @@ export const HeaderBar = () => {
   const unreadCount = notifications.filter(
     (notification) => !notification.isRead
   ).length;
+  const ref = useRef(null);
+  const handleClickOutside = () => {
+    dispatch(closeSidebar());
+  };
+  useOnClickOutside(ref, handleClickOutside);
+
   return (
     <>
       <div className="bg-primary-1 flex h-16 justify-between items-center fixed top-0 left-0 right-0 z-20">
-        <div
-          className="cursor-pointer hover:opacity-90"
-          onClick={() => navigate(PAGES.DASHBOARD)}
-        >
-          <img src={LogoText} alt="Logo Text" />
-        </div>
+        {isSm ? (
+          <div
+            className="cursor-pointer hover:opacity-90"
+            onClick={() => navigate(PAGES.DASHBOARD)}
+          >
+            <img src={LogoText} alt="Logo Text" />
+          </div>
+        ) : (
+          <div
+            className="bg-[#035fa3] py-2 px-2 rounded-full ml-2"
+            onClick={() => dispatch(openSidebar())}
+          >
+            <Icon path={mdiMenu} size={1.3} color="#FFFFFF" />
+          </div>
+        )}
+
         {/* <div className=" flex items-center ml-2">
         <span className="text-lg">/ Lớp học</span>
         <HeaderBreadcrumnbs pathname={pathname} />
@@ -141,7 +166,7 @@ export const HeaderBar = () => {
             )}
           </div>
           <div
-            className="mr-3 cursor-pointer bg-[#035fa3] py-2 px-4 rounded-full"
+            className="mr-3 cursor-pointer bg-[#035fa3] py-2 px-2 rounded-full"
             onClick={() => setIsOpenMenu(!isOpenMenu)}
           >
             <div className="flex items-center">
@@ -159,6 +184,12 @@ export const HeaderBar = () => {
           </div>
         </div>
       </div>
+
+      {isOpenSidebar && (
+        <div ref={ref}>
+          <SideBar />
+        </div>
+      )}
     </>
   );
 };
