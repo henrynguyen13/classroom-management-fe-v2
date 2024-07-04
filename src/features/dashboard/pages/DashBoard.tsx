@@ -58,7 +58,6 @@ export const DashBoard = () => {
     }
   }, []);
 
-  const { isSm } = useBreakpoint(ScreenType.SM);
   const { isLg } = useBreakpoint(ScreenType.LG);
 
   return (
