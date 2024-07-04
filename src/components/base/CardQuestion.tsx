@@ -12,7 +12,7 @@ import {
 import Icon from "@mdi/react";
 import { mdiLeadPencil, mdiTrashCan, mdiPlus } from "@mdi/js";
 
-import { LEVEL_QUESTION, showAlert } from "@/common";
+import { LEVEL_QUESTION, ScreenType, showAlert, useBreakpoint } from "@/common";
 import { IAnswer, QuestionType } from "@/features";
 import { OutputTiptap } from "./math/OutputTiptap";
 interface Props {
@@ -70,6 +70,7 @@ export const CardQuestion = ({
         return "Câu trả lời ngắn";
     }
   };
+  const { isSm } = useBreakpoint(ScreenType.SM);
 
   return (
     <Card className="mt-2  mb-4">
@@ -86,7 +87,12 @@ export const CardQuestion = ({
                 LEVEL_QUESTION.find((i) => i?.id === level?.toString())?.label
               }
               variant="outlined"
-              sx={{ color: "#ed3a3a", borderColor: "#ed3a3a", marginLeft: 2 }}
+              sx={{
+                color: "#ed3a3a",
+                borderColor: "#ed3a3a",
+                marginLeft: 2,
+                marginTop: isSm ? 0 : 1,
+              }}
             />
           </div>
           <div>
@@ -151,7 +157,10 @@ export const CardQuestion = ({
           {(type === QuestionType.SINGLE_CHOICE ||
             type === QuestionType.MULTIPLE_CHOICE) &&
             answers?.map((answer, index) => (
-              <div key={index} className="mt-6 col-span-3 flex items-center">
+              <div
+                key={index}
+                className="mt-6 col-span-12 sm:col-span-6 lg:col-span-3 flex items-center"
+              >
                 {type === QuestionType.SINGLE_CHOICE ? (
                   <Radio checked={answer.isCorrect} />
                 ) : (

@@ -17,7 +17,6 @@ import { PostWidget } from "@/features";
 export const GroupDetailPage = () => {
   const { id } = useParams();
 
-  console.log("-ID", id);
   const {
     posts,
     totalUsers,
@@ -78,13 +77,13 @@ export const GroupDetailPage = () => {
       </div>
 
       <div className="grid grid-cols-12 gap-8 mt-5">
-        <div className="col-span-8">
+        <div className="col-span-12 lg:col-span-8">
           <div className="flex items-center rounded-lg  shadow-forumBox bg-white p-6 mb-5">
             <Avatar alt="avatar" src={user?.avatar} />
 
             <div
               onClick={() => setIsOpenCreateForm(true)}
-              className="bg-background-1 mx-2 pl-5 pr-[200px] py-3 rounded-full cursor-pointer hover:opacity-90"
+              className="bg-background-1 mx-2 pl-5 pr-[100px] py-3 rounded-full cursor-pointer hover:opacity-90"
             >
               Bạn viết gì đi...
             </div>
@@ -96,7 +95,7 @@ export const GroupDetailPage = () => {
             ))}
         </div>
 
-        <div className="col-span-4">
+        <div className="hidden lg:block lg:col-span-4">
           <div className="bg-white p-5 rounded-lg shadow-forumBox">
             <p className="mb-2 text-lg font-semibold">Giới thiệu</p>
 

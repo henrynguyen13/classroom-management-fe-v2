@@ -64,12 +64,12 @@ export const QuestionBankDetailPage = () => {
   }, [id]);
   return (
     <>
-      <div className="flex justify-between items-center">
+      <div className="block sm:flex justify-between items-center">
         <div>
           <h2>Ngân hàng câu hỏi: {questionBank?.name} </h2>
           <h3>Mô tả: {questionBank?.description} </h3>
         </div>
-        <div className="flex">
+        <div className="flex mt-4 sm:mt-0">
           <div className="mr-2">
             <CustomButton
               onClick={() => setIsOpenImportForm(true)}

@@ -1,4 +1,9 @@
-import { LEVEL_QUESTION, TYPE_QUESTION } from "@/common";
+import {
+  LEVEL_QUESTION,
+  ScreenType,
+  TYPE_QUESTION,
+  useBreakpoint,
+} from "@/common";
 import { CustomDropdown, Form } from "@/components";
 
 import { QuestionType } from "../../index";
@@ -26,6 +31,7 @@ export const CreateQuestion = (props: Props) => {
     handleClose,
     handleQuestionCreateSuccess,
   } = props;
+  const { isLg } = useBreakpoint(ScreenType.LG);
 
   const {
     selectedTypeQuestion,
@@ -45,7 +51,7 @@ export const CreateQuestion = (props: Props) => {
   return (
     <Form
       title="Tạo câu hỏi"
-      width="70%"
+      width={isLg ? "70%" : "90%"}
       height="90vh"
       isOpenForm={isOpenForm}
       handleClose={handleClose}

@@ -24,7 +24,7 @@ export const ForumPage = () => {
           {groups.map((group) => (
             <div
               key={group?._id}
-              className="col-span-4"
+              className="col-span-12 sm:col-span-6 lg:col-span-4"
               onClick={() => navigate(`/forum/${group?._id}`)}
             >
               <GroupBox
