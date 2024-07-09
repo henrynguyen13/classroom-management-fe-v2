@@ -5,7 +5,10 @@ import { questionBankService } from "../services";
 import {
   showErrorNotificationFunction,
   showSuccessNotificationFunction,
+  openLoading,
+  closeLoading,
 } from "@/common";
+import { useAppDispatch } from "@/plugins";
 
 interface IProps {
   questionBankId: string;
@@ -16,7 +19,7 @@ export const ImportQuestions = (props: IProps) => {
   const { questionBankId, handleClose, handleQuestionCreateSuccess } = props;
   const [_file, setFile] = useState(null);
   const [questions, setQuestions] = useState<any[]>([]);
-
+  const dispatch = useAppDispatch();
   const handleFileChange = (event: any) => {
     const selectedFile = event.target.files[0];
     setFile(selectedFile);
@@ -147,6 +150,7 @@ export const ImportQuestions = (props: IProps) => {
   };
 
   const handleImport = async () => {
+    dispatch(openLoading());
     try {
       const promises = questions.map((question) =>
         questionBankService.createQuestion(questionBankId, question)
@@ -167,6 +171,8 @@ export const ImportQuestions = (props: IProps) => {
     } catch (error) {
       showErrorNotificationFunction("Có lỗi xảy ra, vui lòng kiểm tra lại");
       console.error("Error importing questions:", error);
+    } finally {
+      dispatch(closeLoading());
     }
   };
 
