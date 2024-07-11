@@ -114,7 +114,8 @@ export const ResponseDetailPage = () => {
         </>
       ) : (
         <>
-          {response?.response?.format === "jpg" ? (
+          {response?.response?.format === "jpg" ||
+          response?.response?.format === "png" ? (
             <img className="mt-5 max-h-[32rem]" src={response?.response?.url} />
           ) : (
             <div className="mt-5">
